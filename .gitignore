@@ -123,3 +123,5 @@ nginx/ssl/
 .mypy_cache/
 .dmypy.json
 dmypy.json
+# Local Netlify folder
+.netlify

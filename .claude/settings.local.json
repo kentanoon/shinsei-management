@@ -39,7 +39,9 @@
       "Bash(COMPOSE_PROJECT_NAME=shinsei-management docker compose ps)",
       "Bash(COMPOSE_PROJECT_NAME=shinsei-management docker compose restart frontend)",
       "Bash(git config:*)",
-      "Bash(DISABLE_ESLINT_PLUGIN=true CI=false npm run build)"
+      "Bash(DISABLE_ESLINT_PLUGIN=true CI=false npm run build)",
+      "Bash(netlify:*)",
+      "WebFetch(domain:6855eccc70bccbf80fa00301--tranquil-cactus-de8407.netlify.app)"
     ],
     "deny": []
   }
