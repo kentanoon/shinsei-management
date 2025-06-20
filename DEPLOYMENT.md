@@ -18,6 +18,32 @@ git remote add origin git@github.com:kentanoon/shinsei-management.git
 git push -u origin main
 ```
 
+## GitHub Actions による自動デプロイ
+
+### 1. GitHub Secretsの設定
+リポジトリの Settings > Secrets and variables > Actions で以下を設定：
+
+**本番サーバー接続用:**
+- `PRODUCTION_HOST`: 本番サーバーのホスト名またはIP
+- `PRODUCTION_USER`: SSH接続用ユーザー名
+- `PRODUCTION_SSH_KEY`: SSH秘密鍵
+
+**アプリケーション設定用:**
+- `POSTGRES_PASSWORD`: データベースパスワード
+- `SECRET_KEY`: アプリケーション秘密鍵
+- `BACKEND_CORS_ORIGINS`: 許可するCORSオリジン
+
+### 2. 自動デプロイの流れ
+1. mainブランチへのプッシュ
+2. テスト実行 (バックエンド・フロントエンド)
+3. Dockerイメージのビルド・GitHub Container Registryへプッシュ
+4. 本番サーバーへの自動デプロイ
+5. ヘルスチェック実行
+
+### 3. GitHub Container Registry の設定
+- リポジトリの Settings > General > Features で "Packages" を有効化
+- GitHub Actionsが自動でイメージをプッシュします
+
 ## 本番環境セットアップ
 
 ### 1. サーバー要件
