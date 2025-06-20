@@ -186,4 +186,4 @@ docker-compose up -d
 
 質問や問題がある場合は、以下までお問い合わせください：
 - 開発者: [Your Name]
-- メール: [your-email@example.com]
+- メール: [your-email@example.com]# shinsei-management
