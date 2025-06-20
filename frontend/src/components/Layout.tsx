@@ -1,8 +1,9 @@
 import React from 'react';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
-import { AppBar, Toolbar, Typography, Box } from '@mui/material';
+import { AppBar, Toolbar, Typography, Box, Container } from '@mui/material';
 import NotificationPanel from './NotificationPanel';
 import AlertSystem from './AlertSystem';
+import { DemoBanner } from './DemoBanner';
 
 interface LayoutProps {
   children?: React.ReactNode;
@@ -81,6 +82,7 @@ const Layout: React.FC<LayoutProps> = () => {
         maxWidth: '1200px',
         margin: '0 auto'
       }}>
+        <DemoBanner />
         <Outlet />
       </main>
 

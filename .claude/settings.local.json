@@ -37,7 +37,8 @@
       "Bash(set -a)",
       "Bash(set +a)",
       "Bash(COMPOSE_PROJECT_NAME=shinsei-management docker compose ps)",
-      "Bash(COMPOSE_PROJECT_NAME=shinsei-management docker compose restart frontend)"
+      "Bash(COMPOSE_PROJECT_NAME=shinsei-management docker compose restart frontend)",
+      "Bash(git config:*)"
     ],
     "deny": []
   }

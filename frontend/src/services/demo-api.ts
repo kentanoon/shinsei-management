@@ -110,6 +110,66 @@ const DEMO_PROJECTS: Project[] = [
     start_date: '2024-01-15',
     end_date: '2024-05-30',
     applications: []
+  },
+  {
+    id: 4,
+    code: 'P2024-004',
+    name: '名古屋市中区複合施設新築',
+    description: '商業・オフィス・住宅の複合施設',
+    customer_name: '中部開発グループ',
+    status: 'in_progress',
+    priority: 'high',
+    created_at: '2024-03-10T11:00:00Z',
+    updated_at: '2024-06-20T16:00:00Z',
+    building_type: '複合施設',
+    structure: 'SRC造',
+    floors_above: 25,
+    floors_below: 3,
+    site_area: 2500.0,
+    building_area: 1800.0,
+    total_floor_area: 45000.0,
+    building_coverage_ratio: 72.0,
+    floor_area_ratio: 1800.0,
+    location: '名古屋市中区栄4-4-4',
+    contact_person: '山田次郎',
+    phone: '052-3333-4444',
+    email: 'yamada@chubu-dev.co.jp',
+    estimated_amount: 12000000000,
+    contract_amount: 11500000000,
+    actual_amount: null,
+    start_date: '2024-07-01',
+    end_date: '2027-12-31',
+    applications: []
+  },
+  {
+    id: 5,
+    code: 'P2024-005',
+    name: '横浜市西区住宅団地建設',
+    description: '低層住宅団地20棟の建設',
+    customer_name: '神奈川住宅開発',
+    status: 'planning',
+    priority: 'medium',
+    created_at: '2024-04-05T14:00:00Z',
+    updated_at: '2024-06-20T10:00:00Z',
+    building_type: '住宅',
+    structure: '木造',
+    floors_above: 3,
+    floors_below: 0,
+    site_area: 5000.0,
+    building_area: 3000.0,
+    total_floor_area: 9000.0,
+    building_coverage_ratio: 60.0,
+    floor_area_ratio: 180.0,
+    location: '横浜市西区みなとみらい5-5-5',
+    contact_person: '高橋美子',
+    phone: '045-5555-6666',
+    email: 'takahashi@kanagawa-housing.co.jp',
+    estimated_amount: 3000000000,
+    contract_amount: 2800000000,
+    actual_amount: null,
+    start_date: '2024-09-01',
+    end_date: '2026-08-31',
+    applications: []
   }
 ];
 
@@ -308,5 +368,7 @@ export const demoApi = {
 // デモモードかどうかを判定
 export const isDemoMode = (): boolean => {
   return process.env.REACT_APP_DEMO_MODE === 'true' || 
-         window.location.hostname.includes('github.io');
+         window.location.hostname.includes('github.io') ||
+         window.location.hostname.includes('vercel.app') ||
+         window.location.hostname.includes('netlify.app');
 };
