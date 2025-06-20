@@ -1,0 +1,573 @@
+import React, { useState, useEffect } from 'react';
+import {
+  Box,
+  Container,
+  Typography,
+  Tabs,
+  Tab,
+  Card,
+  CardContent,
+  Button,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  TextField,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  Chip,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  IconButton,
+  Tooltip,
+  Alert,
+  LinearProgress,
+  Fab,
+  Grid,
+} from '@mui/material';
+import {
+  Add as AddIcon,
+  Edit as EditIcon,
+  Delete as DeleteIcon,
+  Visibility as ViewIcon,
+  Assignment as AssignmentIcon,
+  CheckCircle as CheckCircleIcon,
+  Schedule as ScheduleIcon,
+  Warning as WarningIcon,
+  Save as SaveIcon,
+  Cancel as CancelIcon,
+} from '@mui/icons-material';
+import { useQuery, useMutation, useQueryClient } from 'react-query';
+import { applicationApi, projectApi } from '../services/api';
+
+interface Application {
+  id?: number;
+  project_id: number;
+  application_type_id: number;
+  status: string;
+  submitted_date?: string;
+  approved_date?: string;
+  notes?: string;
+  project?: {
+    project_code: string;
+    project_name: string;
+  };
+  application_type?: {
+    code: string;
+    name: string;
+  };
+}
+
+interface Project {
+  id: number;
+  project_code: string;
+  project_name: string;
+}
+
+interface ApplicationType {
+  id: number;
+  code: string;
+  name: string;
+  description?: string;
+}
+
+const ApplicationManagement: React.FC = () => {
+  const [currentTab, setCurrentTab] = useState(0);
+  const [applications, setApplications] = useState<Application[]>([]);
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [applicationTypes, setApplicationTypes] = useState<ApplicationType[]>([]);
+  const [selectedApplication, setSelectedApplication] = useState<Application | null>(null);
+  const [formData, setFormData] = useState<Application>({
+    project_id: 0,
+    application_type_id: 0,
+    status: '準備中',
+    notes: '',
+  });
+  const [openDialog, setOpenDialog] = useState(false);
+  const [editMode, setEditMode] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const queryClient = useQueryClient();
+
+  // データ取得
+  const fetchApplications = async () => {
+    return await applicationApi.getApplications();
+  };
+
+  const fetchProjects = async () => {
+    return await projectApi.getProjects();
+  };
+
+  const fetchApplicationTypes = async () => {
+    return await applicationApi.getApplicationTypes();
+  };
+
+  const { data: applicationsData, isLoading: applicationsLoading } = useQuery(
+    'applications',
+    fetchApplications,
+    {
+      onSuccess: (data) => setApplications(data.applications || []),
+      onError: (error) => setError('申請データの取得に失敗しました'),
+    }
+  );
+
+  const { data: projectsData } = useQuery('projects', fetchProjects, {
+    onSuccess: (data) => setProjects(data.projects || []),
+  });
+
+  const { data: typesData } = useQuery('applicationTypes', fetchApplicationTypes, {
+    onSuccess: (data) => setApplicationTypes(data.types || []),
+  });
+
+  // 申請作成・更新のミューテーション
+  const createApplicationMutation = useMutation(
+    (applicationData: Application) => applicationApi.createApplication(applicationData),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries('applications');
+        setOpenDialog(false);
+        resetForm();
+        setError(null);
+      },
+      onError: (error: any) => {
+        setError('申請の作成に失敗しました: ' + (error.response?.data?.detail || error.message));
+      },
+    }
+  );
+
+  const updateApplicationMutation = useMutation(
+    ({ id, data }: { id: number; data: Application }) =>
+      applicationApi.updateApplication(id, data),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries('applications');
+        setOpenDialog(false);
+        resetForm();
+        setError(null);
+      },
+      onError: (error: any) => {
+        setError('申請の更新に失敗しました: ' + (error.response?.data?.detail || error.message));
+      },
+    }
+  );
+
+  const deleteApplicationMutation = useMutation(
+    (id: number) => applicationApi.deleteApplication(id),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries('applications');
+        setError(null);
+      },
+      onError: (error: any) => {
+        setError('申請の削除に失敗しました: ' + (error.response?.data?.detail || error.message));
+      },
+    }
+  );
+
+  const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
+    setCurrentTab(newValue);
+  };
+
+  const resetForm = () => {
+    setFormData({
+      project_id: 0,
+      application_type_id: 0,
+      status: '準備中',
+      notes: '',
+    });
+    setSelectedApplication(null);
+    setEditMode(false);
+  };
+
+  const handleCreate = () => {
+    resetForm();
+    setOpenDialog(true);
+  };
+
+  const handleEdit = (application: Application) => {
+    setFormData(application);
+    setSelectedApplication(application);
+    setEditMode(true);
+    setOpenDialog(true);
+  };
+
+  const handleView = (application: Application) => {
+    setSelectedApplication(application);
+    setCurrentTab(1); // 詳細タブに切り替え
+  };
+
+  const handleSave = async () => {
+    if (!formData.project_id || !formData.application_type_id) {
+      setError('プロジェクトと申請種別を選択してください');
+      return;
+    }
+
+    setLoading(true);
+    try {
+      if (editMode && selectedApplication?.id) {
+        await updateApplicationMutation.mutateAsync({
+          id: selectedApplication.id,
+          data: formData,
+        });
+      } else {
+        await createApplicationMutation.mutateAsync(formData);
+      }
+    } catch (error) {
+      // エラーハンドリングはmutationで処理
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDelete = async (id: number) => {
+    if (window.confirm('この申請を削除してもよろしいですか？')) {
+      await deleteApplicationMutation.mutateAsync(id);
+    }
+  };
+
+  const getStatusColor = (status: string): 'default' | 'primary' | 'secondary' | 'error' | 'info' | 'success' | 'warning' => {
+    switch (status) {
+      case '承認': return 'success';
+      case '却下': return 'error';
+      case '申請済み': return 'primary';
+      case '準備中': return 'secondary';
+      case '確認中': return 'info';
+      default: return 'default';
+    }
+  };
+
+  const formatDate = (dateString?: string) => {
+    if (!dateString) return '---';
+    return new Date(dateString).toLocaleDateString('ja-JP');
+  };
+
+  // 申請一覧テーブル
+  const ApplicationTable = () => (
+    <TableContainer component={Paper}>
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableCell>申請ID</TableCell>
+            <TableCell>プロジェクト</TableCell>
+            <TableCell>申請種別</TableCell>
+            <TableCell>ステータス</TableCell>
+            <TableCell>提出日</TableCell>
+            <TableCell>承認日</TableCell>
+            <TableCell>アクション</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {applications.map((application) => (
+            <TableRow key={application.id} hover>
+              <TableCell>{application.id}</TableCell>
+              <TableCell>
+                <Box>
+                  <Typography variant="subtitle2">
+                    {application.project?.project_code}
+                  </Typography>
+                  <Typography variant="caption" color="textSecondary">
+                    {application.project?.project_name}
+                  </Typography>
+                </Box>
+              </TableCell>
+              <TableCell>
+                <Box>
+                  <Typography variant="subtitle2">
+                    {application.application_type?.code}
+                  </Typography>
+                  <Typography variant="caption" color="textSecondary">
+                    {application.application_type?.name}
+                  </Typography>
+                </Box>
+              </TableCell>
+              <TableCell>
+                <Chip 
+                  label={application.status}
+                  color={getStatusColor(application.status)}
+                  size="small"
+                />
+              </TableCell>
+              <TableCell>{formatDate(application.submitted_date)}</TableCell>
+              <TableCell>{formatDate(application.approved_date)}</TableCell>
+              <TableCell>
+                <Box sx={{ display: 'flex', gap: 0.5 }}>
+                  <Tooltip title="詳細表示">
+                    <IconButton size="small" onClick={() => handleView(application)}>
+                      <ViewIcon fontSize="small" />
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title="編集">
+                    <IconButton size="small" onClick={() => handleEdit(application)}>
+                      <EditIcon fontSize="small" />
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title="削除">
+                    <IconButton 
+                      size="small" 
+                      color="error"
+                      onClick={() => application.id && handleDelete(application.id)}
+                    >
+                      <DeleteIcon fontSize="small" />
+                    </IconButton>
+                  </Tooltip>
+                </Box>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
+  );
+
+  // 申請詳細表示
+  const ApplicationDetail = () => {
+    if (!selectedApplication) {
+      return (
+        <Alert severity="info">
+          申請を選択してください
+        </Alert>
+      );
+    }
+
+    return (
+      <Card>
+        <CardContent>
+          <Typography variant="h6" gutterBottom>
+            申請詳細
+          </Typography>
+          
+          <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: '1fr 1fr' }, gap: 3 }}>
+            <Box>
+              <Typography variant="subtitle2" gutterBottom>
+                プロジェクト情報
+              </Typography>
+              <Typography variant="body1">
+                {selectedApplication.project?.project_code} - {selectedApplication.project?.project_name}
+              </Typography>
+            </Box>
+            
+            <Box>
+              <Typography variant="subtitle2" gutterBottom>
+                申請種別
+              </Typography>
+              <Typography variant="body1">
+                {selectedApplication.application_type?.code} - {selectedApplication.application_type?.name}
+              </Typography>
+            </Grid>
+            
+            <Grid xs={12} md={4}>
+              <Typography variant="subtitle2" gutterBottom>
+                ステータス
+              </Typography>
+              <Chip 
+                label={selectedApplication.status}
+                color={getStatusColor(selectedApplication.status)}
+              />
+            </Grid>
+            
+            <Grid xs={12} md={4}>
+              <Typography variant="subtitle2" gutterBottom>
+                提出日
+              </Typography>
+              <Typography variant="body1">
+                {formatDate(selectedApplication.submitted_date)}
+              </Typography>
+            </Grid>
+            
+            <Grid xs={12} md={4}>
+              <Typography variant="subtitle2" gutterBottom>
+                承認日
+              </Typography>
+              <Typography variant="body1">
+                {formatDate(selectedApplication.approved_date)}
+              </Typography>
+            </Grid>
+            
+            <Grid xs={12}>
+              <Typography variant="subtitle2" gutterBottom>
+                備考
+              </Typography>
+              <Typography variant="body2" color="textSecondary">
+                {selectedApplication.notes || '備考はありません'}
+              </Typography>
+            </Grid>
+          </Grid>
+        </CardContent>
+      </Card>
+    );
+  };
+
+  if (applicationsLoading) {
+    return <LinearProgress />;
+  }
+
+  return (
+    <Container maxWidth="lg">
+      <Box sx={{ py: 3 }}>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
+          <Typography variant="h4" component="h1">
+            申請管理
+          </Typography>
+        </Box>
+
+        {error && (
+          <Alert severity="error" sx={{ mb: 2 }} onClose={() => setError(null)}>
+            {error}
+          </Alert>
+        )}
+
+        <Card sx={{ mb: 3 }}>
+          <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+            <Tabs value={currentTab} onChange={handleTabChange}>
+              <Tab 
+                label="申請一覧" 
+                icon={<AssignmentIcon />}
+                iconPosition="start"
+              />
+              <Tab 
+                label="申請詳細" 
+                icon={<ViewIcon />}
+                iconPosition="start"
+              />
+            </Tabs>
+          </Box>
+
+          <CardContent>
+            {currentTab === 0 && (
+              <Box>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+                  <Typography variant="h6">
+                    申請一覧 ({applications.length}件)
+                  </Typography>
+                  <Button
+                    variant="contained"
+                    startIcon={<AddIcon />}
+                    onClick={handleCreate}
+                  >
+                    新規申請
+                  </Button>
+                </Box>
+                <ApplicationTable />
+              </Box>
+            )}
+
+            {currentTab === 1 && <ApplicationDetail />}
+          </CardContent>
+        </Card>
+
+        {/* 申請作成・編集ダイアログ */}
+        <Dialog 
+          open={openDialog} 
+          onClose={() => setOpenDialog(false)}
+          maxWidth="md"
+          fullWidth
+        >
+          <DialogTitle>
+            {editMode ? '申請編集' : '新規申請作成'}
+          </DialogTitle>
+          <DialogContent>
+            <Box sx={{ pt: 2 }}>
+              <Grid container spacing={3}>
+                <Grid xs={12} md={6}>
+                  <FormControl fullWidth>
+                    <InputLabel>プロジェクト</InputLabel>
+                    <Select
+                      value={formData.project_id || ''}
+                      label="プロジェクト"
+                      onChange={(e) => setFormData({ ...formData, project_id: Number(e.target.value) })}
+                    >
+                      {projects.map((project) => (
+                        <MenuItem key={project.id} value={project.id}>
+                          {project.project_code} - {project.project_name}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Grid>
+
+                <Grid xs={12} md={6}>
+                  <FormControl fullWidth>
+                    <InputLabel>申請種別</InputLabel>
+                    <Select
+                      value={formData.application_type_id || ''}
+                      label="申請種別"
+                      onChange={(e) => setFormData({ ...formData, application_type_id: Number(e.target.value) })}
+                    >
+                      {applicationTypes.map((type) => (
+                        <MenuItem key={type.id} value={type.id}>
+                          {type.code} - {type.name}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Grid>
+
+                <Grid xs={12} md={6}>
+                  <FormControl fullWidth>
+                    <InputLabel>ステータス</InputLabel>
+                    <Select
+                      value={formData.status}
+                      label="ステータス"
+                      onChange={(e) => setFormData({ ...formData, status: e.target.value })}
+                    >
+                      <MenuItem value="準備中">準備中</MenuItem>
+                      <MenuItem value="申請済み">申請済み</MenuItem>
+                      <MenuItem value="確認中">確認中</MenuItem>
+                      <MenuItem value="承認">承認</MenuItem>
+                      <MenuItem value="却下">却下</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Grid>
+
+                <Grid xs={12} md={6}>
+                  <TextField
+                    fullWidth
+                    label="提出日"
+                    type="date"
+                    value={formData.submitted_date || ''}
+                    onChange={(e) => setFormData({ ...formData, submitted_date: e.target.value })}
+                    InputLabelProps={{ shrink: true }}
+                  />
+                </Grid>
+
+                <Grid xs={12}>
+                  <TextField
+                    fullWidth
+                    multiline
+                    rows={3}
+                    label="備考"
+                    value={formData.notes || ''}
+                    onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
+                  />
+                </Grid>
+              </Grid>
+            </Box>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setOpenDialog(false)}>
+              キャンセル
+            </Button>
+            <Button 
+              onClick={handleSave}
+              variant="contained"
+              disabled={loading}
+              startIcon={loading ? null : <SaveIcon />}
+            >
+              {loading ? '保存中...' : '保存'}
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </Box>
+    </Container>
+  );
+};
+
+export default ApplicationManagement;

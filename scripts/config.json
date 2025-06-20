@@ -1,0 +1,88 @@
+{
+  "repo_owner": "your-organization",
+  "repo_name": "shinsei-management",
+  "slack_webhook": "https://hooks.slack.com/services/YOUR/SLACK/WEBHOOK",
+  "github_token": "your-github-token",
+  "monitoring": {
+    "prometheus_url": "http://localhost:9090",
+    "grafana_url": "http://localhost:3001"
+  },
+  "kpi_targets": {
+    "test_coverage": 90,
+    "api_response_time": 0.5,
+    "error_rate": 1.0,
+    "deployment_frequency_per_week": 3
+  },
+  "phases": {
+    "Phase 1: 基盤強化": {
+      "status": "completed",
+      "progress": 100
+    },
+    "Phase 2: データ活用": {
+      "status": "in_progress", 
+      "progress": 80,
+      "features": {
+        "B1: インタラクティブダッシュボード": 100,
+        "B2: 高度検索・フィルタリング": 100,
+        "B3: 通知・アラートシステム": 80,
+        "B4: レポーティング機能": 60
+      }
+    },
+    "Phase 3: 拡張・最適化": {
+      "status": "preparing",
+      "progress": 15,
+      "features": {
+        "C1: RBAC・ユーザー管理": 0,
+        "C2: API統合・外部連携": 0, 
+        "C3: パフォーマンス・スケーラビリティ": 0,
+        "D1: テスト体制強化": 30,
+        "D2: パフォーマンス監視": 20,
+        "D3: セキュリティ強化": 10,
+        "D4: 開発効率化": 25
+      }
+    }
+  },
+  "team": {
+    "members": [
+      {
+        "name": "テックリード",
+        "role": "technical_lead",
+        "areas": ["architecture", "code_review", "technical_decisions"]
+      },
+      {
+        "name": "フロントエンドリード", 
+        "role": "frontend_lead",
+        "areas": ["react", "ui_ux", "user_experience"]
+      },
+      {
+        "name": "バックエンドリード",
+        "role": "backend_lead", 
+        "areas": ["fastapi", "database", "api_design"]
+      },
+      {
+        "name": "DevOpsエンジニア",
+        "role": "devops",
+        "areas": ["infrastructure", "monitoring", "deployment"]
+      }
+    ]
+  },
+  "automation": {
+    "weekly_report": {
+      "enabled": true,
+      "day_of_week": "friday",
+      "time": "17:00"
+    },
+    "daily_metrics": {
+      "enabled": true,
+      "time": "09:00"
+    },
+    "slack_notifications": {
+      "enabled": true,
+      "channels": {
+        "general": "#shinsei-management",
+        "alerts": "#alerts",
+        "reports": "#weekly-reports"
+      }
+    }
+  }
+}

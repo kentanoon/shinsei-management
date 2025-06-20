@@ -1,0 +1,37 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run build:*)",
+      "Bash(npx tsc:*)",
+      "mcp__ide__getDiagnostics",
+      "Bash(source:*)",
+      "Bash(USE_SQLITE=false POSTGRES_USER=shinsei_user POSTGRES_PASSWORD=shinsei_pass python test_postgres_connection.py)",
+      "Bash(pip install:*)",
+      "Bash(USE_SQLITE=false POSTGRES_USER=shinsei_user POSTGRES_PASSWORD=shinsei_pass alembic revision --autogenerate -m \"Initial PostgreSQL migration\")",
+      "Bash(USE_SQLITE=false POSTGRES_USER=shinsei_user POSTGRES_PASSWORD=shinsei_pass alembic upgrade head)",
+      "Bash(curl:*)",
+      "Bash(open http://localhost:3000)",
+      "Bash(mkdir:*)",
+      "Bash(USE_SQLITE=false POSTGRES_USER=shinsei_user POSTGRES_PASSWORD=shinsei_pass python scripts/init_application_types.py)",
+      "Bash(docker-compose up:*)",
+      "Bash(npm start)",
+      "Bash(ls:*)",
+      "Bash(python:*)",
+      "Bash(alembic upgrade:*)",
+      "Bash(alembic current:*)",
+      "Bash(alembic stamp:*)",
+      "Bash(grep:*)",
+      "Bash(echo:*)",
+      "Bash(cat:*)",
+      "Bash(mv:*)",
+      "Bash(find:*)",
+      "Bash(npm install:*)",
+      "Bash(rg:*)",
+      "Bash(npm --version)",
+      "Bash(make:*)",
+      "Bash(docker:*)",
+      "Bash(open:*)"
+    ],
+    "deny": []
+  }
+}

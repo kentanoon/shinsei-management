@@ -1,0 +1,72 @@
+version: '3.8'
+
+# 開発環境用の Docker Compose 設定 (PostgreSQL使用)
+# 使用方法: docker-compose -f docker-compose.yml -f docker-compose.dev.yml up
+
+services:
+  # 開発用バックエンド（PostgreSQL使用）
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./backend:/app
+      - ./data:/app/data
+      - ./logs:/app/logs
+    environment:
+      - ENVIRONMENT=development
+      - USE_SQLITE=false
+      - POSTGRES_SERVER=db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=shinsei_management
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    networks:
+      - app-network
+
+  # 開発用フロントエンド（ホットリロード対応）
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      - REACT_APP_API_URL=http://localhost:8000/api/v1
+      - CHOKIDAR_USEPOLLING=true
+    command: npm start
+    ports:
+      - "3000:3000"
+    stdin_open: true
+    tty: true
+    depends_on:
+      - backend
+    networks:
+      - app-network
+
+  # 開発時にも PostgreSQL を使用する
+  db:
+    # `profiles` を削除、またはコメントアウトすることで常に起動する
+    # profiles:
+    #   - postgres
+    networks:
+      - app-network
+
+  # Redis は開発時には使用しない
+  redis:
+    profiles:
+      - redis
+
+  # Nginx は開発時には使用しない
+  nginx:
+    profiles:
+      - production
+
+networks:
+  app-network:
+    name: app-network
