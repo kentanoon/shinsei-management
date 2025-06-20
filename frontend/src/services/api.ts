@@ -22,6 +22,7 @@ import type {
   ApplicationSummary 
 } from '../types/application';
 import { API_CONFIG, API_ENDPOINTS, HTTP_STATUS, ERROR_MESSAGES } from '../constants';
+import { demoApi, isDemoMode } from './demo-api';
 
 // Axios インスタンスの作成
 const api = axios.create({
@@ -71,6 +72,9 @@ export const projectApi = {
     limit?: number;
     status?: string;
   } = {}): Promise<ProjectListResponse> => {
+    if (isDemoMode()) {
+      return demoApi.getProjects();
+    }
     const { data } = await api.get('/projects', { params });
     return data;
   },
@@ -79,6 +83,10 @@ export const projectApi = {
    * プロジェクト詳細取得
    */
   getProject: async (projectCode: string): Promise<Project> => {
+    if (isDemoMode()) {
+      const id = parseInt(projectCode) || 1;
+      return demoApi.getProject(id);
+    }
     const { data } = await api.get(`/projects/${projectCode}`);
     return data;
   },
@@ -87,6 +95,9 @@ export const projectApi = {
    * ステータス別プロジェクト取得
    */
   getProjectsByStatus: async (status: string): Promise<ProjectsByStatusResponse> => {
+    if (isDemoMode()) {
+      return demoApi.getProjectsByStatus(status);
+    }
     const { data } = await api.get(`/projects/status/${status}`);
     return data;
   },
@@ -142,6 +153,9 @@ export const projectApi = {
    * プロジェクトサマリー取得
    */
   getProjectsSummary: async (): Promise<ProjectSummaryResponse> => {
+    if (isDemoMode()) {
+      return demoApi.getProjectsSummary();
+    }
     const { data } = await api.get('/projects/summary');
     return data;
   },
@@ -153,6 +167,9 @@ export const healthApi = {
    * 基本ヘルスチェック
    */
   checkHealth: async () => {
+    if (isDemoMode()) {
+      return demoApi.health();
+    }
     const { data } = await api.get('/health');
     return data;
   },
@@ -175,6 +192,9 @@ export const applicationApi = {
     project_id?: number;
     status?: string;
   } = {}) => {
+    if (isDemoMode()) {
+      return demoApi.getApplications();
+    }
     const { data } = await api.get('/applications/', { params });
     return data;
   },
@@ -183,6 +203,9 @@ export const applicationApi = {
    * 申請詳細取得
    */
   getApplication: async (applicationId: number) => {
+    if (isDemoMode()) {
+      return demoApi.getApplication(applicationId);
+    }
     const { data } = await api.get(`/applications/${applicationId}`);
     return data;
   },

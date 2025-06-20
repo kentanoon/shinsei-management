@@ -2,6 +2,7 @@
   "name": "shinsei-management-frontend",
   "version": "1.0.0",
   "private": true,
+  "homepage": "https://kentanoon.github.io/shinsei-management",
   "dependencies": {
     "@emotion/react": "^11.11.0",
     "@emotion/styled": "^11.11.0",
