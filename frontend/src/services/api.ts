@@ -17,11 +17,9 @@ import type {
 import type { 
   EnhancedApplication, 
   ApplicationCreateRequest, 
-  ApplicationUpdateRequest,
-  ApplicationStatusChangeRequest,
-  ApplicationSummary 
+  ApplicationUpdateRequest
 } from '../types/application';
-import { API_CONFIG, API_ENDPOINTS, HTTP_STATUS, ERROR_MESSAGES } from '../constants';
+import { API_CONFIG } from '../constants';
 import { demoApi, isDemoMode } from './demo-api';
 
 // Axios インスタンスの作成

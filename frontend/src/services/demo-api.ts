@@ -3,21 +3,7 @@
  * 静的データを使用したモックAPI
  */
 
-import type {
-  Project,
-  ProjectListResponse,
-  ProjectsByStatusResponse,
-  ProjectSummaryResponse,
-  ProjectCreateRequest,
-  ProjectUpdateRequest,
-  FinancialUpdateRequest,
-  ScheduleUpdateRequest,
-} from '../types/project';
-import type { 
-  EnhancedApplication, 
-  ApplicationCreateRequest, 
-  ApplicationUpdateRequest,
-} from '../types/application';
+// 型定義は必要に応じてインポート
 
 // デモデータ用の型定義
 interface DemoProject {
