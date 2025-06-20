@@ -1,0 +1,18 @@
+[build]
+  publish = "frontend/build"
+  command = "cd frontend && npm ci && npm run build"
+
+[build.environment]
+  REACT_APP_DEMO_MODE = "true"
+  REACT_APP_API_URL = "https://demo-api.example.com/api/v1"
+  CI = "false"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[context.production.environment]
+  REACT_APP_DEMO_MODE = "true"
+  REACT_APP_API_URL = "https://demo-api.example.com/api/v1"
+  CI = "false"
