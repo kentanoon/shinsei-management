@@ -43,7 +43,8 @@
       "Bash(netlify:*)",
       "WebFetch(domain:6855eccc70bccbf80fa00301--tranquil-cactus-de8407.netlify.app)",
       "Bash(rm:*)",
-      "Bash(vercel:*)"
+      "Bash(vercel:*)",
+      "WebFetch(domain:shinsei-management-ver0-jwyb1g1tj-kentanoons-projects.vercel.app)"
     ],
     "deny": []
   }

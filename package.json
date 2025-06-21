@@ -2,7 +2,6 @@
   "name": "shinsei-management",
   "version": "1.0.0",
   "description": "Building permit management system",
-  "type": "module",
   "scripts": {
     "build": "cd frontend && npm run build"
   },
