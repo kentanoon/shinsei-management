@@ -8,7 +8,7 @@ import {
 } from '@mui/material';
 import { Add as AddIcon, Edit as EditIcon, Check as CheckIcon } from '@mui/icons-material';
 import { getStatusColor } from '../utils/statusUtils';
-import axios from 'axios';
+import { applicationApi, projectApi } from '../services/api';
 
 interface ApplicationType {
   id: number;
@@ -56,14 +56,14 @@ const Applications: React.FC = () => {
   const fetchData = async () => {
     try {
       const [appsResponse, projectsResponse, typesResponse] = await Promise.all([
-        axios.get('http://127.0.0.1:8000/api/v1/applications'),
-        axios.get('http://127.0.0.1:8000/api/v1/projects'),
-        axios.get('http://127.0.0.1:8000/api/v1/applications/types')
+        applicationApi.getApplications(),
+        projectApi.getProjects({ skip: 0, limit: 1000 }),
+        applicationApi.getApplicationTypes()
       ]);
 
-      setApplications(appsResponse.data.applications || []);
-      setProjects(projectsResponse.data.projects || []);
-      setApplicationTypes(typesResponse.data.types || []);
+      setApplications(appsResponse.applications || appsResponse || []);
+      setProjects(projectsResponse.projects || []);
+      setApplicationTypes(typesResponse.types || typesResponse || []);
     } catch (error) {
       console.error('Error fetching data:', error);
     } finally {
@@ -124,9 +124,9 @@ const Applications: React.FC = () => {
       };
 
       if (editingApplication) {
-        await axios.put(`http://127.0.0.1:8000/api/v1/applications/${editingApplication.id}`, data);
+        await applicationApi.updateApplication(editingApplication.id, data);
       } else {
-        await axios.post('http://127.0.0.1:8000/api/v1/applications', data);
+        await applicationApi.createApplication(data);
       }
 
       fetchData();
@@ -138,7 +138,7 @@ const Applications: React.FC = () => {
 
   const handleStatusUpdate = async (applicationId: number, newStatus: string) => {
     try {
-      await axios.put(`http://127.0.0.1:8000/api/v1/applications/${applicationId}/status`, {
+      await applicationApi.updateApplicationStatus(applicationId, {
         status: newStatus,
         ...(newStatus === '申請' && { submitted_date: new Date().toISOString().split('T')[0] }),
         ...(newStatus === '承認' && { approved_date: new Date().toISOString().split('T')[0] }),

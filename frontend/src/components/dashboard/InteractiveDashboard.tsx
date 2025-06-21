@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { Responsive, WidthProvider, Layout } from 'react-grid-layout';
-import axios from 'axios';
+import { projectApi } from '../../services/api';
 import { useWebSocket } from '../../hooks/useWebSocket';
 import { 
   Box, 
@@ -155,8 +155,8 @@ const InteractiveDashboard: React.FC<InteractiveDashboardProps> = ({
   const handleDashboardRefresh = useCallback(async () => {
     console.log('Dashboard refresh requested');
     try {
-      const response = await axios.get('http://127.0.0.1:8000/api/v1/projects?skip=0&limit=1000');
-      setProjects(response.data.projects || []);
+      const response = await projectApi.getProjects({ skip: 0, limit: 1000 });
+      setProjects(response.projects || []);
       setLastUpdateTime(new Date());
     } catch (error) {
       console.error('Failed to refresh dashboard data:', error);

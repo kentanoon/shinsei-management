@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { Box, Typography, Tabs, Tab, Paper } from '@mui/material';
 import { useNotifications } from '../hooks/useNotifications';
 import AlertPanel from '../components/AlertPanel';
@@ -7,6 +6,7 @@ import InspectionCalendar from '../components/InspectionCalendar';
 import InteractiveDashboard from '../components/dashboard/InteractiveDashboard';
 import ClassicDashboardView from '../components/dashboard/ClassicDashboardView';
 import { getStatusColor } from '../utils/statusUtils';
+import { projectApi } from '../services/api';
 import type { Project } from '../types/project';
 
 const Dashboard: React.FC = () => {
@@ -18,10 +18,12 @@ const Dashboard: React.FC = () => {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const response = await axios.get('http://127.0.0.1:8000/api/v1/projects?skip=0&limit=1000');
-        setProjects(response.data.projects || []);
+        console.log('Dashboard: Fetching projects using projectApi');
+        const response = await projectApi.getProjects({ skip: 0, limit: 1000 });
+        setProjects(response.projects || []);
+        console.log('Dashboard: Fetched projects:', response.projects?.length || 0);
       } catch (error) {
-        console.error('Error fetching projects:', error);
+        console.error('Dashboard: Error fetching projects:', error);
       } finally {
         setLoading(false);
       }
