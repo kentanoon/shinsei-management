@@ -297,6 +297,18 @@ export const demoApi = {
 
 // デモモードかどうかを判定
 export const isDemoMode = (): boolean => {
-  // 環境変数で明示的にデモモードが設定されている場合のみデモモード
-  return process.env.REACT_APP_DEMO_MODE === 'true';
+  const demoModeEnv = process.env.REACT_APP_DEMO_MODE;
+  const isDemo = demoModeEnv === 'true';
+  
+  console.log('Demo mode check:', {
+    REACT_APP_DEMO_MODE: demoModeEnv,
+    isDemoMode: isDemo,
+    allEnvVars: {
+      REACT_APP_DEMO_MODE: process.env.REACT_APP_DEMO_MODE,
+      REACT_APP_SUPABASE_URL: process.env.REACT_APP_SUPABASE_URL,
+      NODE_ENV: process.env.NODE_ENV
+    }
+  });
+  
+  return isDemo;
 };
