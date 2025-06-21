@@ -5,7 +5,7 @@
 
 [build.environment]
   REACT_APP_DEMO_MODE = "false"
-  REACT_APP_API_URL = "/.netlify/functions"
+  REACT_APP_API_URL = "https://shinsei-backend.onrender.com/api/v1"
   REACT_APP_SUPABASE_URL = "https://yzdxxmgtgzfmglwswgwd.supabase.co"
   REACT_APP_SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl6ZHh4bWd0Z3pmbWdsd3N3Z3dkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA0NjIzMTYsImV4cCI6MjA2NjAzODMxNn0.1N5qVjOSRDczFA3f-YuijPy6E7do9jgar78YXT9G5dI"
   CI = "false"
@@ -37,7 +37,7 @@
 
 [context.production.environment]
   REACT_APP_DEMO_MODE = "false"
-  REACT_APP_API_URL = "/.netlify/functions"
+  REACT_APP_API_URL = "https://shinsei-backend.onrender.com/api/v1"
   REACT_APP_SUPABASE_URL = "https://yzdxxmgtgzfmglwswgwd.supabase.co"
   REACT_APP_SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl6ZHh4bWd0Z3pmbWdsd3N3Z3dkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA0NjIzMTYsImV4cCI6MjA2NjAzODMxNn0.1N5qVjOSRDczFA3f-YuijPy6E7do9jgar78YXT9G5dI"
   CI = "false"
