@@ -20,7 +20,11 @@ export const supabaseProjectApi = {
     limit?: number;
     status?: string;
   } = {}): Promise<ProjectListResponse> => {
+    console.log('🔥 supabaseProjectApi.getProjects called with params:', params);
     const { skip = 0, limit = 20, status } = params;
+    
+    console.log('🔥 Supabase client URL:', supabase.supabaseUrl);
+    console.log('🔥 Building query...');
     
     let query = supabase
       .from('projects')
@@ -36,20 +40,26 @@ export const supabaseProjectApi = {
       query = query.eq('status', status);
     }
 
+    console.log('🔥 Executing Supabase query...');
     const { data: projects, error, count } = await query
       .range(skip, skip + limit - 1);
 
+    console.log('🔥 Supabase response:', { projects, error, count });
+
     if (error) {
-      console.error('Supabase error:', error);
+      console.error('🔥 Supabase error:', error);
       throw new Error('データベースエラーが発生しました');
     }
 
-    return {
+    const result = {
       projects: projects || [],
       total: count || 0,
       skip,
       limit
     };
+    
+    console.log('🔥 Returning result:', result);
+    return result;
   },
 
   /**

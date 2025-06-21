@@ -72,11 +72,22 @@ export const projectApi = {
     status?: string;
   } = {}): Promise<ProjectListResponse> => {
     // 本番環境では強制的にSupabaseを使用
-    console.log('API call: getProjects - using Supabase directly');
+    console.log('🔧 API call: getProjects - PRODUCTION MODE FORCED');
+    console.log('🔧 Environment check:', {
+      NODE_ENV: process.env.NODE_ENV,
+      hostname: window.location.hostname,
+      REACT_APP_DEMO_MODE: process.env.REACT_APP_DEMO_MODE,
+      REACT_APP_SUPABASE_URL: process.env.REACT_APP_SUPABASE_URL ? 'SET' : 'NOT_SET'
+    });
+    
     try {
-      return await supabaseProjectApi.getProjects(params);
+      console.log('🔧 Calling supabaseProjectApi.getProjects...');
+      const result = await supabaseProjectApi.getProjects(params);
+      console.log('🔧 Supabase result:', result);
+      return result;
     } catch (error) {
-      console.error('Supabase connection failed:', error);
+      console.error('🔧 Supabase connection failed:', error);
+      console.error('🔧 Error details:', error);
       throw error; // エラーをそのまま投げる
     }
   },
