@@ -1,6 +1,6 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import { VercelRequest, VercelResponse } from '@vercel/node';
 
-export default function handler(req: NextApiRequest, res: NextApiResponse) {
+export default function handler(req: VercelRequest, res: VercelResponse) {
   res.status(200).json({
     message: 'Hello from Vercel Serverless Function!',
     timestamp: new Date().toISOString(),

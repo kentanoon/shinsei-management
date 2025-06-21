@@ -1,7 +1,7 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import { VercelRequest, VercelResponse } from '@vercel/node';
 import { supabase } from '../../lib/supabase';
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(req: VercelRequest, res: VercelResponse) {
   const { id } = req.query;
 
   if (!id || Array.isArray(id)) {
@@ -26,7 +26,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 }
 
-async function getProject(id: string, res: NextApiResponse) {
+async function getProject(id: string, res: VercelResponse) {
   const { data: project, error } = await supabase
     .from('projects')
     .select(`
@@ -49,7 +49,7 @@ async function getProject(id: string, res: NextApiResponse) {
   return res.status(200).json(project);
 }
 
-async function updateProject(id: string, updates: any, res: NextApiResponse) {
+async function updateProject(id: string, updates: any, res: VercelResponse) {
   const { data: project, error } = await supabase
     .from('projects')
     .update({
@@ -67,7 +67,7 @@ async function updateProject(id: string, updates: any, res: NextApiResponse) {
   return res.status(200).json(project);
 }
 
-async function deleteProject(id: string, res: NextApiResponse) {
+async function deleteProject(id: string, res: VercelResponse) {
   const { error } = await supabase
     .from('projects')
     .delete()

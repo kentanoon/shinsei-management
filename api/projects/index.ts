@@ -1,7 +1,7 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import { VercelRequest, VercelResponse } from '@vercel/node';
 import { supabase } from '../../lib/supabase';
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(req: VercelRequest, res: VercelResponse) {
   try {
     switch (req.method) {
       case 'GET':
@@ -18,7 +18,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 }
 
-async function getProjects(req: NextApiRequest, res: NextApiResponse) {
+async function getProjects(req: VercelRequest, res: VercelResponse) {
   const { page = 1, limit = 20, status } = req.query;
   
   let query = supabase
@@ -52,7 +52,7 @@ async function getProjects(req: NextApiRequest, res: NextApiResponse) {
   });
 }
 
-async function createProject(req: NextApiRequest, res: NextApiResponse) {
+async function createProject(req: VercelRequest, res: VercelResponse) {
   const { project_name, customer, site, building } = req.body;
 
   if (!project_name) {
