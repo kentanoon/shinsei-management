@@ -1,23 +1,30 @@
 {
   "version": 2,
   "name": "shinsei-management",
-  "buildCommand": "cd frontend && npm ci && npm run build",
+  "buildCommand": "npm install && cd frontend && npm ci && npm run build",
   "outputDirectory": "frontend/build",
-  "installCommand": "cd frontend && npm ci",
-  "routes": [
+  "installCommand": "npm install",
+  "functions": {
+    "api/**/*.ts": {
+      "runtime": "@vercel/node"
+    }
+  },
+  "rewrites": [
     {
-      "src": "/static/(.*)",
-      "dest": "/static/$1"
+      "source": "/api/(.*)",
+      "destination": "/api/$1"
     },
     {
-      "src": "/(.*)",
-      "dest": "/index.html"
+      "source": "/static/(.*)",
+      "destination": "/static/$1"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ],
   "env": {
-    "REACT_APP_DEMO_MODE": "true",
-    "REACT_APP_API_URL": "https://demo-api.example.com/api/v1",
-    "REACT_APP_SITE_URL": "https://shinsei-management.vercel.app",
+    "NODE_ENV": "production",
     "CI": "false",
     "DISABLE_ESLINT_PLUGIN": "true",
     "TSC_COMPILE_ON_ERROR": "true",
