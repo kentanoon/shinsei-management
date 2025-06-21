@@ -5,7 +5,7 @@
 // API基本設定
 export const API_CONFIG = {
   BASE_URL: process.env.REACT_APP_API_URL || 
-    (process.env.NODE_ENV === 'production' ? '/api' : 'http://127.0.0.1:8000/api/v1'),
+    (process.env.NODE_ENV === 'production' ? '/.netlify/functions' : 'http://127.0.0.1:8000/api/v1'),
   WEBSOCKET_URL: process.env.NODE_ENV === 'production' 
     ? `wss://${window.location.host}/api/realtime/ws`
     : 'ws://127.0.0.1:8000/api/v1/realtime/ws',
