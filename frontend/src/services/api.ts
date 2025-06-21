@@ -71,14 +71,13 @@ export const projectApi = {
     limit?: number;
     status?: string;
   } = {}): Promise<ProjectListResponse> => {
-    if (isDemoMode()) {
-      return demoApi.getProjects();
-    }
+    // 本番環境では強制的にSupabaseを使用
+    console.log('API call: getProjects - using Supabase directly');
     try {
       return await supabaseProjectApi.getProjects(params);
     } catch (error) {
-      console.warn('Supabase connection failed, falling back to demo mode');
-      return demoApi.getProjects();
+      console.error('Supabase connection failed:', error);
+      throw error; // エラーをそのまま投げる
     }
   },
 
@@ -165,14 +164,13 @@ export const projectApi = {
    * プロジェクトサマリー取得
    */
   getProjectsSummary: async (): Promise<ProjectSummaryResponse> => {
-    if (isDemoMode()) {
-      return demoApi.getProjectsSummary();
-    }
+    // 本番環境では強制的にSupabaseを使用
+    console.log('API call: getProjectsSummary - using Supabase directly');
     try {
       return await supabaseProjectApi.getProjectsSummary();
     } catch (error) {
-      console.warn('Supabase connection failed, falling back to demo mode');
-      return demoApi.getProjectsSummary();
+      console.error('Supabase connection failed:', error);
+      throw error;
     }
   },
 };
