@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 
 const FinancialPage: React.FC = () => {
   const [financials, setFinancials] = useState<any[]>([]);
@@ -8,8 +7,9 @@ const FinancialPage: React.FC = () => {
   useEffect(() => {
     const fetchFinancials = async () => {
       try {
-        const response = await axios.get('http://localhost:8000/api/v1/financials');
-        setFinancials(response.data || []);
+        // TODO: FinancialAPI実装後にAPIレイヤーを使用
+        console.log('Financial API not yet implemented - showing demo data');
+        setFinancials([]);
       } catch (error) {
         console.error('Error fetching financials:', error);
       } finally {

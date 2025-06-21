@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 
 const SchedulePage: React.FC = () => {
   const [schedules, setSchedules] = useState<any[]>([]);
@@ -8,8 +7,9 @@ const SchedulePage: React.FC = () => {
   useEffect(() => {
     const fetchSchedules = async () => {
       try {
-        const response = await axios.get('http://localhost:8000/api/v1/schedules');
-        setSchedules(response.data || []);
+        // TODO: ScheduleAPI実装後にAPIレイヤーを使用
+        console.log('Schedule API not yet implemented - showing demo data');
+        setSchedules([]);
       } catch (error) {
         console.error('Error fetching schedules:', error);
       } finally {

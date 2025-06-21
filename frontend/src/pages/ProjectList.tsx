@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Pagination, Box, FormControl, InputLabel, Select, MenuItem, Button, Menu } from '@mui/material';
 import { GetApp as GetAppIcon, ArrowDropDown } from '@mui/icons-material';
 import { getStatusColor } from '../utils/statusUtils';
-import axios from 'axios';
+import { projectApi } from '../services/api';
 
 const statusTabs = [
   { label: 'すべて', value: null },
@@ -31,29 +31,23 @@ const ProjectList: React.FC = () => {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        let url = 'http://localhost:8000/api/v1/projects';
-        let params: any = {
-          skip: (currentPage - 1) * itemsPerPage,
-          limit: itemsPerPage,
-          ...(selectedStatus && { status: selectedStatus }),
-        };
-
-        // 検索クエリがある場合は検索エンドポイントを使用
-        if (searchQuery.trim()) {
-          url = `http://localhost:8000/api/v1/projects/search/${encodeURIComponent(searchQuery.trim())}`;
-          // 検索時はページネーションやフィルタは適用しない
-          params = {};
-        }
+        let response: any;
         
-        const response = await axios.get(url, { params });
-        
-        // 検索結果の場合はレスポンス形式が異なる
+        // 検索クエリがある場合は検索APIを使用
         if (searchQuery.trim()) {
-          setProjects(response.data.projects || []);
-          setTotalCount(response.data.count || 0);
+          response = await projectApi.searchProjects(searchQuery.trim());
+          setProjects(response.projects || []);
+          setTotalCount(response.count || 0);
         } else {
-          setProjects(response.data.projects || []);
-          setTotalCount(response.data.total || 0);
+          // 通常のプロジェクト一覧取得
+          const params = {
+            skip: (currentPage - 1) * itemsPerPage,
+            limit: itemsPerPage,
+            ...(selectedStatus && { status: selectedStatus }),
+          };
+          response = await projectApi.getProjects(params);
+          setProjects(response.projects || []);
+          setTotalCount(response.total || 0);
         }
       } catch (error) {
         console.error('Error fetching projects:', error);
