@@ -21,6 +21,7 @@ import type {
 } from '../types/application';
 import { API_CONFIG } from '../constants';
 import { demoApi, isDemoMode } from './demo-api';
+import { supabaseProjectApi, supabaseHealthApi } from './supabase-api';
 
 // Axios インスタンスの作成
 const api = axios.create({
@@ -73,8 +74,12 @@ export const projectApi = {
     if (isDemoMode()) {
       return demoApi.getProjects();
     }
-    const { data } = await api.get('/projects', { params });
-    return data;
+    try {
+      return await supabaseProjectApi.getProjects(params);
+    } catch (error) {
+      console.warn('Supabase connection failed, falling back to demo mode');
+      return demoApi.getProjects();
+    }
   },
 
   /**
@@ -85,8 +90,13 @@ export const projectApi = {
       const id = parseInt(projectCode) || 1;
       return demoApi.getProject(id);
     }
-    const { data } = await api.get(`/projects/${projectCode}`);
-    return data;
+    try {
+      return await supabaseProjectApi.getProject(projectCode);
+    } catch (error) {
+      console.warn('Supabase connection failed, falling back to demo mode');
+      const id = parseInt(projectCode) || 1;
+      return demoApi.getProject(id);
+    }
   },
 
   /**
@@ -96,8 +106,12 @@ export const projectApi = {
     if (isDemoMode()) {
       return demoApi.getProjectsByStatus(status);
     }
-    const { data } = await api.get(`/projects/status/${status}`);
-    return data;
+    try {
+      return await supabaseProjectApi.getProjectsByStatus(status);
+    } catch (error) {
+      console.warn('Supabase connection failed, falling back to demo mode');
+      return demoApi.getProjectsByStatus(status);
+    }
   },
 
   /**
@@ -154,8 +168,12 @@ export const projectApi = {
     if (isDemoMode()) {
       return demoApi.getProjectsSummary();
     }
-    const { data } = await api.get('/projects/summary');
-    return data;
+    try {
+      return await supabaseProjectApi.getProjectsSummary();
+    } catch (error) {
+      console.warn('Supabase connection failed, falling back to demo mode');
+      return demoApi.getProjectsSummary();
+    }
   },
 };
 
@@ -169,11 +187,9 @@ export const healthApi = {
       return demoApi.health();
     }
     try {
-      const { data } = await api.get('/health');
-      return data;
+      return await supabaseHealthApi.checkHealth();
     } catch (error) {
-      console.warn('API health check failed, falling back to demo mode');
-      // APIが利用できない場合はデモデータを返す
+      console.warn('Supabase health check failed, falling back to demo mode');
       return demoApi.health();
     }
   },
