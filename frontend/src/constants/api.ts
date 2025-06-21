@@ -5,7 +5,7 @@
 // API基本設定
 export const API_CONFIG = {
   BASE_URL: process.env.REACT_APP_API_URL || 
-    (window.location.hostname === 'localhost' ? 'http://127.0.0.1:8000/api/v1' : '/api'),
+    (window.location.hostname === 'localhost' ? 'http://127.0.0.1:8000/api/v1' : 'https://shinsei-backend.onrender.com/api/v1'),
   WEBSOCKET_URL: process.env.NODE_ENV === 'production' 
     ? `wss://${window.location.host}/api/realtime/ws`
     : 'ws://127.0.0.1:8000/api/v1/realtime/ws',
