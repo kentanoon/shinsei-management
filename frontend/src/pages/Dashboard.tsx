@@ -18,12 +18,10 @@ const Dashboard: React.FC = () => {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        console.log('Dashboard: Fetching projects using projectApi');
         const response = await projectApi.getProjects({ skip: 0, limit: 1000 });
         setProjects(response.projects || []);
-        console.log('Dashboard: Fetched projects:', response.projects?.length || 0);
       } catch (error) {
-        console.error('Dashboard: Error fetching projects:', error);
+        console.error('Error fetching projects:', error);
       } finally {
         setLoading(false);
       }

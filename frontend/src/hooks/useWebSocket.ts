@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
-import io, { Socket } from 'socket.io-client';
 
 // デモモードかどうかを判定
 const isDemoMode = (): boolean => {
@@ -58,7 +57,6 @@ export const useWebSocket = (options: UseWebSocketOptions = {}) => {
       wsRef.current = ws;
 
       ws.onopen = () => {
-        console.log('WebSocket connected');
         setIsConnected(true);
         setConnectionError(null);
         setReconnectCount(0);
@@ -110,7 +108,6 @@ export const useWebSocket = (options: UseWebSocketOptions = {}) => {
               break;
 
             case 'connection_status':
-              console.log('Connection status:', message.message);
               break;
 
             case 'pong':
@@ -118,12 +115,11 @@ export const useWebSocket = (options: UseWebSocketOptions = {}) => {
               break;
 
             case 'error':
-              console.error('WebSocket error:', message.message);
               setConnectionError(message.message || 'Unknown error');
               break;
 
             default:
-              console.log('Unknown message type:', message.type);
+              break;
           }
         } catch (error) {
           console.error('Failed to parse WebSocket message:', error);
@@ -131,7 +127,6 @@ export const useWebSocket = (options: UseWebSocketOptions = {}) => {
       };
 
       ws.onclose = (event) => {
-        console.log('WebSocket connection closed:', event.code, event.reason);
         setIsConnected(false);
         onConnectionChange?.(false);
         
@@ -144,7 +139,6 @@ export const useWebSocket = (options: UseWebSocketOptions = {}) => {
         // 自動再接続
         if (reconnectCount < reconnectAttempts && !event.wasClean) {
           const timeout = reconnectInterval * Math.pow(2, reconnectCount); // 指数バックオフ
-          console.log(`Reconnecting in ${timeout}ms... (attempt ${reconnectCount + 1}/${reconnectAttempts})`);
           
           reconnectTimeoutRef.current = setTimeout(() => {
             setReconnectCount(prev => prev + 1);
@@ -156,12 +150,10 @@ export const useWebSocket = (options: UseWebSocketOptions = {}) => {
       };
 
       ws.onerror = (error) => {
-        console.error('WebSocket error:', error);
         setConnectionError('Connection error occurred');
       };
 
     } catch (error) {
-      console.error('Failed to create WebSocket connection:', error);
       setConnectionError('Failed to establish connection');
     }
   }, [userId, onProjectUpdate, onApplicationUpdate, onDashboardRefresh, onNotification, onConnectionChange, reconnectAttempts, reconnectInterval, reconnectCount]);

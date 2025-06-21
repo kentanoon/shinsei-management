@@ -71,10 +71,6 @@ export const projectApi = {
     limit?: number;
     status?: string;
   } = {}): Promise<ProjectListResponse> => {
-    // 本番環境では直接バックエンドAPIを使用
-    console.log('🔧 API call: getProjects - using backend API directly');
-    console.log('🔧 API Base URL:', API_CONFIG.BASE_URL);
-    
     try {
       const queryParams = new URLSearchParams();
       if (params.skip !== undefined) queryParams.append('skip', params.skip.toString());
@@ -82,13 +78,9 @@ export const projectApi = {
       if (params.status) queryParams.append('status', params.status);
       
       const url = `/projects${queryParams.toString() ? '?' + queryParams.toString() : ''}`;
-      console.log('🔧 Making request to:', url);
-      
       const { data } = await api.get(url);
-      console.log('🔧 Backend API response:', data);
       return data;
     } catch (error) {
-      console.error('🔧 Backend API connection failed:', error);
       throw error;
     }
   },
@@ -176,13 +168,10 @@ export const projectApi = {
    * プロジェクトサマリー取得
    */
   getProjectsSummary: async (): Promise<ProjectSummaryResponse> => {
-    // 本番環境では直接バックエンドAPIを使用
-    console.log('API call: getProjectsSummary - using backend API directly');
     try {
       const { data } = await api.get('/projects/summary');
       return data;
     } catch (error) {
-      console.error('Backend API connection failed:', error);
       throw error;
     }
   },
@@ -275,7 +264,7 @@ export const applicationApi = {
   /**
    * 申請ステータス更新
    */
-  updateApplicationStatus: async (applicationId: number, statusData: any) => {
+  updateApplicationStatus: async (applicationId: number, statusData: { status: string; notes?: string }) => {
     const { data } = await api.put(`/applications/${applicationId}/status`, statusData);
     return data;
   },
