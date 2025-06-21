@@ -71,24 +71,25 @@ export const projectApi = {
     limit?: number;
     status?: string;
   } = {}): Promise<ProjectListResponse> => {
-    // 本番環境では強制的にSupabaseを使用
-    console.log('🔧 API call: getProjects - PRODUCTION MODE FORCED');
-    console.log('🔧 Environment check:', {
-      NODE_ENV: process.env.NODE_ENV,
-      hostname: window.location.hostname,
-      REACT_APP_DEMO_MODE: process.env.REACT_APP_DEMO_MODE,
-      REACT_APP_SUPABASE_URL: process.env.REACT_APP_SUPABASE_URL ? 'SET' : 'NOT_SET'
-    });
+    // 本番環境では直接バックエンドAPIを使用
+    console.log('🔧 API call: getProjects - using backend API directly');
+    console.log('🔧 API Base URL:', API_CONFIG.BASE_URL);
     
     try {
-      console.log('🔧 Calling supabaseProjectApi.getProjects...');
-      const result = await supabaseProjectApi.getProjects(params);
-      console.log('🔧 Supabase result:', result);
-      return result;
+      const queryParams = new URLSearchParams();
+      if (params.skip !== undefined) queryParams.append('skip', params.skip.toString());
+      if (params.limit !== undefined) queryParams.append('limit', params.limit.toString());
+      if (params.status) queryParams.append('status', params.status);
+      
+      const url = `/projects${queryParams.toString() ? '?' + queryParams.toString() : ''}`;
+      console.log('🔧 Making request to:', url);
+      
+      const { data } = await api.get(url);
+      console.log('🔧 Backend API response:', data);
+      return data;
     } catch (error) {
-      console.error('🔧 Supabase connection failed:', error);
-      console.error('🔧 Error details:', error);
-      throw error; // エラーをそのまま投げる
+      console.error('🔧 Backend API connection failed:', error);
+      throw error;
     }
   },
 
@@ -175,12 +176,13 @@ export const projectApi = {
    * プロジェクトサマリー取得
    */
   getProjectsSummary: async (): Promise<ProjectSummaryResponse> => {
-    // 本番環境では強制的にSupabaseを使用
-    console.log('API call: getProjectsSummary - using Supabase directly');
+    // 本番環境では直接バックエンドAPIを使用
+    console.log('API call: getProjectsSummary - using backend API directly');
     try {
-      return await supabaseProjectApi.getProjectsSummary();
+      const { data } = await api.get('/projects/summary');
+      return data;
     } catch (error) {
-      console.error('Supabase connection failed:', error);
+      console.error('Backend API connection failed:', error);
       throw error;
     }
   },
