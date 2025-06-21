@@ -32,6 +32,7 @@ import {
   WifiOff as WifiOffIcon,
   Settings as SettingsIcon,
   Analytics as AnalyticsIcon,
+  Refresh as RefreshIcon,
 } from '@mui/icons-material';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
@@ -140,7 +141,6 @@ const InteractiveDashboard: React.FC<InteractiveDashboardProps> = ({
 
   // WebSocket handlers
   const handleProjectUpdate = useCallback((data: any, action: string) => {
-    console.log('Project update received:', data, action);
     setLastUpdateTime(new Date());
     
     if (action === 'create') {
@@ -153,7 +153,6 @@ const InteractiveDashboard: React.FC<InteractiveDashboardProps> = ({
   }, []);
 
   const handleDashboardRefresh = useCallback(async () => {
-    console.log('Dashboard refresh requested');
     try {
       const response = await projectApi.getProjects({ skip: 0, limit: 1000 });
       setProjects(response.projects || []);
@@ -163,8 +162,12 @@ const InteractiveDashboard: React.FC<InteractiveDashboardProps> = ({
     }
   }, []);
 
+  // Manual refresh function
+  const handleManualRefresh = useCallback(async () => {
+    await handleDashboardRefresh();
+  }, [handleDashboardRefresh]);
+
   const handleNotification = useCallback((notification: any) => {
-    console.log('Notification received:', notification);
     // ここで通知の表示処理を実装
   }, []);
 
@@ -179,7 +182,22 @@ const InteractiveDashboard: React.FC<InteractiveDashboardProps> = ({
   // Update projects when initial projects change
   useEffect(() => {
     setProjects(initialProjects);
+    if (initialProjects.length > 0) {
+      setLastUpdateTime(new Date());
+    }
   }, [initialProjects]);
+
+  // Initial data load and periodic refresh when WebSocket is not connected
+  useEffect(() => {
+    if (!isConnected) {
+      // Fallback: refresh every 2 minutes when WebSocket is disconnected
+      const fallbackInterval = setInterval(() => {
+        handleDashboardRefresh();
+      }, 2 * 60 * 1000); // 2 minutes
+
+      return () => clearInterval(fallbackInterval);
+    }
+  }, [isConnected, handleDashboardRefresh]);
 
   // Data processing functions
   const getStatusCounts = useCallback(() => {
@@ -470,6 +488,14 @@ const InteractiveDashboard: React.FC<InteractiveDashboardProps> = ({
             )}
           </Box>
           <Box sx={{ display: 'flex', gap: 1 }}>
+            <Button
+              variant="outlined"
+              startIcon={<RefreshIcon />}
+              onClick={handleManualRefresh}
+              size="small"
+            >
+              更新
+            </Button>
             <Button
               variant="outlined"
               startIcon={<SettingsIcon />}
