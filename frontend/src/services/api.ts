@@ -168,8 +168,14 @@ export const healthApi = {
     if (isDemoMode()) {
       return demoApi.health();
     }
-    const { data } = await api.get('/health');
-    return data;
+    try {
+      const { data } = await api.get('/health');
+      return data;
+    } catch (error) {
+      console.warn('API health check failed, falling back to demo mode');
+      // APIが利用できない場合はデモデータを返す
+      return demoApi.health();
+    }
   },
 
   /**

@@ -297,8 +297,6 @@ export const demoApi = {
 
 // デモモードかどうかを判定
 export const isDemoMode = (): boolean => {
-  return process.env.REACT_APP_DEMO_MODE === 'true' || 
-         window.location.hostname.includes('github.io') ||
-         window.location.hostname.includes('vercel.app') ||
-         window.location.hostname.includes('netlify.app');
+  // 環境変数で明示的にデモモードが設定されている場合のみデモモード
+  return process.env.REACT_APP_DEMO_MODE === 'true';
 };
