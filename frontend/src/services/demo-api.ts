@@ -298,9 +298,18 @@ export const demoApi = {
 // デモモードかどうかを判定
 export const isDemoMode = (): boolean => {
   const demoModeEnv = process.env.REACT_APP_DEMO_MODE;
+  const hostname = window.location.hostname;
+  
+  // Netlifyドメインの場合は強制的にfalse
+  if (hostname.includes('netlify.app')) {
+    console.log('Demo mode check: Netlify domain detected, forcing demo mode OFF');
+    return false;
+  }
+  
   const isDemo = demoModeEnv === 'true';
   
   console.log('Demo mode check:', {
+    hostname,
     REACT_APP_DEMO_MODE: demoModeEnv,
     isDemoMode: isDemo,
     allEnvVars: {
