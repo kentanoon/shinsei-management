@@ -1,7 +1,5 @@
 {
-  "version": 2,
-  "name": "shinsei-management",
-  "buildCommand": "npm install && cd frontend && npm ci && npm run build",
+  "buildCommand": "cd frontend && npm ci && npm run build",
   "outputDirectory": "frontend/build",
   "installCommand": "npm install",
   "rewrites": [
@@ -10,22 +8,8 @@
       "destination": "/api/$1"
     },
     {
-      "source": "/static/(.*)",
-      "destination": "/static/$1"
-    },
-    {
       "source": "/(.*)",
       "destination": "/index.html"
     }
-  ],
-  "env": {
-    "NODE_ENV": "production",
-    "CI": "false",
-    "DISABLE_ESLINT_PLUGIN": "true",
-    "TSC_COMPILE_ON_ERROR": "true",
-    "ESLINT_NO_DEV_ERRORS": "true",
-    "SUPABASE_URL": "https://yzdxxmgtgzfmglwswgwd.supabase.co",
-    "SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl6ZHh4bWd0Z3pmbWdsd3N3Z3dkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA0NjIzMTYsImV4cCI6MjA2NjAzODMxNn0.1N5qVjOSRDczFA3f-YuijPy6E7do9jgar78YXT9G5dI",
-    "REACT_APP_DEMO_MODE": "false"
-  }
+  ]
 }
