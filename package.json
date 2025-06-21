@@ -2,17 +2,11 @@
   "name": "shinsei-management",
   "version": "1.0.0",
   "description": "Building permit management system",
+  "type": "module",
   "scripts": {
-    "dev": "vercel dev",
-    "build": "cd frontend && npm run build",
-    "start": "vercel dev"
+    "build": "cd frontend && npm run build"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.45.4",
-    "@types/node": "^20.0.0",
-    "@vercel/node": "^3.0.0"
-  },
-  "devDependencies": {
-    "typescript": "^5.0.0"
+    "@supabase/supabase-js": "^2.45.4"
   }
 }

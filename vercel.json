@@ -4,11 +4,6 @@
   "buildCommand": "npm install && cd frontend && npm ci && npm run build",
   "outputDirectory": "frontend/build",
   "installCommand": "npm install",
-  "functions": {
-    "api/**/*.ts": {
-      "runtime": "@vercel/node@18.x"
-    }
-  },
   "rewrites": [
     {
       "source": "/api/(.*)",

@@ -1,7 +1,11 @@
-import { VercelRequest, VercelResponse } from '@vercel/node';
-import { supabase } from '../../lib/supabase';
+import { createClient } from '@supabase/supabase-js';
 
-export default async function handler(req: VercelRequest, res: VercelResponse) {
+const supabase = createClient(
+  process.env.SUPABASE_URL,
+  process.env.SUPABASE_ANON_KEY
+);
+
+export default async function handler(req, res) {
   const { id } = req.query;
 
   if (!id || Array.isArray(id)) {
@@ -26,7 +30,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 }
 
-async function getProject(id: string, res: VercelResponse) {
+async function getProject(id, res) {
   const { data: project, error } = await supabase
     .from('projects')
     .select(`
@@ -49,7 +53,7 @@ async function getProject(id: string, res: VercelResponse) {
   return res.status(200).json(project);
 }
 
-async function updateProject(id: string, updates: any, res: VercelResponse) {
+async function updateProject(id, updates, res) {
   const { data: project, error } = await supabase
     .from('projects')
     .update({
@@ -67,7 +71,7 @@ async function updateProject(id: string, updates: any, res: VercelResponse) {
   return res.status(200).json(project);
 }
 
-async function deleteProject(id: string, res: VercelResponse) {
+async function deleteProject(id, res) {
   const { error } = await supabase
     .from('projects')
     .delete()

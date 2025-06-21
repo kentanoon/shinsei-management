@@ -1,7 +1,11 @@
-import { VercelRequest, VercelResponse } from '@vercel/node';
-import { supabase } from '../../lib/supabase';
+import { createClient } from '@supabase/supabase-js';
 
-export default async function handler(req: VercelRequest, res: VercelResponse) {
+const supabase = createClient(
+  process.env.SUPABASE_URL,
+  process.env.SUPABASE_ANON_KEY
+);
+
+export default async function handler(req, res) {
   try {
     switch (req.method) {
       case 'GET':
@@ -18,7 +22,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 }
 
-async function getProjects(req: VercelRequest, res: VercelResponse) {
+async function getProjects(req, res) {
   const { page = 1, limit = 20, status } = req.query;
   
   let query = supabase
@@ -52,14 +56,13 @@ async function getProjects(req: VercelRequest, res: VercelResponse) {
   });
 }
 
-async function createProject(req: VercelRequest, res: VercelResponse) {
+async function createProject(req, res) {
   const { project_name, customer, site, building } = req.body;
 
   if (!project_name) {
     return res.status(400).json({ message: 'Project name is required' });
   }
 
-  // Start transaction
   const { data: project, error: projectError } = await supabase
     .from('projects')
     .insert({
