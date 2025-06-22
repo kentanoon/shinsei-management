@@ -108,15 +108,15 @@ const ProjectCreate: React.FC = () => {
         }
         break;
       case 1: // 顧客情報
-        if (!formData.customer.owner_name.trim()) {
+        if (!formData.customer?.owner_name?.trim()) {
           newErrors.owner_name = '施主名は必須です';
         }
-        if (formData.customer.owner_zip && !/^\d{3}-?\d{4}$/.test(formData.customer.owner_zip)) {
+        if (formData.customer?.owner_zip && !/^\d{3}-?\d{4}$/.test(formData.customer.owner_zip)) {
           newErrors.owner_zip = '郵便番号の形式が正しくありません';
         }
         break;
       case 2: // 敷地情報
-        if (!formData.site.address.trim()) {
+        if (!formData.site?.address?.trim()) {
           newErrors.address = '建設地住所は必須です';
         }
         break;
@@ -228,7 +228,7 @@ const ProjectCreate: React.FC = () => {
                   <TextField
                     fullWidth
                     label="施主名"
-                    value={formData.customer.owner_name}
+                    value={formData.customer?.owner_name || ''}
                     onChange={(e) => updateFormData('customer', 'owner_name', e.target.value)}
                     error={!!errors.owner_name}
                     helperText={errors.owner_name}
@@ -239,7 +239,7 @@ const ProjectCreate: React.FC = () => {
                   <TextField
                     fullWidth
                     label="施主フリガナ"
-                    value={formData.customer.owner_kana}
+                    value={formData.customer?.owner_kana || ''}
                     onChange={(e) => updateFormData('customer', 'owner_kana', e.target.value)}
                   />
                 </Box>
@@ -249,7 +249,7 @@ const ProjectCreate: React.FC = () => {
                   <TextField
                     fullWidth
                     label="郵便番号"
-                    value={formData.customer.owner_zip}
+                    value={formData.customer?.owner_zip || ''}
                     onChange={(e) => updateFormData('customer', 'owner_zip', e.target.value)}
                     error={!!errors.owner_zip}
                     helperText={errors.owner_zip}
@@ -260,7 +260,7 @@ const ProjectCreate: React.FC = () => {
                   <TextField
                     fullWidth
                     label="住所"
-                    value={formData.customer.owner_address}
+                    value={formData.customer?.owner_address || ''}
                     onChange={(e) => updateFormData('customer', 'owner_address', e.target.value)}
                   />
                 </Box>
@@ -270,7 +270,7 @@ const ProjectCreate: React.FC = () => {
                   <TextField
                     fullWidth
                     label="電話番号"
-                    value={formData.customer.owner_phone}
+                    value={formData.customer?.owner_phone || ''}
                     onChange={(e) => updateFormData('customer', 'owner_phone', e.target.value)}
                   />
                 </Box>
@@ -278,7 +278,7 @@ const ProjectCreate: React.FC = () => {
                   <TextField
                     fullWidth
                     label="連名者"
-                    value={formData.customer.joint_name}
+                    value={formData.customer?.joint_name || ''}
                     onChange={(e) => updateFormData('customer', 'joint_name', e.target.value)}
                   />
                 </Box>
@@ -286,7 +286,7 @@ const ProjectCreate: React.FC = () => {
                   <TextField
                     fullWidth
                     label="連名者フリガナ"
-                    value={formData.customer.joint_kana}
+                    value={formData.customer?.joint_kana || ''}
                     onChange={(e) => updateFormData('customer', 'joint_kana', e.target.value)}
                   />
                 </Box>
@@ -294,7 +294,7 @@ const ProjectCreate: React.FC = () => {
                   <TextField
                     fullWidth
                     label="発注者名"
-                    value={formData.customer.client_name}
+                    value={formData.customer?.client_name || ''}
                     onChange={(e) => updateFormData('customer', 'client_name', e.target.value)}
                   />
                 </Box>
@@ -302,7 +302,7 @@ const ProjectCreate: React.FC = () => {
                   <TextField
                     fullWidth
                     label="発注者担当者"
-                    value={formData.customer.client_staff}
+                    value={formData.customer?.client_staff || ''}
                     onChange={(e) => updateFormData('customer', 'client_staff', e.target.value)}
                   />
                 </Box>
@@ -321,7 +321,7 @@ const ProjectCreate: React.FC = () => {
                   <TextField
                     fullWidth
                     label="建設地住所"
-                    value={formData.site.address}
+                    value={formData.site?.address || ''}
                     onChange={(e) => updateFormData('site', 'address', e.target.value)}
                     error={!!errors.address}
                     helperText={errors.address}
@@ -334,7 +334,7 @@ const ProjectCreate: React.FC = () => {
                       fullWidth
                       label="敷地面積 (㎡)"
                       type="number"
-                      value={formData.site.land_area || ''}
+                      value={formData.site?.land_area || ''}
                       onChange={(e) => updateFormData('site', 'land_area', e.target.value ? parseFloat(e.target.value) : undefined)}
                     />
                   </Box>
@@ -342,7 +342,7 @@ const ProjectCreate: React.FC = () => {
                     <TextField
                       fullWidth
                       label="都市計画"
-                      value={formData.site.city_plan}
+                      value={formData.site?.city_plan || ''}
                       onChange={(e) => updateFormData('site', 'city_plan', e.target.value)}
                     />
                   </Box>
@@ -350,7 +350,7 @@ const ProjectCreate: React.FC = () => {
                     <TextField
                       fullWidth
                       label="用途地域"
-                      value={formData.site.zoning}
+                      value={formData.site?.zoning || ''}
                       onChange={(e) => updateFormData('site', 'zoning', e.target.value)}
                     />
                   </Box>
@@ -358,7 +358,7 @@ const ProjectCreate: React.FC = () => {
                     <TextField
                       fullWidth
                       label="防火地域"
-                      value={formData.site.fire_zone}
+                      value={formData.site?.fire_zone || ''}
                       onChange={(e) => updateFormData('site', 'fire_zone', e.target.value)}
                     />
                   </Box>
@@ -366,7 +366,7 @@ const ProjectCreate: React.FC = () => {
                     <TextField
                       fullWidth
                       label="斜線制限"
-                      value={formData.site.slope_limit}
+                      value={formData.site?.slope_limit || ''}
                       onChange={(e) => updateFormData('site', 'slope_limit', e.target.value)}
                     />
                   </Box>
@@ -374,7 +374,7 @@ const ProjectCreate: React.FC = () => {
                     <TextField
                       fullWidth
                       label="外壁後退"
-                      value={formData.site.setback}
+                      value={formData.site?.setback || ''}
                       onChange={(e) => updateFormData('site', 'setback', e.target.value)}
                     />
                   </Box>
@@ -385,7 +385,7 @@ const ProjectCreate: React.FC = () => {
                     label="他建物"
                     multiline
                     rows={3}
-                    value={formData.site.other_buildings}
+                    value={formData.site?.other_buildings || ''}
                     onChange={(e) => updateFormData('site', 'other_buildings', e.target.value)}
                   />
                 </Box>
@@ -394,7 +394,7 @@ const ProjectCreate: React.FC = () => {
                     <TextField
                       fullWidth
                       label="土砂災害警戒区域"
-                      value={formData.site.landslide_alert}
+                      value={formData.site?.landslide_alert || ''}
                       onChange={(e) => updateFormData('site', 'landslide_alert', e.target.value)}
                     />
                   </Box>
@@ -402,7 +402,7 @@ const ProjectCreate: React.FC = () => {
                     <TextField
                       fullWidth
                       label="洪水浸水想定区域"
-                      value={formData.site.flood_zone}
+                      value={formData.site?.flood_zone || ''}
                       onChange={(e) => updateFormData('site', 'flood_zone', e.target.value)}
                     />
                   </Box>
@@ -410,7 +410,7 @@ const ProjectCreate: React.FC = () => {
                     <TextField
                       fullWidth
                       label="津波災害警戒区域"
-                      value={formData.site.tsunami_zone}
+                      value={formData.site?.tsunami_zone || ''}
                       onChange={(e) => updateFormData('site', 'tsunami_zone', e.target.value)}
                     />
                   </Box>
