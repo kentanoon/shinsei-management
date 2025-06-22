@@ -9,6 +9,7 @@ import {
 import { Add as AddIcon, Edit as EditIcon, Check as CheckIcon } from '@mui/icons-material';
 import { getStatusColor } from '../utils/statusUtils';
 import { applicationApi, projectApi } from '../services/api';
+import type { ApplicationStatus, ApplicationCategory, ApplicationPriority } from '../types/application';
 
 interface ApplicationType {
   id: number;
@@ -115,18 +116,24 @@ const Applications: React.FC = () => {
 
   const handleSubmit = async () => {
     try {
-      const data = {
-        ...formData,
-        project_id: parseInt(formData.project_id),
-        application_type_id: parseInt(formData.application_type_id),
-        submitted_date: formData.submitted_date || null,
-        approved_date: formData.approved_date || null,
-      };
-
       if (editingApplication) {
-        await applicationApi.updateApplication(editingApplication.id, data);
+        // 更新用のデータ形式
+        const updateData = {
+          status: formData.status as ApplicationStatus,
+          notes: formData.notes,
+        };
+        await applicationApi.updateApplication(editingApplication.id, updateData);
       } else {
-        await applicationApi.createApplication(data);
+        // 作成用のデータ形式
+        const createData = {
+          project_id: parseInt(formData.project_id),
+          application_type_id: parseInt(formData.application_type_id),
+          category: '確認申請' as ApplicationCategory,
+          priority: 'normal' as ApplicationPriority,
+          title: `申請 - ${new Date().toLocaleDateString()}`,
+          notes: formData.notes,
+        };
+        await applicationApi.createApplication(createData);
       }
 
       fetchData();

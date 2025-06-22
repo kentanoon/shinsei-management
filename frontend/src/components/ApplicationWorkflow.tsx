@@ -61,17 +61,16 @@ const ApplicationWorkflow: React.FC<ApplicationWorkflowProps> = ({
   readonly = false
 }) => {
   const [openDialog, setOpenDialog] = useState(false);
-  const [selectedStatus, setSelectedStatus] = useState<ApplicationStatus>('承認済');
+  const [selectedStatus, setSelectedStatus] = useState<ApplicationStatus>('承認');
   const [comment, setComment] = useState('');
   const [loading, setLoading] = useState(false);
 
   // ワークフローステップの定義
   const workflowSteps: { status: ApplicationStatus; label: string; description: string }[] = [
-    { status: '下書き', label: '下書き', description: '申請内容を準備中' },
-    { status: 'レビュー中', label: 'レビュー中', description: '内容確認・レビュー中' },
-    { status: '承認済', label: '承認済', description: '申請が承認されました' },
-    { status: '差戻し', label: '差戻し', description: '修正が必要です' },
-    { status: '取下げ', label: '取下げ', description: '申請を取り下げました' },
+    { status: '未定', label: '未定', description: '申請内容を準備中' },
+    { status: '申請', label: '申請', description: '内容確認・レビュー中' },
+    { status: '承認', label: '承認', description: '申請が承認されました' },
+    { status: '却下', label: '却下', description: '修正が必要です' },
     { status: '完了', label: '完了', description: '全工程が完了しました' },
   ];
 
@@ -82,16 +81,14 @@ const ApplicationWorkflow: React.FC<ApplicationWorkflowProps> = ({
 
   const getAvailableActions = (): ApplicationStatus[] => {
     switch (application.status) {
-      case '下書き':
-        return ['レビュー中', '取下げ'];
-      case 'レビュー中':
-        return ['承認済', '差戻し', '取下げ'];
-      case '承認済':
+      case '未定':
+        return ['申請'];
+      case '申請':
+        return ['承認', '却下'];
+      case '承認':
         return ['完了'];
-      case '差戻し':
-        return ['下書き', '取下げ'];
-      case '取下げ':
-        return ['下書き'];
+      case '却下':
+        return ['申請'];
       case '完了':
         return [];
       default:
@@ -198,9 +195,9 @@ const ApplicationWorkflow: React.FC<ApplicationWorkflowProps> = ({
                     setOpenDialog(true);
                   }}
                   color={
-                    action === '承認済' || action === '完了' ? 'success' :
-                    action === '差戻し' || action === '取下げ' ? 'error' :
-                    action === 'レビュー中' ? 'warning' : 'primary'
+                    action === '承認' || action === '完了' ? 'success' :
+                    action === '却下' ? 'error' :
+                    action === '申請' ? 'warning' : 'primary'
                   }
                 >
                   {action}
@@ -225,13 +222,13 @@ const ApplicationWorkflow: React.FC<ApplicationWorkflowProps> = ({
                 <TimelineSeparator>
                   <TimelineDot
                     color={
-                      history.to_status === '承認済' || history.to_status === '完了' ? 'success' :
-                      history.to_status === '差戻し' || history.to_status === '取下げ' ? 'error' :
+                      history.to_status === '承認' || history.to_status === '完了' ? 'success' :
+                      history.to_status === '却下' ? 'error' :
                       'primary'
                     }
                   >
-                    {history.to_status === '承認済' || history.to_status === '完了' ? <CheckIcon /> :
-                     history.to_status === '差戻し' || history.to_status === '取下げ' ? <CancelIcon /> :
+                    {history.to_status === '承認' || history.to_status === '完了' ? <CheckIcon /> :
+                     history.to_status === '却下' ? <CancelIcon /> :
                      <AssignmentIcon />}
                   </TimelineDot>
                   {index < application.status_history.length - 1 && <TimelineConnector />}
@@ -288,8 +285,8 @@ const ApplicationWorkflow: React.FC<ApplicationWorkflowProps> = ({
             variant="contained"
             disabled={loading}
             color={
-              selectedStatus === '承認済' || selectedStatus === '完了' ? 'success' :
-              selectedStatus === '差戻し' || selectedStatus === '取下げ' ? 'error' :
+              selectedStatus === '承認' || selectedStatus === '完了' ? 'success' :
+              selectedStatus === '却下' ? 'error' :
               'primary'
             }
           >

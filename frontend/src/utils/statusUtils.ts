@@ -36,19 +36,16 @@ export const getProjectStatusColor = (status: string): StatusColor => {
  */
 export const getApplicationStatusColor = (status: string): StatusColor => {
   switch (status) {
-    case '下書き':
+    case '未定':
       return 'default';
-    case '申請中':
+    case '申請':
       return 'warning';
-    case '審査中':
-      return 'info';
     case '承認':
       return 'success';
     case '却下':
-    case '取下げ':
       return 'error';
-    case '修正依頼':
-      return 'warning';
+    case '完了':
+      return 'success';
     default:
       return 'default';
   }

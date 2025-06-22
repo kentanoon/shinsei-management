@@ -1,11 +1,10 @@
 // 申請管理の型定義
 
 export type ApplicationStatus = 
-  | '下書き'
-  | 'レビュー中'
-  | '承認済'
-  | '差戻し'
-  | '取下げ'
+  | '未定'
+  | '申請'
+  | '承認'
+  | '却下'
   | '完了';
 
 export type ApplicationPriority = 'urgent' | 'high' | 'normal' | 'low';

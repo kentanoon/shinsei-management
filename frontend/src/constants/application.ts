@@ -4,11 +4,10 @@
 
 // 申請ステータス
 export const APPLICATION_STATUSES = [
-  '下書き',
-  'レビュー中',
-  '承認済',
-  '差戻し',
-  '取下げ',
+  '未定',
+  '申請',
+  '承認',
+  '却下',
   '完了'
 ] as const;
 
@@ -40,11 +39,10 @@ export type ApplicationCategory = typeof APPLICATION_CATEGORIES[number];
 
 // ステータス別の色定義
 export const APPLICATION_STATUS_COLORS: Record<ApplicationStatus, string> = {
-  '下書き': '#6c757d',
-  'レビュー中': '#ffc107',
-  '承認済': '#28a745',
-  '差戻し': '#dc3545',
-  '取下げ': '#6c757d',
+  '未定': '#6c757d',
+  '申請': '#ffc107',
+  '承認': '#28a745',
+  '却下': '#dc3545',
   '完了': '#17a2b8'
 };
 
@@ -78,30 +76,28 @@ export const PRIORITY_LABELS: Record<ApplicationPriority, string> = {
 
 // ワークフロー状態遷移可能マップ
 export const STATUS_TRANSITIONS: Record<ApplicationStatus, ApplicationStatus[]> = {
-  '下書き': ['レビュー中', '取下げ'],
-  'レビュー中': ['承認済', '差戻し', '取下げ'],
-  '承認済': ['完了'],
-  '差戻し': ['レビュー中', '取下げ'],
-  '取下げ': [],
+  '未定': ['申請'],
+  '申請': ['承認', '却下'],
+  '承認': ['完了'],
+  '却下': ['申請'],
   '完了': []
 };
 
 // アクティブステータス
 export const ACTIVE_APPLICATION_STATUSES: ApplicationStatus[] = [
-  '下書き',
-  'レビュー中',
-  '承認済',
-  '差戻し'
+  '未定',
+  '申請',
+  '承認',
+  '却下'
 ];
 
 // 完了ステータス
 export const FINISHED_APPLICATION_STATUSES: ApplicationStatus[] = [
-  '取下げ',
   '完了'
 ];
 
 // デフォルト値
-export const DEFAULT_APPLICATION_STATUS: ApplicationStatus = '下書き';
+export const DEFAULT_APPLICATION_STATUS: ApplicationStatus = '未定';
 export const DEFAULT_APPLICATION_PRIORITY: ApplicationPriority = 'normal';
 
 // バリデーション用ヘルパー
