@@ -320,12 +320,20 @@ export const projectApi = {
             id: id + 4,
             project_id: id,
             has_permit_application: false,
+            has_inspection_schedule: false,
+            has_foundation_plan: false,
+            has_hardware_plan: false,
+            has_invoice: false,
+            has_energy_calculation: false,
+            has_settlement_data: false,
             ...projectData.financial
           } : undefined,
           schedule: projectData.schedule ? {
             id: id + 5,
             project_id: id,
             has_permit_returned: false,
+            has_report_sent: false,
+            has_items_confirmed: false,
             ...projectData.schedule
           } : undefined
         };
