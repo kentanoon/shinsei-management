@@ -34,7 +34,6 @@ dist/
 downloads/
 eggs/
 .eggs/
-lib/
 lib64/
 parts/
 sdist/
@@ -45,6 +44,9 @@ share/python-wheels/
 .installed.cfg
 *.egg
 MANIFEST
+
+# Python lib folder only (not frontend src/lib)
+/lib/
 
 # Virtual environments
 venv/
