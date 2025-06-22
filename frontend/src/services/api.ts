@@ -7,6 +7,7 @@ import axios from 'axios';
 import { ProjectService, checkSupabaseConnection } from './database';
 import type {
   Project,
+  ProjectStatus,
   ProjectListResponse,
   ProjectsByStatusResponse,
   ProjectSummaryResponse,
@@ -61,15 +62,25 @@ api.interceptors.response.use(
 );
 
 // Supabaseが利用可能かチェック
-let useSupabase = true;
+let useSupabase = false; // デフォルトでSupabase無効（環境変数が設定されている場合のみ有効）
 
-// 初期化時にSupabase接続をチェック
-checkSupabaseConnection().then(isConnected => {
-  useSupabase = isConnected;
-  if (!isConnected) {
-    console.warn('Supabaseに接続できません。モックデータを使用します。');
-  }
-});
+// 環境変数が設定されている場合のみSupabase接続をチェック
+const supabaseUrl = process.env.REACT_APP_SUPABASE_URL;
+const supabaseAnonKey = process.env.REACT_APP_SUPABASE_ANON_KEY;
+
+if (supabaseUrl && supabaseAnonKey) {
+  // 初期化時にSupabase接続をチェック
+  checkSupabaseConnection().then(isConnected => {
+    useSupabase = isConnected;
+    if (isConnected) {
+      console.log('Supabaseデータベースに接続しました。');
+    } else {
+      console.warn('Supabaseに接続できません。モックデータを使用します。');
+    }
+  });
+} else {
+  console.log('Supabase環境変数が設定されていません。モックデータを使用します。');
+}
 
 // API 関数群（Supabase対応版）
 export const projectApi = {
@@ -90,15 +101,85 @@ export const projectApi = {
         }
         return result.data!;
       } else {
-        // 従来のAPI（モック）を使用
-        const queryParams = new URLSearchParams();
-        if (params.skip !== undefined) queryParams.append('skip', params.skip.toString());
-        if (params.limit !== undefined) queryParams.append('limit', params.limit.toString());
-        if (params.status) queryParams.append('status', params.status);
+        // モックデータを使用
+        const mockProjects: Project[] = [
+          {
+            id: 1,
+            project_code: 'PRJ-SAMPLE-001',
+            project_name: 'サンプル住宅A棟新築工事',
+            status: '申請作業' as ProjectStatus,
+            created_at: '2024-12-01T09:00:00Z',
+            updated_at: '2024-12-15T14:30:00Z',
+            input_date: '2024-12-01',
+            customer: {
+              id: 1,
+              project_id: 1,
+              owner_name: '田中太郎',
+              owner_address: '東京都新宿区西新宿1-1-1',
+              owner_phone: '03-1234-5678'
+            },
+            site: {
+              id: 1,
+              project_id: 1,
+              address: '東京都新宿区西新宿1-1-1',
+              land_area: 200.5
+            },
+            building: {
+              id: 1,
+              project_id: 1,
+              structure: '木造',
+              floors: '2',
+              total_floor_area: 120.8,
+              use: '住宅'
+            }
+          },
+          {
+            id: 2,
+            project_code: 'PRJ-SAMPLE-002',
+            project_name: 'サンプル住宅B棟新築工事',
+            status: '審査中' as ProjectStatus,
+            created_at: '2024-11-15T10:00:00Z',
+            updated_at: '2024-12-10T16:00:00Z',
+            input_date: '2024-11-15',
+            customer: {
+              id: 2,
+              project_id: 2,
+              owner_name: '佐藤花子',
+              owner_address: '大阪府大阪市北区梅田1-1-1',
+              owner_phone: '06-5678-9012'
+            },
+            site: {
+              id: 2,
+              project_id: 2,
+              address: '大阪府大阪市北区梅田1-1-1',
+              land_area: 150.0
+            },
+            building: {
+              id: 2,
+              project_id: 2,
+              structure: '鉄骨造',
+              floors: '3',
+              total_floor_area: 180.5,
+              use: '住宅'
+            }
+          }
+        ];
         
-        const url = `/projects${queryParams.toString() ? '?' + queryParams.toString() : ''}`;
-        const { data } = await api.get(url);
-        return data;
+        // フィルタリング
+        let filteredProjects = mockProjects;
+        if (params.status) {
+          filteredProjects = mockProjects.filter(p => p.status === params.status);
+        }
+        
+        // ページネーション
+        const skip = params.skip || 0;
+        const limit = params.limit || 1000;
+        const paginatedProjects = filteredProjects.slice(skip, skip + limit);
+        
+        return {
+          projects: paginatedProjects,
+          total: filteredProjects.length
+        };
       }
     } catch (error) {
       console.error('プロジェクト一覧取得エラー:', error);
@@ -118,8 +199,45 @@ export const projectApi = {
         }
         return result.data!;
       } else {
-        const { data } = await api.get(`/projects/${projectCode}`);
-        return data;
+        // モックデータから検索
+        const mockProjects: Project[] = [
+          {
+            id: 1,
+            project_code: 'PRJ-SAMPLE-001',
+            project_name: 'サンプル住宅A棟新築工事',
+            status: '申請作業' as ProjectStatus,
+            created_at: '2024-12-01T09:00:00Z',
+            updated_at: '2024-12-15T14:30:00Z',
+            input_date: '2024-12-01',
+            customer: {
+              id: 1,
+              project_id: 1,
+              owner_name: '田中太郎',
+              owner_address: '東京都新宿区西新宿1-1-1',
+              owner_phone: '03-1234-5678'
+            },
+            site: {
+              id: 1,
+              project_id: 1,
+              address: '東京都新宿区西新宿1-1-1',
+              land_area: 200.5
+            },
+            building: {
+              id: 1,
+              project_id: 1,
+              structure: '木造',
+              floors: '2',
+              total_floor_area: 120.8,
+              use: '住宅'
+            }
+          }
+        ];
+        
+        const project = mockProjects.find(p => p.project_code === projectCode);
+        if (!project) {
+          throw new Error('プロジェクトが見つかりません');
+        }
+        return project;
       }
     } catch (error) {
       console.error('プロジェクト詳細取得エラー:', error);
@@ -164,8 +282,45 @@ export const projectApi = {
         }
         return result.data!;
       } else {
-        const { data } = await api.post('/projects', projectData);
-        return data;
+        // モックデータでプロジェクト作成をシミュレート
+        const id = Date.now();
+        const newProject: Project = {
+          id: id,
+          project_code: `PRJ-${id}`,
+          project_name: projectData.project_name,
+          status: (projectData.status || '事前相談') as ProjectStatus,
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+          input_date: projectData.input_date || new Date().toISOString().split('T')[0],
+          customer: projectData.customer ? {
+            id: id + 1,
+            project_id: id,
+            ...projectData.customer
+          } : undefined,
+          site: projectData.site ? {
+            id: id + 2,
+            project_id: id,
+            ...projectData.site
+          } : undefined,
+          building: projectData.building ? {
+            id: id + 3,
+            project_id: id,
+            ...projectData.building
+          } : undefined,
+          financial: projectData.financial ? {
+            id: id + 4,
+            project_id: id,
+            ...projectData.financial
+          } : undefined,
+          schedule: projectData.schedule ? {
+            id: id + 5,
+            project_id: id,
+            ...projectData.schedule
+          } : undefined
+        };
+        
+        console.log('モックプロジェクトを作成しました:', newProject);
+        return newProject;
       }
     } catch (error) {
       console.error('プロジェクト作成エラー:', error);
@@ -303,8 +458,16 @@ export const projectApi = {
           ).length
         };
       } else {
-        const { data } = await api.get('/projects/summary');
-        return data;
+        // モックサマリーデータを返す
+        return {
+          total_projects: 2,
+          by_status: {
+            '申請作業': 1,
+            '審査中': 1,
+            '完了': 0
+          },
+          active_projects: 2
+        };
       }
     } catch (error) {
       console.error('プロジェクトサマリー取得エラー:', error);
