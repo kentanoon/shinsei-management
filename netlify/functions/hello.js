@@ -10,8 +10,7 @@ exports.handler = async (event, context) => {
     body: JSON.stringify({
       message: 'Hello from Netlify Functions!',
       timestamp: new Date().toISOString(),
-      status: 'healthy',
-      demo_mode: process.env.REACT_APP_DEMO_MODE === 'true'
+      status: 'healthy'
     })
   };
 };

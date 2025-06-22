@@ -8,7 +8,7 @@ const SchedulePage: React.FC = () => {
     const fetchSchedules = async () => {
       try {
         // TODO: ScheduleAPI実装後にAPIレイヤーを使用
-        console.log('Schedule API not yet implemented - showing demo data');
+        console.log('Schedule API not yet implemented - showing sample data');
         setSchedules([]);
       } catch (error) {
         console.error('Error fetching schedules:', error);

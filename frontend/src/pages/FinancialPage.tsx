@@ -8,7 +8,7 @@ const FinancialPage: React.FC = () => {
     const fetchFinancials = async () => {
       try {
         // TODO: FinancialAPI実装後にAPIレイヤーを使用
-        console.log('Financial API not yet implemented - showing demo data');
+        console.log('Financial API not yet implemented - showing sample data');
         setFinancials([]);
       } catch (error) {
         console.error('Error fetching financials:', error);

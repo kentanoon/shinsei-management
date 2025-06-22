@@ -25,22 +25,22 @@ def create_test_projects(db: Session):
     
     test_projects_data = [
         {
-            "project_name": "田中邸新築工事",
+            "project_name": "サンプル邸新築工事",
             "status": "申請作業",
             "input_date": date.today() - timedelta(days=30),
             "customer": {
-                "owner_name": "田中太郎",
-                "owner_kana": "タナカタロウ",
-                "owner_zip": "123-4567",
-                "owner_address": "東京都世田谷区田中町1-2-3",
-                "owner_phone": "03-1234-5678",
-                "joint_name": "田中花子",
-                "joint_kana": "タナカハナコ",
-                "client_name": "田中工務店",
-                "client_staff": "田中社長"
+                "owner_name": "サンプル太郎",
+                "owner_kana": "サンプルタロウ",
+                "owner_zip": "000-0000",
+                "owner_address": "東京都○○区サンプル町1-2-3",
+                "owner_phone": "000-0000-0000",
+                "joint_name": "サンプル花子",
+                "joint_kana": "サンプルハナコ",
+                "client_name": "サンプル工務店",
+                "client_staff": "サンプル社長"
             },
             "site": {
-                "address": "東京都世田谷区田中町1-2-3",
+                "address": "東京都○○区サンプル町1-2-3",
                 "land_area": Decimal("150.25"),
                 "city_plan": "第一種住居地域",
                 "zoning": "第一種住居地域",
@@ -52,7 +52,7 @@ def create_test_projects(db: Session):
                 "tsunami_zone": "対象外"
             },
             "building": {
-                "building_name": "田中邸",
+                "building_name": "サンプル邸",
                 "construction_type": "住宅",
                 "primary_use": "一戸建ての住宅",
                 "structure": "木造",
@@ -66,7 +66,7 @@ def create_test_projects(db: Session):
                 "estimate_amount": Decimal("24500000"),
                 "construction_cost": Decimal("22000000"),
                 "settlement_date": date.today() + timedelta(days=90),
-                "settlement_staff": "田中社長",
+                "settlement_staff": "サンプル社長",
                 "settlement_amount": Decimal("25000000"),
                 "payment_terms": "着手金30%、中間金40%、完成時30%",
                 "juchu_note": "省エネ基準適合住宅",
@@ -93,7 +93,7 @@ def create_test_projects(db: Session):
                 "owner_kana": "サトウショウジカブシキガイシャ",
                 "owner_zip": "456-7890",
                 "owner_address": "神奈川県横浜市港北区佐藤町4-5-6",
-                "owner_phone": "045-123-4567",
+                "owner_phone": "045-000-0000",
                 "client_name": "佐藤商事株式会社",
                 "client_staff": "佐藤部長"
             },

@@ -99,15 +99,15 @@ async def search_customers(
     レスポンス例:
     ```json
     {
-        "query": "田中",
+        "query": "サンプル",
         "results": [
             {
                 "id": 1,
-                "owner_name": "田中太郎",
-                "owner_kana": "タナカタロウ",
-                "owner_phone": "03-1234-5678",
-                "owner_address": "東京都渋谷区...",
-                "client_name": "株式会社ABC"
+                "owner_name": "サンプル太郎",
+                "owner_kana": "サンプルタロウ",
+                "owner_phone": "000-0000-0000",
+                "owner_address": "東京都○○区...",
+                "client_name": "株式会社サンプル"
             }
         ],
         "count": 1

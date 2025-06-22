@@ -24,7 +24,6 @@ exports.handler = async (event, context) => {
           status: 'error',
           database: 'disconnected',
           error: error.message,
-          demo_mode: process.env.REACT_APP_DEMO_MODE === 'true'
         })
       };
     }
