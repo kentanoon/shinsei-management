@@ -1,10 +1,6 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 
-// デモモードかどうかを判定
-const isDemoMode = (): boolean => {
-  return process.env.REACT_APP_DEMO_MODE === 'true' || 
-         window.location.hostname.includes('github.io');
-};
+// WebSocket接続は本番環境でのみ使用
 
 interface WebSocketMessage {
   type: string;
@@ -208,14 +204,11 @@ export const useWebSocket = (options: UseWebSocketOptions = {}) => {
     });
   }, [sendMessage]);
 
-  // 初期接続（デモモードでは無効）
+  // 初期接続
   useEffect(() => {
-    if (!isDemoMode()) {
+    // 本番環境でのみWebSocket接続を試行
+    if (process.env.NODE_ENV === 'production') {
       connect();
-    } else {
-      // デモモードでは接続状態をシミュレート
-      setIsConnected(false);
-      setConnectionError(null);
     }
     
     return () => {

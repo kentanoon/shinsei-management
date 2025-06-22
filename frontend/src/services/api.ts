@@ -20,8 +20,6 @@ import type {
   ApplicationUpdateRequest
 } from '../types/application';
 import { API_CONFIG } from '../constants';
-import { demoApi, isDemoMode } from './demo-api';
-import { supabaseProjectApi, supabaseHealthApi } from './supabase-api';
 
 // Axios インスタンスの作成
 const api = axios.create({
@@ -89,32 +87,16 @@ export const projectApi = {
    * プロジェクト詳細取得
    */
   getProject: async (projectCode: string): Promise<Project> => {
-    if (isDemoMode()) {
-      const id = parseInt(projectCode) || 1;
-      return demoApi.getProject(id);
-    }
-    try {
-      return await supabaseProjectApi.getProject(projectCode);
-    } catch (error) {
-      console.warn('Supabase connection failed, falling back to demo mode');
-      const id = parseInt(projectCode) || 1;
-      return demoApi.getProject(id);
-    }
+    const { data } = await api.get(`/projects/${projectCode}`);
+    return data;
   },
 
   /**
    * ステータス別プロジェクト取得
    */
   getProjectsByStatus: async (status: string): Promise<ProjectsByStatusResponse> => {
-    if (isDemoMode()) {
-      return demoApi.getProjectsByStatus(status);
-    }
-    try {
-      return await supabaseProjectApi.getProjectsByStatus(status);
-    } catch (error) {
-      console.warn('Supabase connection failed, falling back to demo mode');
-      return demoApi.getProjectsByStatus(status);
-    }
+    const { data } = await api.get(`/projects/status/${status}`);
+    return data;
   },
 
   /**
@@ -183,15 +165,8 @@ export const healthApi = {
    * 基本ヘルスチェック
    */
   checkHealth: async () => {
-    if (isDemoMode()) {
-      return demoApi.health();
-    }
-    try {
-      return await supabaseHealthApi.checkHealth();
-    } catch (error) {
-      console.warn('Supabase health check failed, falling back to demo mode');
-      return demoApi.health();
-    }
+    const { data } = await api.get('/health');
+    return data;
   },
 
   /**
@@ -212,9 +187,6 @@ export const applicationApi = {
     project_id?: number;
     status?: string;
   } = {}) => {
-    if (isDemoMode()) {
-      return demoApi.getApplications();
-    }
     const { data } = await api.get('/applications/', { params });
     return data;
   },
@@ -223,9 +195,6 @@ export const applicationApi = {
    * 申請詳細取得
    */
   getApplication: async (applicationId: number) => {
-    if (isDemoMode()) {
-      return demoApi.getApplication(applicationId);
-    }
     const { data } = await api.get(`/applications/${applicationId}`);
     return data;
   },
