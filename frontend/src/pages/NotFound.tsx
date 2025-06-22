@@ -11,6 +11,7 @@ import {
   CardContent,
   List,
   ListItem,
+  ListItemButton,
   ListItemIcon,
   ListItemText
 } from '@mui/material';
@@ -66,25 +67,25 @@ const NotFound: React.FC = () => {
             {quickLinks.map((link) => {
               const IconComponent = link.icon;
               return (
-                <ListItem
-                  key={link.path}
-                  button
-                  onClick={() => navigate(link.path)}
-                  sx={{ 
-                    borderRadius: 1, 
-                    mb: 1,
-                    '&:hover': { 
-                      backgroundColor: 'action.hover' 
-                    }
-                  }}
-                >
-                  <ListItemIcon>
-                    <IconComponent color="primary" />
-                  </ListItemIcon>
-                  <ListItemText
-                    primary={link.label}
-                    secondary={link.description}
-                  />
+                <ListItem key={link.path}>
+                  <ListItemButton
+                    onClick={() => navigate(link.path)}
+                    sx={{ 
+                      borderRadius: 1, 
+                      mb: 1,
+                      '&:hover': { 
+                        backgroundColor: 'action.hover' 
+                      }
+                    }}
+                  >
+                    <ListItemIcon>
+                      <IconComponent color="primary" />
+                    </ListItemIcon>
+                    <ListItemText
+                      primary={link.label}
+                      secondary={link.description}
+                    />
+                  </ListItemButton>
                 </ListItem>
               );
             })}

@@ -93,16 +93,14 @@ const ApplicationWorkflowActions: React.FC<ApplicationWorkflowActionsProps> = ({
   // 現在のステータスに基づいて利用可能なアクションを取得
   const getAvailableActions = (): WorkflowAction[] => {
     switch (currentStatus) {
-      case '下書き':
+      case '未定':
         return actions.filter(a => ['submit', 'withdraw'].includes(a.action));
-      case 'レビュー中':
+      case '申請':
         return actions.filter(a => ['approve', 'reject', 'withdraw'].includes(a.action));
-      case '承認済':
+      case '承認':
         return actions.filter(a => ['withdraw'].includes(a.action));
-      case '差戻し':
+      case '却下':
         return actions.filter(a => ['submit', 'withdraw'].includes(a.action));
-      case '取下げ':
-        return actions.filter(a => ['submit'].includes(a.action));
       case '完了':
         return [];
       default:
@@ -286,10 +284,10 @@ const ApplicationWorkflowActions: React.FC<ApplicationWorkflowActionsProps> = ({
   // アクションに基づく新しいステータスを取得
   function getNewStatus(action: string): ApplicationStatus {
     switch (action) {
-      case 'submit': return 'レビュー中';
-      case 'approve': return '承認済';
-      case 'reject': return '差戻し';
-      case 'withdraw': return '取下げ';
+      case 'submit': return '申請';
+      case 'approve': return '承認';
+      case 'reject': return '却下';
+      case 'withdraw': return '完了';
       default: return currentStatus;
     }
   }

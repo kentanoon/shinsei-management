@@ -57,20 +57,20 @@ const ApplicationWorkflowStepper: React.FC<ApplicationWorkflowStepperProps> = ({
 }) => {
   const steps: WorkflowStep[] = [
     {
-      label: '下書き',
-      status: '下書き',
+      label: '未定',
+      status: '未定',
       icon: <DraftIcon />,
       description: '申請の準備段階です。必要事項を入力してください。'
     },
     {
-      label: 'レビュー中',
-      status: 'レビュー中',
+      label: '申請',
+      status: '申請',
       icon: <ReviewIcon />,
       description: '申請内容を確認中です。しばらくお待ちください。'
     },
     {
-      label: '承認済',
-      status: '承認済',
+      label: '承認',
+      status: '承認',
       icon: <ApprovedIcon />,
       description: '申請が承認されました。'
     },
@@ -91,7 +91,7 @@ const ApplicationWorkflowStepper: React.FC<ApplicationWorkflowStepperProps> = ({
   const getStepStatus = (stepIndex: number): 'active' | 'completed' | 'error' | 'disabled' => {
     const currentIndex = getCurrentStepIndex();
     
-    if (currentStatus === '差戻し' || currentStatus === '取下げ') {
+    if (currentStatus === '却下') {
       if (stepIndex === 0) return 'error';
       return 'disabled';
     }
@@ -115,20 +115,20 @@ const ApplicationWorkflowStepper: React.FC<ApplicationWorkflowStepperProps> = ({
     return React.cloneElement(step.icon, iconProps);
   };
 
-  // 特別な状態（差戻し・取下げ）の表示
+  // 特別な状態（却下）の表示
   const renderSpecialStatus = () => {
-    if (currentStatus === '差戻し') {
+    if (currentStatus === '却下') {
       return (
         <Box sx={{ mt: 2, p: 2, bgcolor: 'error.light', borderRadius: 1 }}>
           <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
             <RejectedIcon color="error" sx={{ mr: 1 }} />
             <Typography variant="h6" color="error">
-              申請が差戻されました
+              申請が却下されました
             </Typography>
           </Box>
           {rejectedDate && (
             <Typography variant="body2" color="text.secondary">
-              差戻し日: {new Date(rejectedDate).toLocaleDateString('ja-JP')}
+              却下日: {new Date(rejectedDate).toLocaleDateString('ja-JP')}
             </Typography>
           )}
           {rejectionReason && (
@@ -136,19 +136,6 @@ const ApplicationWorkflowStepper: React.FC<ApplicationWorkflowStepperProps> = ({
               理由: {rejectionReason}
             </Typography>
           )}
-        </Box>
-      );
-    }
-
-    if (currentStatus === '取下げ') {
-      return (
-        <Box sx={{ mt: 2, p: 2, bgcolor: 'grey.200', borderRadius: 1 }}>
-          <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-            <WithdrawnIcon color="disabled" sx={{ mr: 1 }} />
-            <Typography variant="h6" color="text.secondary">
-              申請が取下げられました
-            </Typography>
-          </Box>
         </Box>
       );
     }
@@ -162,12 +149,12 @@ const ApplicationWorkflowStepper: React.FC<ApplicationWorkflowStepperProps> = ({
     let dateInfo = '';
 
     switch (step.status) {
-      case 'レビュー中':
+      case '申請':
         if (submittedDate) {
           dateInfo = `提出日: ${new Date(submittedDate).toLocaleDateString('ja-JP')}`;
         }
         break;
-      case '承認済':
+      case '承認':
         if (approvedDate) {
           dateInfo = `承認日: ${new Date(approvedDate).toLocaleDateString('ja-JP')}`;
         }
@@ -190,7 +177,7 @@ const ApplicationWorkflowStepper: React.FC<ApplicationWorkflowStepperProps> = ({
   const renderCommentInfo = (stepIndex: number) => {
     const step = steps[stepIndex];
     
-    if (step.status === '承認済' && approvalComment) {
+    if (step.status === '承認' && approvalComment) {
       return (
         <Typography variant="body2" sx={{ mt: 1, fontStyle: 'italic' }}>
           コメント: {approvalComment}
@@ -238,10 +225,9 @@ const ApplicationWorkflowStepper: React.FC<ApplicationWorkflowStepperProps> = ({
         <Chip
           label={currentStatus}
           color={
-            currentStatus === '承認済' || currentStatus === '完了' ? 'success' :
-            currentStatus === 'レビュー中' ? 'primary' :
-            currentStatus === '差戻し' ? 'error' :
-            currentStatus === '取下げ' ? 'default' : 'default'
+            currentStatus === '承認' || currentStatus === '完了' ? 'success' :
+            currentStatus === '申請' ? 'primary' :
+            currentStatus === '却下' ? 'error' : 'default'
           }
           variant="filled"
           size="medium"

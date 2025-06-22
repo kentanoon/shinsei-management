@@ -69,7 +69,7 @@ const EnhancedApplications: React.FC = () => {
     application_type_id: '' as string | number,
     title: '',
     description: '',
-    status: '下書き',
+    status: '未定',
   });
 
   useEffect(() => {
@@ -146,7 +146,7 @@ const EnhancedApplications: React.FC = () => {
     showSuccess('申請を作成しました');
     setCreateDialogOpen(false);
     // フォームリセット
-    setNewApplication({ project_id: '', application_type_id: '', title: '', description: '', status: '下書き' });
+    setNewApplication({ project_id: '', application_type_id: '', title: '', description: '', status: '未定' });
   };
 
   const fetchApplications = async () => {
@@ -164,7 +164,7 @@ const EnhancedApplications: React.FC = () => {
           project_id: 1,
           application_type_id: 1,
           category: '確認申請',
-          status: '承認済',
+          status: '承認',
           priority: 'high',
           title: '住宅A棟 確認申請',
           description: '3階建て住宅の確認申請書類',
@@ -198,7 +198,7 @@ const EnhancedApplications: React.FC = () => {
               id: 1,
               application_id: 1,
               from_status: null,
-              to_status: '下書き',
+              to_status: '未定',
               changed_by: '田中太郎',
               changed_at: '2024-12-01T09:00:00Z',
               comment: '申請書類作成開始',
@@ -206,8 +206,8 @@ const EnhancedApplications: React.FC = () => {
             {
               id: 2,
               application_id: 1,
-              from_status: '下書き',
-              to_status: '承認済',
+              from_status: '未定',
+              to_status: '承認',
               changed_by: '田中太郎',
               changed_at: '2024-12-10T10:00:00Z',
               comment: '必要書類を揃えて申請完了',
@@ -252,12 +252,11 @@ const EnhancedApplications: React.FC = () => {
       const mockSummary: ApplicationSummary = {
         total_count: 15,
         by_status: {
-          '下書き': 2,
-          'レビュー中': 3,
-          '承認済': 4,
-          '差戻し': 3,
-          '取下げ': 2,
-          '完了': 1,
+          '未定': 2,
+          '申請': 3,
+          '承認': 4,
+          '却下': 3,
+          '完了': 3,
         },
         by_category: {
           '確認申請': 8,
