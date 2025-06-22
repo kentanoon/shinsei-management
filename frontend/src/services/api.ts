@@ -129,8 +129,8 @@ export const projectApi = {
               project_id: 1,
               structure: '木造',
               floors: '2',
-              total_floor_area: 120.8,
-              use: '住宅'
+              total_area: 120.8,
+              building_area: 100.0
             }
           },
           {
@@ -159,8 +159,8 @@ export const projectApi = {
               project_id: 2,
               structure: '鉄骨造',
               floors: '3',
-              total_floor_area: 180.5,
-              use: '住宅'
+              total_area: 180.5,
+              building_area: 100.0
             }
           }
         ];
@@ -227,8 +227,8 @@ export const projectApi = {
               project_id: 1,
               structure: '木造',
               floors: '2',
-              total_floor_area: 120.8,
-              use: '住宅'
+              total_area: 120.8,
+              building_area: 100.0
             }
           }
         ];
@@ -295,26 +295,37 @@ export const projectApi = {
           customer: projectData.customer ? {
             id: id + 1,
             project_id: id,
+            owner_name: projectData.customer.owner_name || '',
+            owner_address: projectData.customer.owner_address || '',
+            owner_phone: projectData.customer.owner_phone || '',
             ...projectData.customer
           } : undefined,
           site: projectData.site ? {
             id: id + 2,
             project_id: id,
+            address: projectData.site.address || '',
+            land_area: projectData.site.land_area || 0,
             ...projectData.site
           } : undefined,
           building: projectData.building ? {
             id: id + 3,
             project_id: id,
+            structure: projectData.building.structure || '',
+            floors: projectData.building.floors || '',
+            total_area: projectData.building.total_area || 0,
+            building_area: projectData.building.building_area || 0,
             ...projectData.building
           } : undefined,
           financial: projectData.financial ? {
             id: id + 4,
             project_id: id,
+            has_permit_application: false,
             ...projectData.financial
           } : undefined,
           schedule: projectData.schedule ? {
             id: id + 5,
             project_id: id,
+            has_permit_returned: false,
             ...projectData.schedule
           } : undefined
         };
