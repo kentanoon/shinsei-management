@@ -140,20 +140,23 @@ export interface Schedule {
 export interface ProjectListResponse {
   projects: Project[];
   total: number;
-  skip: number;
-  limit: number;
+  skip?: number;
+  limit?: number;
 }
 
 export interface ProjectsByStatusResponse {
   status: string;
   projects: Project[];
-  count: number;
+  count?: number;
+  total?: number;
 }
 
 export interface ProjectSummaryResponse {
-  status_counts: Record<string, number>;
-  new_this_month: number;
+  status_counts?: Record<string, number>;
+  by_status?: Record<string, number>;
+  new_this_month?: number;
   total_projects: number;
+  active_projects?: number;
 }
 
 // API リクエスト型
@@ -161,9 +164,11 @@ export interface ProjectCreateRequest {
   project_name: string;
   status?: ProjectStatus;
   input_date?: string;
-  customer: Omit<Customer, 'id' | 'project_id'>;
-  site: Omit<Site, 'id' | 'project_id'>;
-  building?: Omit<Building, 'id' | 'project_id'>;
+  customer?: Partial<Omit<Customer, 'id' | 'project_id'>>;
+  site?: Partial<Omit<Site, 'id' | 'project_id'>>;
+  building?: Partial<Omit<Building, 'id' | 'project_id'>>;
+  financial?: Partial<Omit<Financial, 'id' | 'project_id'>>;
+  schedule?: Partial<Omit<Schedule, 'id' | 'project_id'>>;
 }
 
 export interface ProjectUpdateRequest {
@@ -173,6 +178,8 @@ export interface ProjectUpdateRequest {
   customer?: Partial<Omit<Customer, 'id' | 'project_id'>>;
   site?: Partial<Omit<Site, 'id' | 'project_id'>>;
   building?: Partial<Omit<Building, 'id' | 'project_id'>>;
+  financial?: Partial<Omit<Financial, 'id' | 'project_id'>>;
+  schedule?: Partial<Omit<Schedule, 'id' | 'project_id'>>;
   // その他の動的フィールド用
   metadata?: Record<string, string | number | boolean>;
 }

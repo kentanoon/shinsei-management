@@ -1,9 +1,10 @@
 /**
  * API クライアント
- * バックエンドとの通信を担当
+ * バックエンドとSupabaseとの通信を担当
  */
 
 import axios from 'axios';
+import { ProjectService, checkSupabaseConnection } from './database';
 import type {
   Project,
   ProjectListResponse,
@@ -59,7 +60,18 @@ api.interceptors.response.use(
   }
 );
 
-// API 関数群
+// Supabaseが利用可能かチェック
+let useSupabase = true;
+
+// 初期化時にSupabase接続をチェック
+checkSupabaseConnection().then(isConnected => {
+  useSupabase = isConnected;
+  if (!isConnected) {
+    console.warn('Supabaseに接続できません。モックデータを使用します。');
+  }
+});
+
+// API 関数群（Supabase対応版）
 export const projectApi = {
   /**
    * プロジェクト一覧取得
@@ -70,15 +82,26 @@ export const projectApi = {
     status?: string;
   } = {}): Promise<ProjectListResponse> => {
     try {
-      const queryParams = new URLSearchParams();
-      if (params.skip !== undefined) queryParams.append('skip', params.skip.toString());
-      if (params.limit !== undefined) queryParams.append('limit', params.limit.toString());
-      if (params.status) queryParams.append('status', params.status);
-      
-      const url = `/projects${queryParams.toString() ? '?' + queryParams.toString() : ''}`;
-      const { data } = await api.get(url);
-      return data;
+      if (useSupabase) {
+        // Supabaseを使用
+        const result = await ProjectService.getProjects(params);
+        if (result.error) {
+          throw new Error(result.error);
+        }
+        return result.data!;
+      } else {
+        // 従来のAPI（モック）を使用
+        const queryParams = new URLSearchParams();
+        if (params.skip !== undefined) queryParams.append('skip', params.skip.toString());
+        if (params.limit !== undefined) queryParams.append('limit', params.limit.toString());
+        if (params.status) queryParams.append('status', params.status);
+        
+        const url = `/projects${queryParams.toString() ? '?' + queryParams.toString() : ''}`;
+        const { data } = await api.get(url);
+        return data;
+      }
     } catch (error) {
+      console.error('プロジェクト一覧取得エラー:', error);
       throw error;
     }
   },
@@ -87,63 +110,170 @@ export const projectApi = {
    * プロジェクト詳細取得
    */
   getProject: async (projectCode: string): Promise<Project> => {
-    const { data } = await api.get(`/projects/${projectCode}`);
-    return data;
+    try {
+      if (useSupabase) {
+        const result = await ProjectService.getProject(projectCode);
+        if (result.error) {
+          throw new Error(result.error);
+        }
+        return result.data!;
+      } else {
+        const { data } = await api.get(`/projects/${projectCode}`);
+        return data;
+      }
+    } catch (error) {
+      console.error('プロジェクト詳細取得エラー:', error);
+      throw error;
+    }
   },
 
   /**
    * ステータス別プロジェクト取得
    */
   getProjectsByStatus: async (status: string): Promise<ProjectsByStatusResponse> => {
-    const { data } = await api.get(`/projects/status/${status}`);
-    return data;
+    try {
+      if (useSupabase) {
+        const result = await ProjectService.getProjects({ status });
+        if (result.error) {
+          throw new Error(result.error);
+        }
+        return {
+          projects: result.data!.projects,
+          total: result.data!.total,
+          status
+        };
+      } else {
+        const { data } = await api.get(`/projects/status/${status}`);
+        return data;
+      }
+    } catch (error) {
+      console.error('ステータス別プロジェクト取得エラー:', error);
+      throw error;
+    }
   },
 
   /**
    * プロジェクト作成
    */
   createProject: async (projectData: ProjectCreateRequest): Promise<Project> => {
-    const { data } = await api.post('/projects', projectData);
-    return data;
+    try {
+      if (useSupabase) {
+        const result = await ProjectService.createProject(projectData);
+        if (result.error) {
+          throw new Error(result.error);
+        }
+        return result.data!;
+      } else {
+        const { data } = await api.post('/projects', projectData);
+        return data;
+      }
+    } catch (error) {
+      console.error('プロジェクト作成エラー:', error);
+      throw error;
+    }
   },
 
   /**
    * プロジェクト更新
    */
   updateProject: async (projectId: number, projectData: ProjectUpdateRequest): Promise<Project> => {
-    const { data } = await api.put(`/projects/${projectId}`, projectData);
-    return data;
+    try {
+      if (useSupabase) {
+        const result = await ProjectService.updateProject(projectId, projectData);
+        if (result.error) {
+          throw new Error(result.error);
+        }
+        return result.data!;
+      } else {
+        const { data } = await api.put(`/projects/${projectId}`, projectData);
+        return data;
+      }
+    } catch (error) {
+      console.error('プロジェクト更新エラー:', error);
+      throw error;
+    }
   },
 
   /**
    * 財務情報更新
    */
   updateFinancial: async (projectId: number, financialData: FinancialUpdateRequest) => {
-    const { data } = await api.put(`/projects/${projectId}/financial`, financialData);
-    return data;
+    try {
+      if (useSupabase) {
+        const result = await ProjectService.updateProject(projectId, { financial: financialData });
+        if (result.error) {
+          throw new Error(result.error);
+        }
+        return result.data!;
+      } else {
+        const { data } = await api.put(`/projects/${projectId}/financial`, financialData);
+        return data;
+      }
+    } catch (error) {
+      console.error('財務情報更新エラー:', error);
+      throw error;
+    }
   },
 
   /**
    * スケジュール情報更新
    */
   updateSchedule: async (projectId: number, scheduleData: ScheduleUpdateRequest) => {
-    const { data } = await api.put(`/projects/${projectId}/schedule`, scheduleData);
-    return data;
+    try {
+      if (useSupabase) {
+        const result = await ProjectService.updateProject(projectId, { schedule: scheduleData });
+        if (result.error) {
+          throw new Error(result.error);
+        }
+        return result.data!;
+      } else {
+        const { data } = await api.put(`/projects/${projectId}/schedule`, scheduleData);
+        return data;
+      }
+    } catch (error) {
+      console.error('スケジュール情報更新エラー:', error);
+      throw error;
+    }
   },
 
   /**
    * プロジェクト削除
    */
   deleteProject: async (projectId: number): Promise<void> => {
-    await api.delete(`/projects/${projectId}`);
+    try {
+      if (useSupabase) {
+        const result = await ProjectService.deleteProject(projectId);
+        if (result.error) {
+          throw new Error(result.error);
+        }
+      } else {
+        await api.delete(`/projects/${projectId}`);
+      }
+    } catch (error) {
+      console.error('プロジェクト削除エラー:', error);
+      throw error;
+    }
   },
 
   /**
    * プロジェクト検索
    */
   searchProjects: async (query: string) => {
-    const { data } = await api.get(`/projects/search/${encodeURIComponent(query)}`);
-    return data;
+    try {
+      if (useSupabase) {
+        const result = await ProjectService.getProjects({ search: query });
+        if (result.error) {
+          throw new Error(result.error);
+        }
+        return result.data!;
+      } else {
+        const { data } = await api.get(`/projects/search/${encodeURIComponent(query)}`);
+        return data;
+      }
+    } catch (error) {
+      console.error('プロジェクト検索エラー:', error);
+      throw error;
+    }
   },
 
   /**
@@ -151,9 +281,33 @@ export const projectApi = {
    */
   getProjectsSummary: async (): Promise<ProjectSummaryResponse> => {
     try {
-      const { data } = await api.get('/projects/summary');
-      return data;
+      if (useSupabase) {
+        // Supabaseからサマリーデータを計算して取得
+        const result = await ProjectService.getProjects({ limit: 1000 });
+        if (result.error) {
+          throw new Error(result.error);
+        }
+        
+        const projects = result.data!.projects;
+        const statusCounts: { [key: string]: number } = {};
+        
+        projects.forEach(project => {
+          statusCounts[project.status] = (statusCounts[project.status] || 0) + 1;
+        });
+
+        return {
+          total_projects: projects.length,
+          by_status: statusCounts,
+          active_projects: projects.filter(p => 
+            !['完了', '失注'].includes(p.status)
+          ).length
+        };
+      } else {
+        const { data } = await api.get('/projects/summary');
+        return data;
+      }
     } catch (error) {
+      console.error('プロジェクトサマリー取得エラー:', error);
       throw error;
     }
   },

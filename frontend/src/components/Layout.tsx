@@ -3,6 +3,7 @@ import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { AppBar, Toolbar, Typography, Box, Container } from '@mui/material';
 import NotificationPanel from './NotificationPanel';
 import AlertSystem from './AlertSystem';
+import SupabaseStatus from './SupabaseStatus';
 
 interface LayoutProps {
   children?: React.ReactNode;
@@ -38,7 +39,10 @@ const Layout: React.FC<LayoutProps> = () => {
           >
             🏗️ 申請管理システム
           </Typography>
-          <NotificationPanel />
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+            <SupabaseStatus showDetails={true} />
+            <NotificationPanel />
+          </Box>
         </Toolbar>
       </AppBar>
 
