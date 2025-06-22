@@ -16,6 +16,7 @@ import {
   ListItem,
   ListItemText,
   ListItemIcon,
+  ListItemButton,
   Fab,
   Tooltip,
   Chip,
@@ -554,23 +555,23 @@ const InteractiveDashboard: React.FC<InteractiveDashboardProps> = ({
           <DialogContent>
             <List>
               {AVAILABLE_WIDGETS.map((widget) => (
-                <ListItem
-                  key={widget.id}
-                  button
-                  onClick={() => addWidget(widget.type)}
-                  sx={{
-                    borderRadius: 1,
-                    mb: 1,
-                    '&:hover': {
-                      bgcolor: 'action.hover',
-                    },
-                  }}
-                >
-                  <ListItemIcon>{widget.icon}</ListItemIcon>
-                  <ListItemText
-                    primary={widget.title}
-                    secondary={widget.description}
-                  />
+                <ListItem key={widget.id}>
+                  <ListItemButton
+                    onClick={() => addWidget(widget.type)}
+                    sx={{
+                      borderRadius: 1,
+                      mb: 1,
+                      '&:hover': {
+                        bgcolor: 'action.hover',
+                      },
+                    }}
+                  >
+                    <ListItemIcon>{widget.icon}</ListItemIcon>
+                    <ListItemText
+                      primary={widget.title}
+                      secondary={widget.description}
+                    />
+                  </ListItemButton>
                 </ListItem>
               ))}
             </List>

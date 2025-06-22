@@ -45,7 +45,8 @@
       "Bash(rm:*)",
       "Bash(vercel:*)",
       "WebFetch(domain:shinsei-management-ver0-jwyb1g1tj-kentanoons-projects.vercel.app)",
-      "WebFetch(domain:tranquil-cactus-de8407.netlify.app)"
+      "WebFetch(domain:tranquil-cactus-de8407.netlify.app)",
+      "Bash(npm outdated)"
     ],
     "deny": []
   }

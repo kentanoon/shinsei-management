@@ -5,7 +5,7 @@
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Box, Typography } from '@mui/material';
-import { useQuery, useQueryClient } from 'react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { projectApi } from '../services/api';
 import { useToast } from '../components/Toast';
@@ -41,13 +41,11 @@ const ProjectDetail: React.FC = () => {
   const [currentTab, setCurrentTab] = useState(0);
   const [editMode, setEditMode] = useState(false);
 
-  const { data: project, isLoading, error } = useQuery(
-    ['project', projectCode],
-    () => projectApi.getProject(projectCode!),
-    {
-      enabled: !!projectCode,
-    }
-  );
+  const { data: project, isLoading, error } = useQuery({
+    queryKey: ['project', projectCode],
+    queryFn: () => projectApi.getProject(projectCode!),
+    enabled: !!projectCode,
+  });
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
     setCurrentTab(newValue);
@@ -73,7 +71,7 @@ const ProjectDetail: React.FC = () => {
       await projectApi.updateProject(project.id, updateData);
       
       // キャッシュを更新
-      queryClient.invalidateQueries(['project', projectCode]);
+      queryClient.invalidateQueries({ queryKey: ['project', projectCode] });
       showSuccess('更新しました');
     } catch (error) {
       handleError(error, '更新に失敗しました');
@@ -93,7 +91,7 @@ const ProjectDetail: React.FC = () => {
       await projectApi.updateFinancial(project.id, updateData);
       
       // キャッシュを更新
-      queryClient.invalidateQueries(['project', projectCode]);
+      queryClient.invalidateQueries({ queryKey: ['project', projectCode] });
       showSuccess('財務情報を更新しました');
     } catch (error) {
       handleError(error, '財務情報の更新に失敗しました');
@@ -113,7 +111,7 @@ const ProjectDetail: React.FC = () => {
       await projectApi.updateSchedule(project.id, updateData);
       
       // キャッシュを更新
-      queryClient.invalidateQueries(['project', projectCode]);
+      queryClient.invalidateQueries({ queryKey: ['project', projectCode] });
       showSuccess('スケジュール情報を更新しました');
     } catch (error) {
       handleError(error, 'スケジュール情報の更新に失敗しました');

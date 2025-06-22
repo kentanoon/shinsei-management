@@ -19,7 +19,7 @@ import {
   Notifications as NotificationsIcon,
   CheckCircle as CheckCircleIcon,
 } from '@mui/icons-material';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { projectApi } from '../services/api';
 import type { Project } from '../types/project';
 
@@ -38,13 +38,11 @@ const AlertSystem: React.FC = () => {
   const [showAlerts, setShowAlerts] = useState(false);
   const [dismissedAlerts, setDismissedAlerts] = useState<Set<string>>(new Set());
 
-  const { data: projectsData } = useQuery(
-    'projects-for-alerts',
-    () => projectApi.getProjects({ limit: 1000 }),
-    {
-      refetchInterval: 5 * 60 * 1000, // 5分ごとに更新
-    }
-  );
+  const { data: projectsData } = useQuery({
+    queryKey: ['projects-for-alerts'],
+    queryFn: () => projectApi.getProjects({ limit: 1000 }),
+    refetchInterval: 5 * 60 * 1000, // 5分ごとに更新
+  });
 
   useEffect(() => {
     if (projectsData?.projects) {
