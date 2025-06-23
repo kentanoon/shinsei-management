@@ -8,9 +8,11 @@ export const API_CONFIG = {
     (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
       ? 'http://127.0.0.1:8000/api/v1' 
       : 'https://shinsei-backend.onrender.com/api/v1'),
-  WEBSOCKET_URL: process.env.NODE_ENV === 'production' 
-    ? `wss://${window.location.host}/api/realtime/ws`
-    : 'ws://127.0.0.1:8000/api/v1/realtime/ws',
+  WEBSOCKET_URL: process.env.REACT_APP_SUPABASE_URL 
+    ? `wss://${process.env.REACT_APP_SUPABASE_URL.replace('https://', '')}/realtime/v1/websocket`
+    : (process.env.NODE_ENV === 'production' 
+        ? `wss://${window.location.host}/api/realtime/ws`
+        : 'ws://127.0.0.1:8000/api/v1/realtime/ws'),
   TIMEOUT: 10000, // 10秒
   RETRY_ATTEMPTS: 3,
   RETRY_DELAY: 1000 // 1秒
