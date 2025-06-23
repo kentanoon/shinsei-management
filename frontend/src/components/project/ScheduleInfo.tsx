@@ -26,7 +26,7 @@ const ScheduleInfo: React.FC<ScheduleInfoProps> = ({
     <Box>
       <Grid container spacing={3}>
         {/* 基本スケジュール */}
-        <Grid xs={12} md={6}>
+        <Grid item xs={12} md={6}>
           <Card>
             <CardContent>
               <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
@@ -62,7 +62,7 @@ const ScheduleInfo: React.FC<ScheduleInfoProps> = ({
         </Grid>
 
         {/* 重要なマイルストーン */}
-        <Grid xs={12} md={6}>
+        <Grid item xs={12} md={6}>
           <Card>
             <CardContent>
               <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
@@ -98,7 +98,7 @@ const ScheduleInfo: React.FC<ScheduleInfoProps> = ({
         </Grid>
 
         {/* 検査スケジュール */}
-        <Grid xs={12}>
+        <Grid item xs={12}>
           <Card>
             <CardContent>
               <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
@@ -110,7 +110,7 @@ const ScheduleInfo: React.FC<ScheduleInfoProps> = ({
               <Divider sx={{ mb: 2 }} />
               
               <Grid container spacing={3}>
-                <Grid xs={12} md={6}>
+                <Grid item xs={12} md={6}>
                   <InfoItem 
                     label="配筋検査予定日" 
                     value={formatDate(project.schedule?.inspection_date)} 
@@ -124,7 +124,7 @@ const ScheduleInfo: React.FC<ScheduleInfoProps> = ({
                     value={project.schedule?.corrections} 
                   />
                 </Grid>
-                <Grid xs={12} md={6}>
+                <Grid item xs={12} md={6}>
                   <InfoItem 
                     label="中間検査予定日" 
                     value={formatDate(project.schedule?.interim_actual)} 
@@ -138,7 +138,7 @@ const ScheduleInfo: React.FC<ScheduleInfoProps> = ({
                     value={project.schedule?.corrections} 
                   />
                 </Grid>
-                <Grid xs={12} md={6}>
+                <Grid item xs={12} md={6}>
                   <InfoItem 
                     label="完了検査予定日" 
                     value={formatDate(project.schedule?.inspection_date)} 

@@ -29,7 +29,7 @@ const FinancialInfo: React.FC<FinancialInfoProps> = ({
     <Box>
       <Grid container spacing={3}>
         {/* 見積もり情報 */}
-        <Grid xs={12} md={6}>
+        <Grid item xs={12} md={6}>
           <Card>
             <CardContent>
               <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
@@ -61,7 +61,7 @@ const FinancialInfo: React.FC<FinancialInfoProps> = ({
         </Grid>
 
         {/* 契約情報 */}
-        <Grid xs={12} md={6}>
+        <Grid item xs={12} md={6}>
           <Card>
             <CardContent>
               <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
@@ -93,7 +93,7 @@ const FinancialInfo: React.FC<FinancialInfoProps> = ({
         </Grid>
 
         {/* 支払い情報 */}
-        <Grid xs={12}>
+        <Grid item xs={12}>
           <Card>
             <CardContent>
               <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
@@ -105,7 +105,7 @@ const FinancialInfo: React.FC<FinancialInfoProps> = ({
               <Divider sx={{ mb: 2 }} />
               
               <Grid container spacing={3}>
-                <Grid xs={12} md={6}>
+                <Grid item xs={12} md={6}>
                   <InfoItem 
                     label="頭金" 
                     value={formatCurrency(project.financial?.settlement_amount)} 
@@ -119,7 +119,7 @@ const FinancialInfo: React.FC<FinancialInfoProps> = ({
                     value={formatCurrency(project.financial?.settlement_amount)} 
                   />
                 </Grid>
-                <Grid xs={12} md={6}>
+                <Grid item xs={12} md={6}>
                   <InfoItem 
                     label="支払い状況" 
                     value={project.financial?.settlement_note ? '支払い済み' : '未払い'} 

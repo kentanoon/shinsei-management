@@ -30,7 +30,7 @@ const ProjectOverview: React.FC<ProjectOverviewProps> = ({
     <Box>
       <Grid container spacing={3}>
         {/* 顧客情報 */}
-        <Grid xs={12} md={6}>
+        <Grid item xs={12} md={6}>
           <Card>
             <CardContent>
               <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
@@ -42,7 +42,7 @@ const ProjectOverview: React.FC<ProjectOverviewProps> = ({
               <Divider sx={{ mb: 2 }} />
               
               <Grid container spacing={2}>
-                <Grid xs={12} md={6}>
+                <Grid item xs={12} md={6}>
                   <InfoItem 
                     label="お客様名" 
                     value={project.customer?.owner_name || ''} 
@@ -51,7 +51,7 @@ const ProjectOverview: React.FC<ProjectOverviewProps> = ({
                     onChange={(value: string) => onUpdate('owner_name', value, 'customer')}
                   />
                 </Grid>
-                <Grid xs={12} md={6}>
+                <Grid item xs={12} md={6}>
                   <InfoItem 
                     label="お客様名（カナ）" 
                     value={project.customer?.owner_kana || ''} 
@@ -59,7 +59,7 @@ const ProjectOverview: React.FC<ProjectOverviewProps> = ({
                     onChange={(value: string) => onUpdate('owner_kana', value, 'customer')}
                   />
                 </Grid>
-                <Grid xs={12} md={6}>
+                <Grid item xs={12} md={6}>
                   <InfoItem 
                     label="郵便番号" 
                     value={project.customer?.owner_zip || ''} 
@@ -67,7 +67,7 @@ const ProjectOverview: React.FC<ProjectOverviewProps> = ({
                     onChange={(value: string) => onUpdate('owner_zip', value, 'customer')}
                   />
                 </Grid>
-                <Grid xs={12}>
+                <Grid item xs={12}>
                   <InfoItem 
                     label="住所" 
                     value={project.customer?.owner_address || ''} 
@@ -76,7 +76,7 @@ const ProjectOverview: React.FC<ProjectOverviewProps> = ({
                     fullWidth
                   />
                 </Grid>
-                <Grid xs={12} md={6}>
+                <Grid item xs={12} md={6}>
                   <InfoItem 
                     label="電話番号" 
                     value={project.customer?.owner_phone || ''} 
@@ -89,9 +89,8 @@ const ProjectOverview: React.FC<ProjectOverviewProps> = ({
           </Card>
         </Grid>
 
-
         {/* 建築物情報 */}
-        <Grid xs={12} md={6}>
+        <Grid item xs={12} md={6}>
           <Card>
             <CardContent>
               <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
@@ -103,7 +102,7 @@ const ProjectOverview: React.FC<ProjectOverviewProps> = ({
               <Divider sx={{ mb: 2 }} />
               
               <Grid container spacing={2}>
-                <Grid xs={12} md={6}>
+                <Grid item xs={12} md={6}>
                   <InfoItem 
                     label="プロジェクトコード" 
                     value={project.project_code} 
@@ -111,7 +110,7 @@ const ProjectOverview: React.FC<ProjectOverviewProps> = ({
                     onChange={(value: string) => onUpdate('project_code', value)}
                   />
                 </Grid>
-                <Grid xs={12} md={6}>
+                <Grid item xs={12} md={6}>
                   <InfoItem 
                     label="ステータス" 
                     value={project.status} 
@@ -132,7 +131,7 @@ const ProjectOverview: React.FC<ProjectOverviewProps> = ({
                     ]}
                   />
                 </Grid>
-                <Grid xs={12}>
+                <Grid item xs={12}>
                   <InfoItem 
                     label="プロジェクト名" 
                     value={project.project_name} 
@@ -147,7 +146,7 @@ const ProjectOverview: React.FC<ProjectOverviewProps> = ({
         </Grid>
 
         {/* 現場情報 */}
-        <Grid xs={12}>
+        <Grid item xs={12}>
           <Card>
             <CardContent>
               <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
@@ -159,7 +158,7 @@ const ProjectOverview: React.FC<ProjectOverviewProps> = ({
               <Divider sx={{ mb: 2 }} />
               
               <Grid container spacing={3} sx={{ width: '100%' }}>
-                <Grid xs={12} md={6}>
+                <Grid item xs={12} md={6}>
                   <InfoItem 
                     label="住所" 
                     value={project.site?.address} 
@@ -173,7 +172,7 @@ const ProjectOverview: React.FC<ProjectOverviewProps> = ({
                     value={project.site?.zoning} 
                   />
                 </Grid>
-                <Grid xs={12} md={6}>
+                <Grid item xs={12} md={6}>
                   <InfoItem 
                     label="着工予定日" 
                     value={formatDate(project.schedule?.reinforcement_scheduled)} 
