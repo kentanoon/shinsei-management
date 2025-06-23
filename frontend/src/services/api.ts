@@ -4,7 +4,7 @@
  */
 
 import axios from 'axios';
-import { ProjectService, checkSupabaseConnection } from './database';
+import { ProjectService, ApplicationTypeService, checkSupabaseConnection } from './database';
 import type {
   Project,
   ProjectStatus,
@@ -490,6 +490,34 @@ export const projectApi = {
       }
     } catch (error) {
       console.error('プロジェクトサマリー取得エラー:', error);
+      throw error;
+    }
+  },
+};
+
+// 申請種別API
+export const applicationTypeApi = {
+  /**
+   * 申請種別一覧取得
+   */
+  getApplicationTypes: async () => {
+    try {
+      if (useSupabase) {
+        const result = await ApplicationTypeService.getApplicationTypes();
+        if (result.error) {
+          throw new Error(result.error);
+        }
+        return result.data!;
+      } else {
+        // モックデータを返す
+        return [
+          { id: 1, name: '通常申請', code: 'NORMAL', category: '確認申請', description: '', typical_duration_days: 5, is_active: true },
+          { id: 2, name: '緊急申請', code: 'URGENT', category: '確認申請', description: '', typical_duration_days: 1, is_active: true },
+          { id: 3, name: '情報開示請求', code: 'DISCLOSURE', category: 'その他', description: '', typical_duration_days: 14, is_active: true },
+        ];
+      }
+    } catch (error) {
+      console.error('申請種別取得エラー:', error);
       throw error;
     }
   },

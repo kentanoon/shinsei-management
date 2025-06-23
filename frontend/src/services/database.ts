@@ -230,6 +230,43 @@ export class ProjectService {
 }
 
 /**
+ * ApplicationTypeService - 申請種別関連のデータベース操作
+ */
+export class ApplicationTypeService {
+  /**
+   * 申請種別一覧を取得
+   */
+  static async getApplicationTypes(): Promise<DatabaseResponse<any[]>> {
+    try {
+      const { data, error } = await supabase
+        .from('application_types')
+        .select('*')
+        .eq('is_active', true)
+        .order('name');
+
+      if (error) {
+        console.error('申請種別取得エラー:', error);
+        return {
+          data: null,
+          error: error.message || '申請種別の取得に失敗しました'
+        };
+      }
+
+      return {
+        data: data || [],
+        error: null
+      };
+    } catch (err) {
+      console.error('申請種別取得エラー:', err);
+      return {
+        data: null,
+        error: '申請種別の取得中にエラーが発生しました'
+      };
+    }
+  }
+}
+
+/**
  * Supabaseの接続状況を確認
  */
 export async function checkSupabaseConnection(): Promise<boolean> {

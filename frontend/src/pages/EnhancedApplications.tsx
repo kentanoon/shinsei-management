@@ -27,6 +27,7 @@ import ApplicationDashboard from '../components/ApplicationDashboard';
 import ApplicationDetail from '../components/ApplicationDetail';
 import { useToast } from '../components/Toast';
 import { useErrorHandler } from '../hooks/useErrorHandler';
+import { projectApi, applicationTypeApi } from '../services/api';
 import type { 
   EnhancedApplication, 
   ApplicationSummary,
@@ -291,13 +292,8 @@ const EnhancedApplications: React.FC = () => {
 
   const fetchProjects = async () => {
     try {
-      // TODO: 実際のAPIエンドポイントに置き換え
-      const mockProjects: Project[] = [
-        { id: 1, project_code: 'PJT-001', project_name: 'R&Dプロジェクト', status: '進行中' },
-        { id: 2, project_code: 'PJT-002', project_name: '新機能開発', status: '計画中' },
-        { id: 3, project_code: 'PJT-003', project_name: 'システム改善', status: '完了' },
-      ];
-      setProjects(mockProjects);
+      const response = await projectApi.getProjects();
+      setProjects(response.projects);
     } catch (error) {
       handleError(error, 'プロジェクトの取得に失敗しました');
     }
@@ -305,13 +301,8 @@ const EnhancedApplications: React.FC = () => {
 
   const fetchApplicationTypes = async () => {
     try {
-      // TODO: 実際のAPIエンドポイントに置き換え
-      const mockTypes: ApplicationType[] = [
-        { id: 1, name: '通常申請', code: 'NORMAL', category: '確認申請', description: '', typical_duration_days: 5, is_active: true },
-        { id: 2, name: '緊急申請', code: 'URGENT', category: '確認申請', description: '', typical_duration_days: 1, is_active: true },
-        { id: 3, name: '情報開示請求', code: 'DISCLOSURE', category: 'その他', description: '', typical_duration_days: 14, is_active: true },
-      ];
-      setApplicationTypes(mockTypes);
+      const types = await applicationTypeApi.getApplicationTypes();
+      setApplicationTypes(types);
     } catch (error) {
       handleError(error, '申請種別の取得に失敗しました');
     }
