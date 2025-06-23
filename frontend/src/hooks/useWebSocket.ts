@@ -42,7 +42,10 @@ export const useWebSocket = (options: UseWebSocketOptions = {}) => {
   const reconnectTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const pingIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
+  // WebSocketを一時的に無効化（Supabase移行中）
   const connect = useCallback(() => {
+    console.log('WebSocket接続は現在無効化されています（Supabase移行中）');
+    return;
     try {
       // WebSocket URLを構築
       const wsUrl = process.env.NODE_ENV === 'production' 

@@ -240,14 +240,23 @@ export async function checkSupabaseConnection(): Promise<boolean> {
       .limit(1);
 
     if (error) {
-      console.warn('Supabase接続確認に失敗:', error.message);
+      // APIキーエラーの場合は明確にログ出力
+      if (error.message.includes('Invalid API key') || error.message.includes('JWT')) {
+        console.error('❌ Supabase APIキーが無効です。環境変数を確認してください。');
+      } else {
+        console.warn('⚠️ Supabase接続確認に失敗:', error.message);
+      }
       return false;
     }
 
-    console.log('Supabase接続確認成功');
+    console.log('✅ Supabase接続確認成功');
     return true;
-  } catch (err) {
-    console.warn('Supabase接続確認エラー:', err);
+  } catch (err: any) {
+    if (err.message?.includes('Failed to fetch')) {
+      console.warn('⚠️ ネットワークエラー - Supabaseへの接続に失敗');
+    } else {
+      console.warn('⚠️ Supabase接続確認エラー:', err);
+    }
     return false;
   }
 }
