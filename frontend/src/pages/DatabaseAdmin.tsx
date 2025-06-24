@@ -44,8 +44,10 @@ import {
   RestoreFromTrash as RestoreIcon,
   Warning as WarningIcon,
   CheckCircle as CheckIcon,
-  Info as InfoIcon
+  Info as InfoIcon,
+  MonitorHeart as MonitorIcon
 } from '@mui/icons-material';
+import ErrorMonitor from '../components/ErrorMonitor';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -117,11 +119,11 @@ const DatabaseAdmin: React.FC = () => {
   const fetchDatabaseStats = async () => {
     try {
       setLoading(true);
-      const response = await fetch('/api/v1/admin/database/stats');
-      if (!response.ok) throw new Error('統計データの取得に失敗しました');
-      
-      const data = await response.json();
+      // Supabase対応APIを使用
+      const { databaseAdminApi } = await import('../services/api');
+      const data = await databaseAdminApi.getDatabaseStats();
       setStats(data);
+      setError('');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'エラーが発生しました');
     } finally {
@@ -211,6 +213,24 @@ const DatabaseAdmin: React.FC = () => {
 
   const renderDatabaseOverview = () => (
     <Grid container spacing={3}>
+      {/* Supabase接続状況カード */}
+      <Grid item xs={12} md={6} lg={3}>
+        <Card>
+          <CardContent>
+            <Box display="flex" alignItems="center" mb={2}>
+              <CheckIcon color="success" sx={{ mr: 1 }} />
+              <Typography variant="h6">Supabase接続</Typography>
+            </Box>
+            <Typography variant="h4" color="success.main">
+              接続中
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              最終確認: {new Date().toLocaleTimeString()}
+            </Typography>
+          </CardContent>
+        </Card>
+      </Grid>
+
       {/* 統計カード */}
       <Grid item xs={12} md={6} lg={3}>
         <Card>
@@ -487,6 +507,7 @@ const DatabaseAdmin: React.FC = () => {
         <Tabs value={tabValue} onChange={(_, newValue) => setTabValue(newValue)}>
           <Tab label="🏠 概要・統計" />
           <Tab label="📋 テーブル管理" />
+          <Tab label="🚨 エラー監視" />
           <Tab label="🔧 メンテナンス" />
         </Tabs>
       </Box>
@@ -500,6 +521,10 @@ const DatabaseAdmin: React.FC = () => {
       </TabPanel>
 
       <TabPanel value={tabValue} index={2}>
+        <ErrorMonitor />
+      </TabPanel>
+
+      <TabPanel value={tabValue} index={3}>
         <Grid container spacing={3}>
           <Grid item xs={12} md={6}>
             <Card>

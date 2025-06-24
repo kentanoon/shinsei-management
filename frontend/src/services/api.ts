@@ -4,7 +4,7 @@
  */
 
 import axios from 'axios';
-import { ProjectService, ApplicationTypeService, checkSupabaseConnection } from './database';
+import { ProjectService, ApplicationTypeService, DatabaseAdminService, checkSupabaseConnection } from './database';
 import type {
   Project,
   ProjectStatus,
@@ -548,6 +548,76 @@ export const applicationTypeApi = {
       throw error;
     }
   },
+};
+
+// データベース管理API
+export const databaseAdminApi = {
+  /**
+   * データベース統計情報取得
+   */
+  getDatabaseStats: async () => {
+    try {
+      console.log('📊 データベース統計API呼び出し');
+      if (useSupabase) {
+        const result = await DatabaseAdminService.getDatabaseStats();
+        if (result.error) {
+          throw new Error(result.error);
+        }
+        return result.data;
+      } else {
+        // モックデータ
+        return {
+          tables: [
+            { name: 'projects', rows: 0, size: '0KB', last_updated: new Date().toISOString() },
+            { name: 'applications', rows: 0, size: '0KB', last_updated: new Date().toISOString() }
+          ],
+          total_size: '0KB',
+          connection_count: 0,
+          performance_stats: {
+            avg_query_time: 'N/A',
+            slow_queries: 0,
+            cache_hit_ratio: 'N/A'
+          }
+        };
+      }
+    } catch (error) {
+      console.error('データベース統計取得エラー:', error);
+      throw error;
+    }
+  },
+
+  /**
+   * テーブルデータ取得
+   */
+  getTableData: async (tableName: string, page = 0, limit = 10) => {
+    try {
+      console.log(`📋 テーブルデータAPI呼び出し: ${tableName}`);
+      if (useSupabase) {
+        const result = await DatabaseAdminService.getTableData(tableName, page, limit);
+        if (result.error) {
+          throw new Error(result.error);
+        }
+        return result.data;
+      } else {
+        // モックデータ
+        return {
+          columns: ['id', 'name', 'created_at'],
+          rows: [],
+          total_count: 0
+        };
+      }
+    } catch (error) {
+      console.error('テーブルデータ取得エラー:', error);
+      throw error;
+    }
+  },
+
+  /**
+   * 利用可能なテーブル一覧取得
+   */
+  getAvailableTables: () => {
+    return DatabaseAdminService.getAvailableTables();
+  }
 };
 
 // ヘルスチェック
