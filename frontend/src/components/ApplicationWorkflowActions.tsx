@@ -116,16 +116,15 @@ const ApplicationWorkflowActions: React.FC<ApplicationWorkflowActionsProps> = ({
       setIsLoading(true);
       setError(null);
 
-      const response = await fetch(`/api/v1/applications/${applicationId}/${selectedAction.action}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          action: selectedAction.action,
-          comment: comment || undefined
-        })
-      });
+      // TODO: Supabase対応版に更新予定
+      console.log('🚧 ApplicationWorkflowActions: API呼び出しを一時的に無効化中');
+      console.log('アクション:', selectedAction.action, 'コメント:', comment);
+      
+      // モック成功レスポンス
+      const response = {
+        ok: true,
+        json: async () => ({ success: true, message: 'アクション実行成功（モック）' })
+      };
 
       if (!response.ok) {
         const errorData = await response.json();

@@ -131,9 +131,14 @@ const GoogleFormsManager: React.FC<GoogleFormsManagerProps> = ({
   const fetchFormTemplates = async () => {
     try {
       setLoading(true);
-      const response = await fetch(
-        `/api/v1/google-forms/form-templates/by-type/${selectedApplicationType}`
-      );
+      // TODO: Supabase対応版に更新予定
+      console.log('🚧 GoogleFormsManager: フォームテンプレート取得を一時的に無効化中');
+      
+      // モックレスポンス
+      const response = {
+        ok: true,
+        json: async () => ({ categories: {} })
+      };
       
       if (!response.ok) {
         throw new Error('フォームテンプレートの取得に失敗しました');
@@ -151,9 +156,14 @@ const GoogleFormsManager: React.FC<GoogleFormsManagerProps> = ({
 
   const fetchSubmissions = async () => {
     try {
-      const response = await fetch(
-        `/api/v1/google-forms/submissions/project/${projectId}`
-      );
+      // TODO: Supabase対応版に更新予定
+      console.log('🚧 GoogleFormsManager: 送信状況取得を一時的に無効化中');
+      
+      // モックレスポンス
+      const response = {
+        ok: true,
+        json: async () => ({ submissions: [] })
+      };
       
       if (!response.ok) {
         throw new Error('送信状況の取得に失敗しました');
@@ -179,13 +189,18 @@ const GoogleFormsManager: React.FC<GoogleFormsManagerProps> = ({
         custom_message: customMessage || undefined
       };
 
-      const response = await fetch('/api/v1/google-forms/send-forms', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(request)
-      });
+      // TODO: Supabase対応版に更新予定
+      console.log('🚧 GoogleFormsManager: フォーム送信を一時的に無効化中');
+      
+      // モック成功レスポンス
+      const response = {
+        ok: true,
+        json: async () => ({ 
+          success: true, 
+          submission_ids: ['mock-1'], 
+          failed_emails: [] 
+        })
+      };
 
       if (!response.ok) {
         throw new Error('フォームの送信に失敗しました');
