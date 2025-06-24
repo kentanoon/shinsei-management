@@ -64,7 +64,7 @@ const Applications: React.FC = () => {
 
       setApplications(appsResponse.applications || appsResponse || []);
       setProjects(projectsResponse.projects || []);
-      setApplicationTypes(typesResponse.types || typesResponse || []);
+      setApplicationTypes(typesResponse || []);
     } catch (error) {
       console.error('Error fetching data:', error);
     } finally {

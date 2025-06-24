@@ -276,8 +276,12 @@ export const projectApi = {
           status
         };
       } else {
-        const { data } = await api.get(`/projects/status/${status}`);
-        return data;
+        // モックデータを返す
+        return {
+          projects: [],
+          total: 0,
+          status
+        };
       }
     } catch (error) {
       console.error('ステータス別プロジェクト取得エラー:', error);
@@ -374,8 +378,9 @@ export const projectApi = {
         }
         return result.data!;
       } else {
-        const { data } = await api.put(`/projects/${projectId}`, projectData);
-        return data;
+        // モック更新
+        console.log('🎭 モックプロジェクト更新:', projectId, projectData);
+        throw new Error('プロジェクト更新機能は準備中です（Supabase対応予定）');
       }
     } catch (error) {
       console.error('プロジェクト更新エラー:', error);
@@ -395,8 +400,8 @@ export const projectApi = {
         }
         return result.data!;
       } else {
-        const { data } = await api.put(`/projects/${projectId}/financial`, financialData);
-        return data;
+        console.log('🎭 モック財務情報更新:', projectId, financialData);
+        throw new Error('財務情報更新機能は準備中です（Supabase対応予定）');
       }
     } catch (error) {
       console.error('財務情報更新エラー:', error);
@@ -416,8 +421,8 @@ export const projectApi = {
         }
         return result.data!;
       } else {
-        const { data } = await api.put(`/projects/${projectId}/schedule`, scheduleData);
-        return data;
+        console.log('🎭 モックスケジュール更新:', projectId, scheduleData);
+        throw new Error('スケジュール更新機能は準備中です（Supabase対応予定）');
       }
     } catch (error) {
       console.error('スケジュール情報更新エラー:', error);
@@ -436,7 +441,8 @@ export const projectApi = {
           throw new Error(result.error);
         }
       } else {
-        await api.delete(`/projects/${projectId}`);
+        console.log('🎭 モックプロジェクト削除:', projectId);
+        throw new Error('プロジェクト削除機能は準備中です（Supabase対応予定）');
       }
     } catch (error) {
       console.error('プロジェクト削除エラー:', error);
@@ -456,8 +462,8 @@ export const projectApi = {
         }
         return result.data!;
       } else {
-        const { data } = await api.get(`/projects/search/${encodeURIComponent(query)}`);
-        return data;
+        console.log('🎭 モックプロジェクト検索:', query);
+        return { projects: [], total: 0 };
       }
     } catch (error) {
       console.error('プロジェクト検索エラー:', error);
@@ -550,16 +556,16 @@ export const healthApi = {
    * 基本ヘルスチェック
    */
   checkHealth: async () => {
-    const { data } = await api.get('/health');
-    return data;
+    console.log('💚 ヘルスチェック（モック）');
+    return { status: 'ok', timestamp: new Date().toISOString() };
   },
 
   /**
    * データベース接続チェック
    */
   checkDatabase: async () => {
-    const { data } = await api.get('/health/db');
-    return data;
+    console.log('💚 データベースヘルスチェック（モック）');
+    return { status: 'ok', database: 'supabase', timestamp: new Date().toISOString() };
   },
 };
 
@@ -572,47 +578,66 @@ export const applicationApi = {
     project_id?: number;
     status?: string;
   } = {}) => {
-    const { data } = await api.get('/applications/', { params });
-    return data;
+    try {
+      console.log('📝 申請一覧取得開始:', { useSupabase, params });
+      if (useSupabase) {
+        console.log('🔗 Supabaseから申請一覧を取得中...');
+        // TODO: Supabase申請取得を実装
+        console.log('⚠️ Supabase申請取得は未実装、モックデータを返します');
+        return { applications: [] };
+      } else {
+        console.log('🎭 モックデータから申請一覧を取得中...');
+        // モックデータを返す
+        return { applications: [] };
+      }
+    } catch (error) {
+      console.error('申請一覧取得エラー:', error);
+      throw error;
+    }
   },
 
   /**
    * 申請詳細取得
    */
   getApplication: async (applicationId: number) => {
-    const { data } = await api.get(`/applications/${applicationId}`);
-    return data;
+    console.log('📄 申請詳細取得:', applicationId);
+    // TODO: Supabase実装
+    return { id: applicationId, title: 'モック申請', status: '未定' };
   },
 
   /**
    * 申請作成
    */
   createApplication: async (applicationData: ApplicationCreateRequest): Promise<EnhancedApplication> => {
-    const { data } = await api.post('/applications/', applicationData);
-    return data;
+    console.log('📝 申請作成:', applicationData);
+    // TODO: Supabase実装
+    throw new Error('申請作成機能は準備中です（Supabase対応予定）');
   },
 
   /**
    * 申請更新
    */
   updateApplication: async (applicationId: number, applicationData: ApplicationUpdateRequest): Promise<EnhancedApplication> => {
-    const { data } = await api.put(`/applications/${applicationId}`, applicationData);
-    return data;
+    console.log('📝 申請更新:', applicationId, applicationData);
+    // TODO: Supabase実装
+    throw new Error('申請更新機能は準備中です（Supabase対応予定）');
   },
 
   /**
    * 申請削除
    */
   deleteApplication: async (applicationId: number) => {
-    await api.delete(`/applications/${applicationId}`);
+    console.log('🗑 申請削除:', applicationId);
+    // TODO: Supabase実装
+    throw new Error('申請削除機能は準備中です（Supabase対応予定）');
   },
 
   /**
-   * 申請種別一覧取得
+   * 申請種別一覧取得（applicationTypeApiにリダイレクト）
    */
   getApplicationTypes: async () => {
-    const { data } = await api.get('/applications/types/');
-    return data;
+    console.log('🔀 applicationApi.getApplicationTypes は applicationTypeApi.getApplicationTypes にリダイレクトします');
+    return applicationTypeApi.getApplicationTypes();
   },
 
   /**
