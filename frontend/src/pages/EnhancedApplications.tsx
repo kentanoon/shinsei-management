@@ -64,6 +64,15 @@ const EnhancedApplications: React.FC = () => {
   const [projects, setProjects] = useState<Project[]>([]);
   const [applicationTypes, setApplicationTypes] = useState<ApplicationType[]>([]);
 
+  // デバッグ用: 状態変更を監視
+  useEffect(() => {
+    console.log('📊 EnhancedApplications: プロジェクト状態変更:', projects.length, '件', projects);
+  }, [projects]);
+
+  useEffect(() => {
+    console.log('📊 EnhancedApplications: 申請種別状態変更:', applicationTypes.length, '件', applicationTypes);
+  }, [applicationTypes]);
+
   // 新規申請作成用のフォーム状態
   const [newApplication, setNewApplication] = useState({
     project_id: '' as string | number,
@@ -292,18 +301,26 @@ const EnhancedApplications: React.FC = () => {
 
   const fetchProjects = async () => {
     try {
+      console.log('🚀 EnhancedApplications: プロジェクト取得開始');
       const response = await projectApi.getProjects();
+      console.log('📄 EnhancedApplications: プロジェクト取得レスポンス:', response);
       setProjects(response.projects);
+      console.log('✨ EnhancedApplications: プロジェクト状態更新完了:', response.projects.length, '件');
     } catch (error) {
+      console.error('❌ EnhancedApplications: プロジェクト取得エラー:', error);
       handleError(error, 'プロジェクトの取得に失敗しました');
     }
   };
 
   const fetchApplicationTypes = async () => {
     try {
+      console.log('🚀 EnhancedApplications: 申請種別取得開始');
       const types = await applicationTypeApi.getApplicationTypes();
+      console.log('📄 EnhancedApplications: 申請種別取得レスポンス:', types);
       setApplicationTypes(types);
+      console.log('✨ EnhancedApplications: 申請種別状態更新完了:', types.length, '件');
     } catch (error) {
+      console.error('❌ EnhancedApplications: 申請種別取得エラー:', error);
       handleError(error, '申請種別の取得に失敗しました');
     }
   };
