@@ -277,24 +277,36 @@ export class DatabaseAdminService {
     try {
       console.log('📊 データベース統計情報を取得中...');
       
-      // テーブル一覧と行数を取得
-      const tableStats = await Promise.all([
-        supabase.from('projects').select('*', { count: 'exact', head: true }),
-        supabase.from('applications').select('*', { count: 'exact', head: true }),
-        supabase.from('application_types').select('*', { count: 'exact', head: true }),
-        supabase.from('users').select('*', { count: 'exact', head: true })
-      ]);
+      // 存在するテーブルを動的に取得してチェック
+      const existingTablesResult = await this.getExistingTables();
+      const existingTables = existingTablesResult.data || [];
+      
+      const tables = [];
+      for (const tableName of existingTables) {
+        try {
+          const { count, error } = await supabase
+            .from(tableName)
+            .select('*', { count: 'exact', head: true });
+          
+          if (!error) {
+            tables.push({
+              name: tableName,
+              rows: count || 0,
+              size: `推定: ${Math.max(1, Math.floor((count || 0) / 100))}KB`,
+              last_updated: new Date().toISOString()
+            });
+          }
+        } catch (err) {
+          console.warn(`⚠️ テーブル '${tableName}' の統計取得に失敗:`, err);
+        }
+      }
 
-      const tables = [
-        { name: 'projects', rows: tableStats[0].count || 0, size: '推定: 5KB', last_updated: new Date().toISOString() },
-        { name: 'applications', rows: tableStats[1].count || 0, size: '推定: 3KB', last_updated: new Date().toISOString() },
-        { name: 'application_types', rows: tableStats[2].count || 0, size: '推定: 1KB', last_updated: new Date().toISOString() },
-        { name: 'users', rows: tableStats[3].count || 0, size: '推定: 2KB', last_updated: new Date().toISOString() }
-      ];
+      const totalRows = tables.reduce((sum, table) => sum + table.rows, 0);
+      const estimatedTotalSize = Math.max(1, Math.floor(totalRows / 100));
 
       const stats = {
         tables,
-        total_size: '推定: 11KB',
+        total_size: `推定: ${estimatedTotalSize}KB`,
         connection_count: 1,
         performance_stats: {
           avg_query_time: '< 100ms',
@@ -367,10 +379,50 @@ export class DatabaseAdminService {
   }
 
   /**
-   * テーブル一覧を取得
+   * 実際に存在するテーブル一覧を取得
+   */
+  static async getExistingTables(): Promise<DatabaseResponse<string[]>> {
+    try {
+      const tablesToCheck = ['projects', 'applications', 'application_types'];
+      const existingTables: string[] = [];
+
+      for (const table of tablesToCheck) {
+        try {
+          // テーブルの存在確認（1件だけ取得を試行）
+          const { error } = await supabase
+            .from(table)
+            .select('*')
+            .limit(1);
+          
+          if (!error) {
+            existingTables.push(table);
+          } else {
+            console.warn(`⚠️ テーブル '${table}' は存在しません:`, error.message);
+          }
+        } catch (err) {
+          console.warn(`⚠️ テーブル '${table}' のチェックに失敗:`, err);
+        }
+      }
+
+      console.log('✅ 存在するテーブル:', existingTables);
+      return {
+        data: existingTables,
+        error: null
+      };
+    } catch (err) {
+      console.error('テーブル一覧取得エラー:', err);
+      return {
+        data: null,
+        error: 'テーブル一覧の取得中にエラーが発生しました'
+      };
+    }
+  }
+
+  /**
+   * テーブル一覧を取得（静的リスト）
    */
   static getAvailableTables(): string[] {
-    return ['projects', 'applications', 'application_types', 'users'];
+    return ['projects', 'applications', 'application_types'];
   }
 }
 
