@@ -134,18 +134,9 @@ const GoogleFormsManager: React.FC<GoogleFormsManagerProps> = ({
       // TODO: Supabase対応版に更新予定
       console.log('🚧 GoogleFormsManager: フォームテンプレート取得を一時的に無効化中');
       
-      // モックレスポンス
-      const response = {
-        ok: true,
-        json: async () => ({ categories: {} })
-      };
-      
-      if (!response.ok) {
-        throw new Error('フォームテンプレートの取得に失敗しました');
-      }
-      
-      const data = await response.json();
-      setAvailableCategories(data.categories);
+      // モック処理
+      console.log('✅ フォームテンプレート取得成功（モック）');
+      setAvailableCategories({});
       setSelectedCategories([]);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'エラーが発生しました');
@@ -159,18 +150,9 @@ const GoogleFormsManager: React.FC<GoogleFormsManagerProps> = ({
       // TODO: Supabase対応版に更新予定
       console.log('🚧 GoogleFormsManager: 送信状況取得を一時的に無効化中');
       
-      // モックレスポンス
-      const response = {
-        ok: true,
-        json: async () => ({ submissions: [] })
-      };
-      
-      if (!response.ok) {
-        throw new Error('送信状況の取得に失敗しました');
-      }
-      
-      const data = await response.json();
-      setSubmissions(data.submissions || []);
+      // モック処理
+      console.log('✅ 送信状況取得成功（モック）');
+      setSubmissions([]);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'エラーが発生しました');
     }
@@ -192,38 +174,15 @@ const GoogleFormsManager: React.FC<GoogleFormsManagerProps> = ({
       // TODO: Supabase対応版に更新予定
       console.log('🚧 GoogleFormsManager: フォーム送信を一時的に無効化中');
       
-      // モック成功レスポンス
-      const response = {
-        ok: true,
-        json: async () => ({ 
-          success: true, 
-          submission_ids: ['mock-1'], 
-          failed_emails: [] 
-        })
-      };
-
-      if (!response.ok) {
-        throw new Error('フォームの送信に失敗しました');
-      }
-
-      const result = await response.json();
+      // モック成功処理
+      console.log('✅ フォーム送信成功（モック）');
+      setSuccess('1 件のフォームを送信しました（モック）');
+      setSendDialogOpen(false);
       
-      if (result.success) {
-        setSuccess(`${result.submission_ids.length} 件のフォームを送信しました`);
-        setSendDialogOpen(false);
-        fetchSubmissions(); // 送信状況を更新
-        
-        // フォームリセット
-        setSelectedApplicationType('');
-        setSelectedCategories([]);
-        setCustomMessage('');
-      } else {
-        setError(result.message);
-      }
-      
-      if (result.failed_emails.length > 0) {
-        setError(`一部のメール送信に失敗しました: ${result.failed_emails.join(', ')}`);
-      }
+      // フォームリセット
+      setSelectedApplicationType('');
+      setSelectedCategories([]);
+      setCustomMessage('');
       
     } catch (err) {
       setError(err instanceof Error ? err.message : 'エラーが発生しました');

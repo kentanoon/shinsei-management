@@ -120,19 +120,9 @@ const ApplicationWorkflowActions: React.FC<ApplicationWorkflowActionsProps> = ({
       console.log('🚧 ApplicationWorkflowActions: API呼び出しを一時的に無効化中');
       console.log('アクション:', selectedAction.action, 'コメント:', comment);
       
-      // モック成功レスポンス
-      const response = {
-        ok: true,
-        json: async () => ({ success: true, message: 'アクション実行成功（モック）' })
-      };
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.detail || 'アクションの実行に失敗しました');
-      }
-
-      const updatedApplication = await response.json();
-      onStatusChange(updatedApplication.status);
+      // モック成功処理
+      console.log('✅ アクション実行成功（モック）');
+      // onStatusChange は呼び出さない（モックのため）
       
       // ダイアログを閉じる
       handleCloseDialog();
