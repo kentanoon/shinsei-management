@@ -21,7 +21,7 @@
 1. Supabaseダッシュボードの「Settings」→「API」を開く
 2. 以下の値をコピー：
    - **Project URL**: `https://xxxxx.supabase.co`
-   - **anon public key**: `eyJhbGciOiJIUzI1...`
+   - **anon public key**: `eyJxxxxxxxxxxxxxxxxx...`（実際のキーは他の箇所に記載しないこと）
 
 ## 4. 環境変数の設定
 
