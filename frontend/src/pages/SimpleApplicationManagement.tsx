@@ -169,7 +169,7 @@ export default function SimpleApplicationManagement() {
   const fetchApplicationTypes = async () => {
     try {
       const data = await applicationApi.getApplicationTypes();
-      setApplicationTypes(data.types || []);
+      setApplicationTypes(data || []);
     } catch (error) {
       showError('申請種別の取得に失敗しました');
     }
