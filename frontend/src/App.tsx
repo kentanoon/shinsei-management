@@ -14,7 +14,7 @@ import DatabaseAdmin from './pages/DatabaseAdmin';
 import NotFound from './pages/NotFound';
 import ErrorBoundary from './components/ErrorBoundary';
 import { ToastProvider } from './components/Toast';
-import { theme } from './theme';
+import { theme } from './theme/';
 import './App.css';
 import './version';
 
