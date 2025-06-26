@@ -9,39 +9,39 @@ import { jaJP } from '@mui/material/locale';
 // カラーパレット定義
 const palette = {
   primary: {
-    main: '#1976d2', // 信頼性の高いブルー
-    light: '#42a5f5',
-    dark: '#1565c0',
+    main: '#3D5B81', // カスタムブルー
+    light: '#9BC0D9',
+    dark: '#293241',
     contrastText: '#ffffff',
   },
   secondary: {
-    main: '#dc004e', // アクセントカラー
-    light: '#ff5983',
-    dark: '#9a0036',
+    main: '#EE6B4D', // カスタムオレンジレッド
+    light: '#ff8a65',
+    dark: '#d84315',
     contrastText: '#ffffff',
   },
   success: {
-    main: '#2e7d32', // 成功・完了状態
-    light: '#4caf50',
-    dark: '#1b5e20',
+    main: '#4caf50', // 成功・完了状態
+    light: '#81c784',
+    dark: '#2e7d32',
     contrastText: '#ffffff',
   },
   warning: {
-    main: '#ed6c02', // 注意・警告状態
-    light: '#ff9800',
-    dark: '#e65100',
+    main: '#EE6B4D', // カスタムオレンジをwarningにも使用
+    light: '#ff8a65',
+    dark: '#d84315',
     contrastText: '#ffffff',
   },
   error: {
-    main: '#d32f2f', // エラー状態
-    light: '#ef5350',
-    dark: '#c62828',
+    main: '#EE6B4D', // カスタムオレンジレッド
+    light: '#ff8a65',
+    dark: '#d84315',
     contrastText: '#ffffff',
   },
   info: {
-    main: '#0288d1', // 情報表示
-    light: '#03a9f4',
-    dark: '#01579b',
+    main: '#3D5B81', // カスタムブルー
+    light: '#9BC0D9',
+    dark: '#293241',
     contrastText: '#ffffff',
   },
   grey: {
@@ -57,13 +57,13 @@ const palette = {
     900: '#212121',
   },
   background: {
-    default: '#fafafa',
+    default: '#DFFBFC', // カスタム薄いブルー背景
     paper: '#ffffff',
   },
   text: {
-    primary: 'rgba(0, 0, 0, 0.87)',
-    secondary: 'rgba(0, 0, 0, 0.6)',
-    disabled: 'rgba(0, 0, 0, 0.38)',
+    primary: '#293241', // カスタムダークグレー
+    secondary: 'rgba(41, 50, 65, 0.7)',
+    disabled: 'rgba(41, 50, 65, 0.38)',
   },
 };
 
