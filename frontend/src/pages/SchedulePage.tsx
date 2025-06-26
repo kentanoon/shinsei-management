@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Build as BuildIcon, Sync as SyncIcon, CheckCircle as CheckCircleIcon } from '@mui/icons-material';
+import { Build as BuildIcon, Sync as SyncIcon, CheckCircle as CheckCircleIcon, CalendarToday as CalendarIcon } from '@mui/icons-material';
 
 const SchedulePage: React.FC = () => {
   const [schedules, setSchedules] = useState<any[]>([]);
@@ -31,7 +31,10 @@ const SchedulePage: React.FC = () => {
 
   return (
     <div>
-      <h1 style={{ color: '#495057', marginBottom: '2rem' }}>📅 工程管理</h1>
+      <h1 style={{ color: '#495057', marginBottom: '2rem', display: 'flex', alignItems: 'center', gap: '12px' }}>
+        <CalendarIcon sx={{ fontSize: '2rem' }} />
+        工程管理
+      </h1>
       
       {/* 検査予定サマリー */}
       <div style={{ 

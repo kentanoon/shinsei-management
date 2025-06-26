@@ -21,6 +21,7 @@ import {
   ExpandMore as ExpandMoreIcon,
   ExpandLess as ExpandLessIcon,
   Refresh as RefreshIcon,
+  Notifications as NotificationsIcon,
 } from '@mui/icons-material';
 import { useAlerts, Alert as AlertType } from '../hooks/useAlerts';
 
@@ -105,7 +106,10 @@ const AlertPanel: React.FC<AlertPanelProps> = ({ maxHeight = 400, showAll = fals
       >
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
           <Typography variant="h6">
-            🚨 アラート・通知
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+              <NotificationsIcon sx={{ color: 'error.main' }} />
+              アラート・通知
+            </Box>
           </Typography>
           {alerts.length > 0 && (
             <Chip

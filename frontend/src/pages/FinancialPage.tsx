@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { AttachMoney as AttachMoneyIcon, BarChart as BarChartIcon, Assignment as AssignmentIcon } from '@mui/icons-material';
+import { AttachMoney as AttachMoneyIcon, BarChart as BarChartIcon, Assignment as AssignmentIcon, AccountBalance as AccountBalanceIcon, Schedule as ScheduleIcon } from '@mui/icons-material';
 
 const FinancialPage: React.FC = () => {
   const [financials, setFinancials] = useState<any[]>([]);
@@ -82,7 +82,10 @@ const FinancialPage: React.FC = () => {
           border: '1px solid #dee2e6',
           boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
         }}>
-          <h3 style={{ margin: '0 0 0.5rem 0', color: '#495057' }}>💸 総決済金額</h3>
+          <h3 style={{ margin: '0 0 0.5rem 0', color: '#495057', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <AccountBalanceIcon sx={{ color: 'success.main' }} />
+            総決済金額
+          </h3>
           <p style={{ fontSize: '1.5rem', fontWeight: 'bold', margin: 0, color: '#28a745' }}>
             {formatCurrency(getTotalSettlement())}
           </p>
@@ -111,7 +114,10 @@ const FinancialPage: React.FC = () => {
           border: '1px solid #dee2e6',
           boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
         }}>
-          <h3 style={{ margin: '0 0 0.5rem 0', color: '#495057' }}>⏳ 未決済金額</h3>
+          <h3 style={{ margin: '0 0 0.5rem 0', color: '#495057', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <ScheduleIcon sx={{ color: 'warning.main' }} />
+            未決済金額
+          </h3>
           <p style={{ fontSize: '1.5rem', fontWeight: 'bold', margin: 0, color: '#ffc107' }}>
             {formatCurrency(getTotalContract() - getTotalSettlement())}
           </p>

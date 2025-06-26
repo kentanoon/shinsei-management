@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Typography, Tabs, Tab, Paper } from '@mui/material';
-import { Dashboard as DashboardIcon, BarChart as BarChartIcon, Analytics as AnalyticsIcon } from '@mui/icons-material';
+import { Dashboard as DashboardIcon, BarChart as BarChartIcon, Analytics as AnalyticsIcon, CalendarToday as CalendarIcon } from '@mui/icons-material';
 import { useNotifications } from '../hooks/useNotifications';
 import AlertPanel from '../components/AlertPanel';
 import InspectionCalendar from '../components/InspectionCalendar';
@@ -149,7 +149,14 @@ const Dashboard: React.FC = () => {
               </Box>
             } 
           />
-          <Tab label="📅 カレンダービュー" />
+          <Tab 
+            label={
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <CalendarIcon sx={{ mr: 1, fontSize: 18 }} />
+                カレンダービュー
+              </Box>
+            } 
+          />
         </Tabs>
       </Paper>
 
