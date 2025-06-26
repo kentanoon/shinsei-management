@@ -58,7 +58,7 @@ const palette = {
   },
   background: {
     default: '#DFFBFC', // カスタム薄いブルー背景
-    paper: '#ffffff',
+    paper: '#DFFBFC', // カードや紙要素も同じベースカラー
   },
   text: {
     primary: '#293241', // カスタムダークグレー
@@ -183,10 +183,14 @@ const components: any = {
     styleOverrides: {
       root: {
         borderRadius: 12,
-        boxShadow: '0px 2px 8px rgba(0, 0, 0, 0.1)',
-        transition: 'box-shadow 0.2s ease-in-out',
+        backgroundColor: 'rgba(255, 255, 255, 0.7)', // ベースカラーの上に半透明の白
+        backdropFilter: 'blur(10px)',
+        border: '1px solid rgba(255, 255, 255, 0.2)',
+        boxShadow: '0px 2px 8px rgba(61, 91, 129, 0.1)',
+        transition: 'all 0.2s ease-in-out',
         '&:hover': {
-          boxShadow: '0px 4px 16px rgba(0, 0, 0, 0.12)',
+          backgroundColor: 'rgba(255, 255, 255, 0.9)',
+          boxShadow: '0px 4px 16px rgba(61, 91, 129, 0.15)',
         },
       },
     },
@@ -197,6 +201,9 @@ const components: any = {
     styleOverrides: {
       root: {
         borderRadius: 8,
+        backgroundColor: 'rgba(255, 255, 255, 0.8)', // ベースカラーを活かす半透明
+        backdropFilter: 'blur(10px)',
+        border: '1px solid rgba(255, 255, 255, 0.3)',
       },
     },
   },
