@@ -16,26 +16,26 @@ const palette = {
   },
   secondary: {
     main: '#EE6B4D', // カスタムオレンジレッド
-    light: '#ff8a65',
-    dark: '#d84315',
+    light: '#9BC0D9', // ライトブルーを使用
+    dark: '#293241', // ダークグレーを使用
     contrastText: '#ffffff',
   },
   success: {
-    main: '#4caf50', // 成功・完了状態
-    light: '#81c784',
-    dark: '#2e7d32',
-    contrastText: '#ffffff',
+    main: '#9BC0D9', // ライトブルーを成功色に
+    light: '#DFFBFC', // 極薄ブルーを使用
+    dark: '#3D5B81', // ダークブルーを使用
+    contrastText: '#293241',
   },
   warning: {
-    main: '#EE6B4D', // カスタムオレンジをwarningにも使用
-    light: '#ff8a65',
-    dark: '#d84315',
+    main: '#EE6B4D', // オレンジレッド
+    light: '#9BC0D9', // ライトブルー
+    dark: '#293241', // ダークグレー
     contrastText: '#ffffff',
   },
   error: {
-    main: '#EE6B4D', // カスタムオレンジレッド
-    light: '#ff8a65',
-    dark: '#d84315',
+    main: '#EE6B4D', // オレンジレッド
+    light: '#9BC0D9', // ライトブルー
+    dark: '#293241', // ダークグレー
     contrastText: '#ffffff',
   },
   info: {
@@ -45,16 +45,16 @@ const palette = {
     contrastText: '#ffffff',
   },
   grey: {
-    50: '#fafafa',
-    100: '#f5f5f5',
-    200: '#eeeeee',
-    300: '#e0e0e0',
-    400: '#bdbdbd',
-    500: '#9e9e9e',
-    600: '#757575',
-    700: '#616161',
-    800: '#424242',
-    900: '#212121',
+    50: '#DFFBFC', // 極薄ブルー
+    100: '#9BC0D9', // ライトブルー
+    200: '#9BC0D9',
+    300: '#9BC0D9',
+    400: '#3D5B81', // ダークブルー
+    500: '#3D5B81',
+    600: '#293241', // ダークグレー
+    700: '#293241',
+    800: '#293241',
+    900: '#293241',
   },
   background: {
     default: '#DFFBFC', // カスタム薄いブルー背景
