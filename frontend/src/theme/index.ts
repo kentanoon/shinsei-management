@@ -22,7 +22,7 @@ const palette = {
   },
   success: {
     main: '#9BC0D9', // ライトブルーを成功色に
-    light: '#DFFBFC', // 極薄ブルーを使用
+    light: '#ffffff', // 白を使用
     dark: '#3D5B81', // ダークブルーを使用
     contrastText: '#293241',
   },
@@ -45,7 +45,7 @@ const palette = {
     contrastText: '#ffffff',
   },
   grey: {
-    50: '#DFFBFC', // 極薄ブルー
+    50: '#ffffff', // 白
     100: '#9BC0D9', // ライトブルー
     200: '#9BC0D9',
     300: '#9BC0D9',
@@ -57,8 +57,8 @@ const palette = {
     900: '#293241',
   },
   background: {
-    default: '#DFFBFC', // カスタム薄いブルー背景
-    paper: '#DFFBFC', // カードや紙要素も同じベースカラー
+    default: '#ffffff', // 白背景
+    paper: '#ffffff', // カードや紙要素も白
   },
   text: {
     primary: '#293241', // カスタムダークグレー
