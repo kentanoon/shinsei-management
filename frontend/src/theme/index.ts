@@ -152,10 +152,10 @@ const shadows = [
   '0px 25px 50px rgba(0, 0, 0, 0.25)',
   '0px 25px 50px rgba(0, 0, 0, 0.25)',
   '0px 25px 50px rgba(0, 0, 0, 0.25)',
-] as const;
+] as any;
 
 // コンポーネントのカスタマイズ
-const components = {
+const components: any = {
   // ボタンコンポーネント
   MuiButton: {
     styleOverrides: {

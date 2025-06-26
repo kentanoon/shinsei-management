@@ -85,14 +85,14 @@ const EnhancedCard: React.FC<EnhancedCardProps> = ({
       boxShadow: hoverable ? theme.shadows[Math.min(elevation + 2, 24)] : theme.shadows[elevation],
       transition: {
         duration: 0.2,
-        ease: "easeOut"
+        ease: [0.4, 0, 0.2, 1] as const
       }
     },
     tap: {
       scale: interactive ? 0.98 : 1,
       transition: {
         duration: 0.1,
-        ease: "easeOut"
+        ease: [0.4, 0, 0.2, 1] as const
       }
     }
   };
@@ -103,7 +103,7 @@ const EnhancedCard: React.FC<EnhancedCardProps> = ({
       width: '100%',
       transition: {
         duration: 0.5,
-        ease: "easeOut",
+        ease: [0.4, 0, 0.2, 1] as const,
         delay: 0.1
       }
     }
