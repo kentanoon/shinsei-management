@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Pagination, Box, FormControl, InputLabel, Select, MenuItem, Button, Menu } from '@mui/material';
-import { GetApp as GetAppIcon, ArrowDropDown } from '@mui/icons-material';
+import { GetApp as GetAppIcon, ArrowDropDown, Assignment } from '@mui/icons-material';
 import { getStatusColor } from '../utils/statusUtils';
 import { projectApi } from '../services/api';
 
@@ -173,7 +173,10 @@ const ProjectList: React.FC = () => {
   return (
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
-        <h1 style={{ color: '#495057' }}>📋 案件管理</h1>
+        <h1 style={{ color: '#495057', display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <Assignment sx={{ fontSize: '2rem' }} />
+          案件管理
+        </h1>
         <div style={{ display: 'flex', gap: '1rem' }}>
           <Button
             variant="outlined"

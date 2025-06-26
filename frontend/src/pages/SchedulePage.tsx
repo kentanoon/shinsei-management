@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Build as BuildIcon, Sync as SyncIcon, CheckCircle as CheckCircleIcon } from '@mui/icons-material';
 
 const SchedulePage: React.FC = () => {
   const [schedules, setSchedules] = useState<any[]>([]);
@@ -46,7 +47,10 @@ const SchedulePage: React.FC = () => {
           border: '1px solid #dee2e6',
           boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
         }}>
-          <h3 style={{ margin: '0 0 0.5rem 0', color: '#495057' }}>🔧 配筋検査予定</h3>
+          <h3 style={{ margin: '0 0 0.5rem 0', color: '#495057', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <BuildIcon />
+            配筋検査予定
+          </h3>
           <p style={{ fontSize: '2rem', fontWeight: 'bold', margin: 0, color: '#ffc107' }}>
             {schedules.filter(s => s.reinforcement_scheduled && !s.reinforcement_actual).length}
           </p>
@@ -59,7 +63,10 @@ const SchedulePage: React.FC = () => {
           border: '1px solid #dee2e6',
           boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
         }}>
-          <h3 style={{ margin: '0 0 0.5rem 0', color: '#495057' }}>🔄 中間検査予定</h3>
+          <h3 style={{ margin: '0 0 0.5rem 0', color: '#495057', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <SyncIcon />
+            中間検査予定
+          </h3>
           <p style={{ fontSize: '2rem', fontWeight: 'bold', margin: 0, color: '#007bff' }}>
             {schedules.filter(s => s.interim_scheduled && !s.interim_actual).length}
           </p>
@@ -72,7 +79,10 @@ const SchedulePage: React.FC = () => {
           border: '1px solid #dee2e6',
           boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
         }}>
-          <h3 style={{ margin: '0 0 0.5rem 0', color: '#495057' }}>✅ 完了検査予定</h3>
+          <h3 style={{ margin: '0 0 0.5rem 0', color: '#495057', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <CheckCircleIcon sx={{ color: 'success.main' }} />
+            完了検査予定
+          </h3>
           <p style={{ fontSize: '2rem', fontWeight: 'bold', margin: 0, color: '#28a745' }}>
             {schedules.filter(s => s.completion_scheduled && !s.completion_actual).length}
           </p>

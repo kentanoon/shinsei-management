@@ -25,6 +25,7 @@ import {
   AttachMoney as FinancialIcon,
   Description as ApplicationIcon,
   Storage as DatabaseIcon,
+  Construction as ConstructionIcon,
 } from '@mui/icons-material';
 import NotificationPanel from './NotificationPanel';
 import AlertSystem from './AlertSystem';
@@ -56,8 +57,9 @@ const Layout: React.FC<LayoutProps> = () => {
 
   const drawerContent = (
     <Box sx={{ width: 250, pt: 2 }}>
-      <Typography variant="h6" sx={{ px: 2, pb: 2, fontWeight: 600 }}>
-        🏗️ 申請管理システム
+      <Typography variant="h6" sx={{ px: 2, pb: 2, fontWeight: 600, display: 'flex', alignItems: 'center' }}>
+        <ConstructionIcon sx={{ mr: 1 }} />
+        申請管理システム
       </Typography>
       <Divider />
       <List>
@@ -137,7 +139,8 @@ const Layout: React.FC<LayoutProps> = () => {
             }}
             onClick={() => navigate('/')}
           >
-            🏗️ 申請管理システム
+            <ConstructionIcon sx={{ mr: 1 }} />
+            申請管理システム
           </Typography>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
             <SupabaseStatus showDetails={!isMobile} />

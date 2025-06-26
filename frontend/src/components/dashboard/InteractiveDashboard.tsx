@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { Dashboard } from '@mui/icons-material';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { Responsive, WidthProvider, Layout } from 'react-grid-layout';
@@ -471,7 +472,10 @@ const InteractiveDashboard: React.FC<InteractiveDashboardProps> = ({
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
             <Typography variant="h4" component="h1" sx={{ color: '#495057' }}>
-              📊 インタラクティブダッシュボード
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                <Dashboard sx={{ fontSize: '1.25rem' }} />
+                インタラクティブダッシュボード
+              </Box>
             </Typography>
             {dashboardSettings.showConnectionStatus && (
               <Chip

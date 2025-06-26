@@ -32,6 +32,7 @@ import {
   Switch,
   FormControlLabel
 } from '@mui/material';
+import { Home as HomeIcon, TableChart as TableChartIcon, Build as BuildIcon } from '@mui/icons-material';
 import {
   Storage as StorageIcon,
   Refresh as RefreshIcon,
@@ -505,10 +506,31 @@ const DatabaseAdmin: React.FC = () => {
 
       <Box sx={{ borderBottom: 1, borderColor: 'divider', mb: 2 }}>
         <Tabs value={tabValue} onChange={(_, newValue) => setTabValue(newValue)}>
-          <Tab label="🏠 概要・統計" />
-          <Tab label="📋 テーブル管理" />
+          <Tab 
+            label={
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                <HomeIcon sx={{ fontSize: 18 }} />
+                概要・統計
+              </Box>
+            } 
+          />
+          <Tab 
+            label={
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                <TableChartIcon sx={{ fontSize: 18 }} />
+                テーブル管理
+              </Box>
+            } 
+          />
           <Tab label="🚨 エラー監視" />
-          <Tab label="🔧 メンテナンス" />
+          <Tab 
+            label={
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                <BuildIcon sx={{ fontSize: 18 }} />
+                メンテナンス
+              </Box>
+            } 
+          />
         </Tabs>
       </Box>
 
@@ -530,7 +552,10 @@ const DatabaseAdmin: React.FC = () => {
             <Card>
               <CardContent>
                 <Typography variant="h6" gutterBottom>
-                  🔄 メンテナンス操作
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <BuildIcon />
+                    メンテナンス操作
+                  </Box>
                 </Typography>
                 <Box display="flex" flexDirection="column" gap={2}>
                   <Button

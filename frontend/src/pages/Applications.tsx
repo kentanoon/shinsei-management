@@ -6,7 +6,7 @@ import {
   FormControl, InputLabel, Select, MenuItem, TextField,
   Alert, CircularProgress
 } from '@mui/material';
-import { Add as AddIcon, Edit as EditIcon, Check as CheckIcon } from '@mui/icons-material';
+import { Add as AddIcon, Edit as EditIcon, Check as CheckIcon, Description as DescriptionIcon, Assignment as AssignmentIcon, CheckCircle as CheckCircleIcon, Cancel as CancelIcon } from '@mui/icons-material';
 import { getStatusColor } from '../utils/statusUtils';
 import { applicationApi, projectApi } from '../services/api';
 import type { ApplicationStatus, ApplicationCategory, ApplicationPriority } from '../types/application';
@@ -170,7 +170,10 @@ const Applications: React.FC = () => {
     <Box sx={{ p: 3 }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
         <Typography variant="h4" component="h1" sx={{ color: '#495057' }}>
-          📄 申請管理
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <DescriptionIcon sx={{ fontSize: '1.5rem' }} />
+            申請管理
+          </Box>
         </Typography>
         <Button
           variant="contained"
@@ -187,7 +190,10 @@ const Applications: React.FC = () => {
         <Card>
           <CardContent>
             <Typography variant="h6" color="textSecondary" gutterBottom>
-              📋 総申請数
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                <AssignmentIcon />
+                総申請数
+              </Box>
             </Typography>
             <Typography variant="h3" component="p" sx={{ color: '#007bff', fontWeight: 'bold' }}>
               {counts.total}
@@ -220,7 +226,10 @@ const Applications: React.FC = () => {
         <Card>
           <CardContent>
             <Typography variant="h6" color="textSecondary" gutterBottom>
-              ✅ 承認済
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                <CheckCircleIcon sx={{ color: 'success.main' }} />
+                承認済
+              </Box>
             </Typography>
             <Typography variant="h3" component="p" sx={{ color: '#28a745', fontWeight: 'bold' }}>
               {counts.approved}
@@ -231,7 +240,10 @@ const Applications: React.FC = () => {
         <Card>
           <CardContent>
             <Typography variant="h6" color="textSecondary" gutterBottom>
-              ❌ 却下
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                <CancelIcon sx={{ color: 'error.main' }} />
+                却下
+              </Box>
             </Typography>
             <Typography variant="h3" component="p" sx={{ color: '#dc3545', fontWeight: 'bold' }}>
               {counts.rejected}

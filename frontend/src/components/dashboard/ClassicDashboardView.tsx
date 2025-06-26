@@ -1,6 +1,7 @@
 import React from 'react';
 import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LineChart, Line } from 'recharts';
 import { Box, Paper, Typography, Card, CardContent } from '@mui/material';
+import { Assignment as AssignmentIcon, Sync as SyncIcon, Warning as WarningIcon, CheckCircle as CheckCircleIcon } from '@mui/icons-material';
 
 interface ClassicDashboardViewProps {
   projects: any[];
@@ -24,7 +25,10 @@ const ClassicDashboardView: React.FC<ClassicDashboardViewProps> = ({
         <Card sx={{ height: '100%' }}>
           <CardContent>
             <Typography variant="h6" color="textSecondary" gutterBottom>
-              📋 総案件数
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                <AssignmentIcon />
+                総案件数
+              </Box>
             </Typography>
             <Typography variant="h3" component="p" sx={{ color: '#007bff', fontWeight: 'bold' }}>
               {projects.length}
@@ -35,7 +39,10 @@ const ClassicDashboardView: React.FC<ClassicDashboardViewProps> = ({
         <Card sx={{ height: '100%' }}>
           <CardContent>
             <Typography variant="h6" color="textSecondary" gutterBottom>
-              🔄 進行中案件
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                <SyncIcon />
+                進行中案件
+              </Box>
             </Typography>
             <Typography variant="h3" component="p" sx={{ color: '#28a745', fontWeight: 'bold' }}>
               {(statusCounts['申請作業'] || 0) + (statusCounts['審査中'] || 0)}
@@ -46,7 +53,10 @@ const ClassicDashboardView: React.FC<ClassicDashboardViewProps> = ({
         <Card sx={{ height: '100%' }}>
           <CardContent>
             <Typography variant="h6" color="textSecondary" gutterBottom>
-              ⚠️ 検査待ち
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                <WarningIcon sx={{ color: 'warning.main' }} />
+                検査待ち
+              </Box>
             </Typography>
             <Typography variant="h3" component="p" sx={{ color: '#ffc107', fontWeight: 'bold' }}>
               {(statusCounts['配筋検査待ち'] || 0) + (statusCounts['中間検査待ち'] || 0) + (statusCounts['完了検査待ち'] || 0)}
@@ -57,7 +67,10 @@ const ClassicDashboardView: React.FC<ClassicDashboardViewProps> = ({
         <Card sx={{ height: '100%' }}>
           <CardContent>
             <Typography variant="h6" color="textSecondary" gutterBottom>
-              ✅ 完了案件
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                <CheckCircleIcon sx={{ color: 'success.main' }} />
+                完了案件
+              </Box>
             </Typography>
             <Typography variant="h3" component="p" sx={{ color: '#28a745', fontWeight: 'bold' }}>
               {statusCounts['完了'] || 0}

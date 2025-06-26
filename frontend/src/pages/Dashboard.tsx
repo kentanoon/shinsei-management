@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Typography, Tabs, Tab, Paper } from '@mui/material';
+import { Dashboard as DashboardIcon, BarChart as BarChartIcon, Analytics as AnalyticsIcon } from '@mui/icons-material';
 import { useNotifications } from '../hooks/useNotifications';
 import AlertPanel from '../components/AlertPanel';
 import InspectionCalendar from '../components/InspectionCalendar';
@@ -112,7 +113,10 @@ const Dashboard: React.FC = () => {
   return (
     <Box sx={{ p: 3 }}>
       <Typography variant="h4" component="h1" gutterBottom sx={{ color: '#495057', mb: 3 }}>
-        📊 ダッシュボード
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <DashboardIcon sx={{ mr: 1 }} />
+          ダッシュボード
+        </Box>
       </Typography>
 
       {/* アラートパネル */}
@@ -129,8 +133,22 @@ const Dashboard: React.FC = () => {
           textColor="primary"
           variant="fullWidth"
         >
-          <Tab label="📊 インタラクティブビュー" />
-          <Tab label="📈 クラシックビュー" />
+          <Tab 
+            label={
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <AnalyticsIcon sx={{ mr: 1, fontSize: 18 }} />
+                インタラクティブビュー
+              </Box>
+            } 
+          />
+          <Tab 
+            label={
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <BarChartIcon sx={{ mr: 1, fontSize: 18 }} />
+                クラシックビュー
+              </Box>
+            } 
+          />
           <Tab label="📅 カレンダービュー" />
         </Tabs>
       </Paper>
