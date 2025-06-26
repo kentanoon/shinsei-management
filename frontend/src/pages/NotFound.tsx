@@ -3,6 +3,7 @@
  */
 
 import React from 'react';
+import { Link as LinkIcon } from '@mui/icons-material';
 import {
   Box,
   Typography,
@@ -61,7 +62,10 @@ const NotFound: React.FC = () => {
       <Card sx={{ maxWidth: 600, width: '100%', mb: 3 }}>
         <CardContent>
           <Typography variant="h6" gutterBottom>
-            🔗 利用可能なページ
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+              <LinkIcon />
+              利用可能なページ
+            </Box>
           </Typography>
           <List>
             {quickLinks.map((link) => {

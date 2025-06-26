@@ -40,6 +40,8 @@ import {
 import { formatFileSize } from '../utils/fileUtils';
 import {
   Description as DescriptionIcon,
+  CheckCircle as CheckCircleIcon,
+  Sync as SyncIcon,
   GetApp as DownloadIcon,
   CloudUpload as UploadIcon,
   Edit as EditIcon,
@@ -334,7 +336,10 @@ const ApplicationTemplateManager: React.FC = () => {
       {/* ヘッダー */}
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
         <Typography variant="h6">
-          📄 申請書類テンプレート管理
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <DescriptionIcon sx={{ fontSize: '1.5rem' }} />
+            申請書類テンプレート管理
+          </Box>
         </Typography>
         <Button
           variant="contained"
@@ -351,7 +356,10 @@ const ApplicationTemplateManager: React.FC = () => {
         <Card>
           <CardContent>
             <Typography variant="h6" color="textSecondary" gutterBottom>
-              📄 総テンプレート数
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                <DescriptionIcon />
+                総テンプレート数
+              </Box>
             </Typography>
             <Typography variant="h3" component="p" sx={{ color: 'primary.main', fontWeight: 'bold' }}>
               {templates.length}
@@ -362,7 +370,10 @@ const ApplicationTemplateManager: React.FC = () => {
         <Card>
           <CardContent>
             <Typography variant="h6" color="textSecondary" gutterBottom>
-              ✅ 有効テンプレート
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                <CheckCircleIcon sx={{ color: 'success.main' }} />
+                有効テンプレート
+              </Box>
             </Typography>
             <Typography variant="h3" component="p" sx={{ color: 'success.main', fontWeight: 'bold' }}>
               {templates.filter(t => t.is_active).length}
@@ -384,7 +395,10 @@ const ApplicationTemplateManager: React.FC = () => {
         <Card>
           <CardContent>
             <Typography variant="h6" color="textSecondary" gutterBottom>
-              🔄 自動生成対応
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                <SyncIcon />
+                自動生成対応
+              </Box>
             </Typography>
             <Typography variant="h3" component="p" sx={{ color: 'warning.main', fontWeight: 'bold' }}>
               {templates.filter(t => t.auto_fill_fields.length > 0).length}

@@ -22,6 +22,7 @@ import {
   Add as AddIcon,
   Close as CloseIcon,
   FilterList as FilterIcon,
+  Description as DescriptionIcon,
 } from '@mui/icons-material';
 import ApplicationDashboard from '../components/ApplicationDashboard';
 import ApplicationDetail from '../components/ApplicationDetail';
@@ -405,7 +406,10 @@ const EnhancedApplications: React.FC = () => {
       {/* ヘッダー */}
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
         <Typography variant="h4" component="h1" sx={{ color: '#495057' }}>
-          📄 申請管理（強化版）
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <DescriptionIcon sx={{ fontSize: '1.5rem' }} />
+            申請管理（強化版）
+          </Box>
         </Typography>
         <Button
           variant="contained"

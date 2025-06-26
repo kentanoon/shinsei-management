@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Assignment as AssignmentIcon } from '@mui/icons-material';
 import {
   Box,
   Card,
@@ -406,7 +407,10 @@ const GoogleFormsManager: React.FC<GoogleFormsManagerProps> = ({
           
           <Paper sx={{ p: 2, mt: 2, bgcolor: 'grey.50' }}>
             <Typography variant="subtitle2" gutterBottom>
-              📋 送信内容
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                <AssignmentIcon />
+                送信内容
+              </Box>
             </Typography>
             <Typography variant="body2">
               <strong>プロジェクト:</strong> {projectName}
