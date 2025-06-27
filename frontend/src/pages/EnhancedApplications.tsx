@@ -415,7 +415,7 @@ const EnhancedApplications: React.FC = () => {
           variant="contained"
           startIcon={<AddIcon />}
           onClick={() => setCreateDialogOpen(true)}
-          sx={{ backgroundColor: '#007bff' }}
+          sx={{ backgroundColor: '#3D5B81' }}
         >
           新規申請
         </Button>

@@ -23,17 +23,18 @@ interface StatusChartProps {
 
 const getStatusColorHex = (status: string): string => {
   const statusColor = getStatusColor(status);
-  // Convert Material-UI color names to hex colors for chart
+  // Convert Material-UI color names to hex colors for chart using theme colors
   const colorMap: Record<string, string> = {
-    'info': '#6c757d',
-    'primary': '#007bff',
-    'warning': '#fd7e14',
-    'secondary': '#ffc107',
-    'success': '#28a745',
-    'error': '#dc3545',
-    'default': '#6c757d'
+    'info': '#3D5B81',     // ダークブルー
+    'primary': '#3D5B81',  // ダークブルー
+    'warning': '#EE6B4D',  // オレンジレッド
+    'secondary': '#EE6B4D', // オレンジレッド
+    'success': '#9BC0D9',  // ライトブルー
+    'error': '#EE6B4D',    // オレンジレッド
+    'grey': '#9BC0D9',     // ライトブルー（デフォルト）
+    'default': '#9BC0D9'   // ライトブルー
   };
-  return colorMap[statusColor] || '#6c757d';
+  return colorMap[statusColor] || '#9BC0D9';
 };
 
 const StatusChart: React.FC<StatusChartProps> = ({ 

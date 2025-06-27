@@ -69,26 +69,26 @@ const supabaseUrl = process.env.REACT_APP_SUPABASE_URL;
 const supabaseAnonKey = process.env.REACT_APP_SUPABASE_ANON_KEY;
 const demoMode = process.env.REACT_APP_DEMO_MODE === 'true';
 
-console.log('🔧 API初期化: 環境変数確認');
+console.log('[CONFIG] API初期化: 環境変数確認');
 console.log('- SUPABASE_URL:', supabaseUrl ? `${supabaseUrl.substring(0, 30)}...` : 'なし');
 console.log('- SUPABASE_ANON_KEY:', supabaseAnonKey ? `${supabaseAnonKey.substring(0, 20)}...` : 'なし');
 console.log('- DEMO_MODE:', demoMode);
 
 if (demoMode) {
-  console.log('🎭 デモモードが有効です。モックデータを使用します。');
+  console.log('[MOCK] デモモードが有効です。モックデータを使用します。');
   useSupabase = false;
 } else if (supabaseUrl && supabaseAnonKey) {
   // 初期化時にSupabase接続をチェック
   checkSupabaseConnection().then(isConnected => {
     useSupabase = isConnected;
     if (isConnected) {
-      console.log('✅ Supabaseデータベースに接続しました。');
+      console.log('[SUCCESS] Supabaseデータベースに接続しました。');
     } else {
-      console.warn('⚠️ Supabaseに接続できません。モックデータを使用します。');
+      console.warn('[WARNING] Supabaseに接続できません。モックデータを使用します。');
     }
   });
 } else {
-  console.log('📝 Supabase環境変数が設定されていません。モックデータを使用します。');
+  console.log('[FORM] Supabase環境変数が設定されていません。モックデータを使用します。');
 }
 
 // API 関数群（Supabase対応版）
@@ -102,18 +102,18 @@ export const projectApi = {
     status?: string;
   } = {}): Promise<ProjectListResponse> => {
     try {
-      console.log('📋 プロジェクト取得開始:', { useSupabase, params });
+      console.log('[LIST] プロジェクト取得開始:', { useSupabase, params });
       if (useSupabase) {
-        console.log('🔗 Supabaseからプロジェクトを取得中...');
+        console.log('[CONNECT] Supabaseからプロジェクトを取得中...');
         // Supabaseを使用
         const result = await ProjectService.getProjects(params);
         if (result.error) {
           throw new Error(result.error);
         }
-        console.log('✅ Supabaseプロジェクト取得成功:', result.data?.projects?.length, '件');
+        console.log('[SUCCESS] Supabaseプロジェクト取得成功:', result.data?.projects?.length, '件');
         return result.data!;
       } else {
-        console.log('🎭 モックデータからプロジェクトを取得中...');
+        console.log('[MOCK] モックデータからプロジェクトを取得中...');
         // モックデータを使用
         const mockProjects: Project[] = [
           {
@@ -193,7 +193,7 @@ export const projectApi = {
           projects: paginatedProjects,
           total: filteredProjects.length
         };
-        console.log('✅ モックプロジェクト取得成功:', result.projects.length, '件');
+        console.log('[SUCCESS] モックプロジェクト取得成功:', result.projects.length, '件');
         return result;
       }
     } catch (error) {
@@ -379,7 +379,7 @@ export const projectApi = {
         return result.data!;
       } else {
         // モック更新
-        console.log('🎭 モックプロジェクト更新:', projectId, projectData);
+        console.log('[MOCK] モックプロジェクト更新:', projectId, projectData);
         throw new Error('プロジェクト更新機能は準備中です（Supabase対応予定）');
       }
     } catch (error) {
@@ -400,7 +400,7 @@ export const projectApi = {
         }
         return result.data!;
       } else {
-        console.log('🎭 モック財務情報更新:', projectId, financialData);
+        console.log('[MOCK] モック財務情報更新:', projectId, financialData);
         throw new Error('財務情報更新機能は準備中です（Supabase対応予定）');
       }
     } catch (error) {
@@ -421,7 +421,7 @@ export const projectApi = {
         }
         return result.data!;
       } else {
-        console.log('🎭 モックスケジュール更新:', projectId, scheduleData);
+        console.log('[MOCK] モックスケジュール更新:', projectId, scheduleData);
         throw new Error('スケジュール更新機能は準備中です（Supabase対応予定）');
       }
     } catch (error) {
@@ -441,7 +441,7 @@ export const projectApi = {
           throw new Error(result.error);
         }
       } else {
-        console.log('🎭 モックプロジェクト削除:', projectId);
+        console.log('[MOCK] モックプロジェクト削除:', projectId);
         throw new Error('プロジェクト削除機能は準備中です（Supabase対応予定）');
       }
     } catch (error) {
@@ -462,7 +462,7 @@ export const projectApi = {
         }
         return result.data!;
       } else {
-        console.log('🎭 モックプロジェクト検索:', query);
+        console.log('[MOCK] モックプロジェクト検索:', query);
         return { projects: [], total: 0 };
       }
     } catch (error) {
@@ -523,24 +523,24 @@ export const applicationTypeApi = {
    */
   getApplicationTypes: async () => {
     try {
-      console.log('📝 申請種別取得開始:', { useSupabase });
+      console.log('[FORM] 申請種別取得開始:', { useSupabase });
       if (useSupabase) {
-        console.log('🔗 Supabaseから申請種別を取得中...');
+        console.log('[CONNECT] Supabaseから申請種別を取得中...');
         const result = await ApplicationTypeService.getApplicationTypes();
         if (result.error) {
           throw new Error(result.error);
         }
-        console.log('✅ Supabase申請種別取得成功:', result.data?.length, '件');
+        console.log('[SUCCESS] Supabase申請種別取得成功:', result.data?.length, '件');
         return result.data!;
       } else {
-        console.log('🎭 モックデータから申請種別を取得中...');
+        console.log('[MOCK] モックデータから申請種別を取得中...');
         // モックデータを返す
         const mockTypes = [
           { id: 1, name: '通常申請', code: 'NORMAL', category: '確認申請', description: '', typical_duration_days: 5, is_active: true },
           { id: 2, name: '緊急申請', code: 'URGENT', category: '確認申請', description: '', typical_duration_days: 1, is_active: true },
           { id: 3, name: '情報開示請求', code: 'DISCLOSURE', category: 'その他', description: '', typical_duration_days: 14, is_active: true },
         ];
-        console.log('✅ モック申請種別取得成功:', mockTypes.length, '件');
+        console.log('[SUCCESS] モック申請種別取得成功:', mockTypes.length, '件');
         return mockTypes;
       }
     } catch (error) {
@@ -557,7 +557,7 @@ export const databaseAdminApi = {
    */
   getDatabaseStats: async () => {
     try {
-      console.log('📊 データベース統計API呼び出し');
+      console.log('[STATS] データベース統計API呼び出し');
       if (useSupabase) {
         const result = await DatabaseAdminService.getDatabaseStats();
         if (result.error) {
@@ -591,7 +591,7 @@ export const databaseAdminApi = {
    */
   getTableData: async (tableName: string, page = 0, limit = 10) => {
     try {
-      console.log(`📋 テーブルデータAPI呼び出し: ${tableName}`);
+      console.log(`[LIST] テーブルデータAPI呼び出し: ${tableName}`);
       if (useSupabase) {
         const result = await DatabaseAdminService.getTableData(tableName, page, limit);
         if (result.error) {
@@ -626,7 +626,7 @@ export const healthApi = {
    * 基本ヘルスチェック
    */
   checkHealth: async () => {
-    console.log('💚 ヘルスチェック（モック）');
+    console.log('[HEALTH] ヘルスチェック（モック）');
     return { status: 'ok', timestamp: new Date().toISOString() };
   },
 
@@ -634,7 +634,7 @@ export const healthApi = {
    * データベース接続チェック
    */
   checkDatabase: async () => {
-    console.log('💚 データベースヘルスチェック（モック）');
+    console.log('[HEALTH] データベースヘルスチェック（モック）');
     return { status: 'ok', database: 'supabase', timestamp: new Date().toISOString() };
   },
 };
@@ -649,14 +649,14 @@ export const applicationApi = {
     status?: string;
   } = {}) => {
     try {
-      console.log('📝 申請一覧取得開始:', { useSupabase, params });
+      console.log('[FORM] 申請一覧取得開始:', { useSupabase, params });
       if (useSupabase) {
-        console.log('🔗 Supabaseから申請一覧を取得中...');
+        console.log('[CONNECT] Supabaseから申請一覧を取得中...');
         // TODO: Supabase申請取得を実装
-        console.log('⚠️ Supabase申請取得は未実装、モックデータを返します');
+        console.log('[WARNING] Supabase申請取得は未実装、モックデータを返します');
         return { applications: [] };
       } else {
-        console.log('🎭 モックデータから申請一覧を取得中...');
+        console.log('[MOCK] モックデータから申請一覧を取得中...');
         // モックデータを返す
         return { applications: [] };
       }
@@ -670,7 +670,7 @@ export const applicationApi = {
    * 申請詳細取得
    */
   getApplication: async (applicationId: number) => {
-    console.log('📄 申請詳細取得:', applicationId);
+    console.log('[FILE] 申請詳細取得:', applicationId);
     // TODO: Supabase実装
     return { id: applicationId, title: 'モック申請', status: '未定' };
   },
@@ -679,7 +679,7 @@ export const applicationApi = {
    * 申請作成
    */
   createApplication: async (applicationData: ApplicationCreateRequest): Promise<EnhancedApplication> => {
-    console.log('📝 申請作成:', applicationData);
+    console.log('[FORM] 申請作成:', applicationData);
     // TODO: Supabase実装
     throw new Error('申請作成機能は準備中です（Supabase対応予定）');
   },
@@ -688,7 +688,7 @@ export const applicationApi = {
    * 申請更新
    */
   updateApplication: async (applicationId: number, applicationData: ApplicationUpdateRequest): Promise<EnhancedApplication> => {
-    console.log('📝 申請更新:', applicationId, applicationData);
+    console.log('[FORM] 申請更新:', applicationId, applicationData);
     // TODO: Supabase実装
     throw new Error('申請更新機能は準備中です（Supabase対応予定）');
   },
@@ -697,7 +697,7 @@ export const applicationApi = {
    * 申請削除
    */
   deleteApplication: async (applicationId: number) => {
-    console.log('🗑 申請削除:', applicationId);
+    console.log('[DELETE] 申請削除:', applicationId);
     // TODO: Supabase実装
     throw new Error('申請削除機能は準備中です（Supabase対応予定）');
   },
@@ -706,7 +706,7 @@ export const applicationApi = {
    * 申請種別一覧取得（applicationTypeApiにリダイレクト）
    */
   getApplicationTypes: async () => {
-    console.log('🔀 applicationApi.getApplicationTypes は applicationTypeApi.getApplicationTypes にリダイレクトします');
+    console.log('[REDIRECT] applicationApi.getApplicationTypes は applicationTypeApi.getApplicationTypes にリダイレクトします');
     return applicationTypeApi.getApplicationTypes();
   },
 

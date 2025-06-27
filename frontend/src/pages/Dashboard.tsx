@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Typography, Tabs, Tab, Paper } from '@mui/material';
+import { Box, Typography, Tabs, Tab, Paper, useTheme } from '@mui/material';
 import { Dashboard as DashboardIcon, BarChart as BarChartIcon, Analytics as AnalyticsIcon, CalendarToday as CalendarIcon } from '@mui/icons-material';
 import { useNotifications } from '../hooks/useNotifications';
 import AlertPanel from '../components/AlertPanel';
@@ -11,6 +11,7 @@ import { projectApi } from '../services/api';
 import type { Project } from '../types/project';
 
 const Dashboard: React.FC = () => {
+  const theme = useTheme();
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
   const [tabValue, setTabValue] = useState(0);
@@ -43,20 +44,20 @@ const Dashboard: React.FC = () => {
     const statusCounts = getStatusCounts();
     return Object.entries(statusCounts).map(([status, count]) => {
       const statusColor = getStatusColor(status);
-      // Convert Material-UI color names to hex colors for chart
+      // Convert Material-UI color names to theme colors for chart
       const colorMap: Record<string, string> = {
-        'info': '#6c757d',
-        'primary': '#007bff',
-        'warning': '#fd7e14',
-        'secondary': '#ffc107',
-        'success': '#28a745',
-        'error': '#dc3545',
-        'default': '#6c757d'
+        'info': theme.palette.info.main,
+        'primary': theme.palette.primary.main,
+        'warning': theme.palette.warning.main,
+        'secondary': theme.palette.secondary.main,
+        'success': theme.palette.success.main,
+        'error': theme.palette.error.main,
+        'default': theme.palette.text.secondary
       };
       return {
         name: status,
         value: count,
-        color: colorMap[statusColor] || '#6c757d'
+        color: colorMap[statusColor] || theme.palette.text.secondary
       };
     });
   };
@@ -90,9 +91,9 @@ const Dashboard: React.FC = () => {
     const lowPriority = Math.max(0, projects.length - highPriority - mediumPriority);
     
     return [
-      { name: '高優先度', value: highPriority, color: '#dc3545' },
-      { name: '中優先度', value: mediumPriority, color: '#ffc107' },
-      { name: '低優先度', value: lowPriority, color: '#28a745' }
+      { name: '高優先度', value: highPriority, color: theme.palette.error.main },
+      { name: '中優先度', value: mediumPriority, color: theme.palette.warning.main },
+      { name: '低優先度', value: lowPriority, color: theme.palette.success.main }
     ].filter(item => item.value > 0);
   };
 
@@ -112,7 +113,7 @@ const Dashboard: React.FC = () => {
 
   return (
     <Box sx={{ p: 3 }}>
-      <Typography variant="h4" component="h1" gutterBottom sx={{ color: '#495057', mb: 3 }}>
+      <Typography variant="h4" component="h1" gutterBottom sx={{ color: theme.palette.text.secondary, mb: 3 }}>
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           <DashboardIcon sx={{ mr: 1 }} />
           ダッシュボード

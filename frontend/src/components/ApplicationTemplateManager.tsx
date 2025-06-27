@@ -384,7 +384,10 @@ const ApplicationTemplateManager: React.FC = () => {
         <Card>
           <CardContent>
             <Typography variant="h6" color="textSecondary" gutterBottom>
-              📥 今月のDL数
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                <DownloadIcon />
+                今月のDL数
+              </Box>
             </Typography>
             <Typography variant="h3" component="p" sx={{ color: 'info.main', fontWeight: 'bold' }}>
               {templates.reduce((sum, t) => sum + t.download_count, 0)}

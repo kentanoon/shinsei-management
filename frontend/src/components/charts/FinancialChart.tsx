@@ -87,17 +87,17 @@ const FinancialChart: React.FC<FinancialChartProps> = ({
             <Line 
               type="monotone" 
               dataKey="契約金額" 
-              stroke="#007bff" 
+              stroke="#3D5B81" 
               strokeWidth={3}
-              dot={{ fill: '#007bff', strokeWidth: 2, r: 4 }}
+              dot={{ fill: '#3D5B81', strokeWidth: 2, r: 4 }}
               name="契約金額"
             />
             <Line 
               type="monotone" 
               dataKey="決済金額" 
-              stroke="#28a745" 
+              stroke="#9BC0D9" 
               strokeWidth={3}
-              dot={{ fill: '#28a745', strokeWidth: 2, r: 4 }}
+              dot={{ fill: '#9BC0D9', strokeWidth: 2, r: 4 }}
               name="決済金額"
             />
           </LineChart>

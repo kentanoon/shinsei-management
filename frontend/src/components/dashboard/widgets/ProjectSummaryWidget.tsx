@@ -37,25 +37,25 @@ const ProjectSummaryWidget: React.FC<ProjectSummaryWidgetProps> = ({
     {
       title: '総案件数',
       value: data.total,
-      color: '#2196f3',
+      color: '#3D5B81',
       icon: <AssignmentIcon />,
     },
     {
       title: '進行中',
       value: data.inProgress,
-      color: '#4caf50',
+      color: '#9BC0D9',
       icon: <PlayArrowIcon />,
     },
     {
       title: '検査待ち',
       value: data.pending,
-      color: '#ff9800',
+      color: '#EE6B4D',
       icon: <WarningIcon />,
     },
     {
       title: '完了',
       value: data.completed,
-      color: '#4caf50',
+      color: '#9BC0D9',
       icon: <CheckCircleIcon />,
     },
   ];

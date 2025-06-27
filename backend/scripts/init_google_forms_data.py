@@ -22,11 +22,11 @@ def create_tables():
     """テーブル作成"""
     print("🗃️  データベーステーブルを作成中...")
     google_forms.Base.metadata.create_all(bind=engine)
-    print("✅ テーブル作成完了")
+    print("[SUCCESS] テーブル作成完了")
 
 def init_email_templates(db: Session):
     """メールテンプレートの初期データ投入"""
-    print("📧 メールテンプレートを初期化中...")
+    print("[EMAIL] メールテンプレートを初期化中...")
     
     # デフォルトメールテンプレート
     default_template = EmailTemplate(
@@ -42,7 +42,7 @@ def init_email_templates(db: Session):
             <p>下記プロジェクトに関する申請書類のご提出をお願いいたします。</p>
             
             <div style="background-color: #f5f5f5; padding: 15px; margin: 20px 0; border-radius: 5px;">
-                <h3>📋 プロジェクト情報</h3>
+                <h3>プロジェクト情報</h3>
                 <ul>
                     <li><strong>プロジェクト名:</strong> {{project.project_name}}</li>
                     <li><strong>プロジェクトコード:</strong> {{project.project_code}}</li>
@@ -54,12 +54,12 @@ def init_email_templates(db: Session):
             <div style="text-align: center; margin: 30px 0;">
                 <a href="{{form.google_form_url}}" 
                    style="background-color: #4CAF50; color: white; padding: 15px 30px; text-decoration: none; border-radius: 5px; font-weight: bold;">
-                    📝 フォームに入力する
+                    フォームに入力する
                 </a>
             </div>
             
             <div style="background-color: #fff3cd; padding: 15px; margin: 20px 0; border-radius: 5px;">
-                <h4>⚠️ ご注意事項</h4>
+                <h4>ご注意事項</h4>
                 <ul>
                     <li>フォームの入力期限は送信から <strong>7日間</strong> です</li>
                     <li>入力内容に不明な点がございましたら、お気軽にお問い合わせください</li>
@@ -95,15 +95,15 @@ def init_email_templates(db: Session):
         db.add(default_template)
         db.commit()
         db.refresh(default_template)
-        print(f"✅ デフォルトメールテンプレート作成完了 (ID: {default_template.id})")
+        print(f"[SUCCESS] デフォルトメールテンプレート作成完了 (ID: {default_template.id})")
         return default_template.id
     else:
-        print(f"ℹ️  デフォルトメールテンプレート既存 (ID: {existing.id})")
+        print(f"[INFO] デフォルトメールテンプレート既存 (ID: {existing.id})")
         return existing.id
 
 def init_form_templates(db: Session, email_template_id: int):
     """フォームテンプレートの初期データ投入"""
-    print("📝 フォームテンプレートを初期化中...")
+    print("[FORM] フォームテンプレートを初期化中...")
     
     # サンプルフォームテンプレート
     form_templates = [
@@ -275,22 +275,22 @@ def init_form_templates(db: Session, email_template_id: int):
             )
             db.add(template)
             created_count += 1
-            print(f"✅ 作成: {template_data['form_name']}")
+            print(f"[SUCCESS] 作成: {template_data['form_name']}")
     
     db.commit()
-    print(f"📝 フォームテンプレート初期化完了: 新規作成 {created_count}件, 更新 {updated_count}件")
+    print(f"[FORM] フォームテンプレート初期化完了: 新規作成 {created_count}件, 更新 {updated_count}件")
 
 def verify_data(db: Session):
     """データ確認"""
-    print("\n🔍 初期化されたデータを確認中...")
+    print("\n[VERIFY] 初期化されたデータを確認中...")
     
     # メールテンプレート数
     email_templates_count = db.query(EmailTemplate).count()
-    print(f"📧 メールテンプレート: {email_templates_count}件")
+    print(f"[EMAIL] メールテンプレート: {email_templates_count}件")
     
     # フォームテンプレート数
     form_templates_count = db.query(ApplicationFormTemplate).count()
-    print(f"📝 フォームテンプレート: {form_templates_count}件")
+    print(f"[FORM] フォームテンプレート: {form_templates_count}件")
     
     # 申請種別別集計
     from sqlalchemy import func
@@ -299,15 +299,15 @@ def verify_data(db: Session):
         func.count(ApplicationFormTemplate.id).label('count')
     ).group_by(ApplicationFormTemplate.application_type).all()
     
-    print("\n📊 申請種別別フォーム数:")
+    print("\n[STATS] 申請種別別フォーム数:")
     for stat in type_stats:
         print(f"  - {stat.application_type}: {stat.count}件")
     
-    print("\n✅ データ確認完了")
+    print("\n[SUCCESS] データ確認完了")
 
 def main():
     """メイン処理"""
-    print("🚀 Googleフォーム連携システム初期化開始")
+    print("[START] Googleフォーム連携システム初期化開始")
     print("=" * 50)
     
     # テーブル作成
@@ -326,15 +326,15 @@ def main():
         # データ確認
         verify_data(db)
         
-        print("\n🎉 初期化完了!")
-        print("\n📋 次のステップ:")
+        print("\n[COMPLETE] 初期化完了!")
+        print("\n[NEXT] 次のステップ:")
         print("1. 実際のGoogleフォームを作成")
         print("2. フォームIDとURLを正しい値に更新")
         print("3. メール送信設定を環境変数で設定")
         print("4. フロントエンドでGoogleFormsManagerコンポーネントを使用")
         
     except Exception as e:
-        print(f"❌ エラーが発生しました: {e}")
+        print(f"[ERROR] エラーが発生しました: {e}")
         db.rollback()
         return 1
     finally:

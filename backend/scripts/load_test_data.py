@@ -336,13 +336,13 @@ def main():
         
         db.commit()
         
-        print(f"✅ テストデータの投入が完了しました。")
+        print(f"[SUCCESS] テストデータの投入が完了しました。")
         print(f"   - プロジェクト: {len(projects)}件")
         print(f"   - 申請種別マスタ: {db.query(ApplicationType).count()}件")
         print(f"   - 申請: {db.query(Application).count()}件")
         
     except Exception as e:
-        print(f"❌ エラーが発生しました: {e}")
+        print(f"[ERROR] エラーが発生しました: {e}")
         db.rollback()
         raise
     finally:

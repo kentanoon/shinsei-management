@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Pagination, Box, FormControl, InputLabel, Select, MenuItem, Button, Menu } from '@mui/material';
+import { Pagination, Box, FormControl, InputLabel, Select, MenuItem, Button, Menu, useTheme } from '@mui/material';
 import { GetApp as GetAppIcon, ArrowDropDown, Assignment } from '@mui/icons-material';
 import { getStatusColor } from '../utils/statusUtils';
 import { projectApi } from '../services/api';
@@ -17,6 +17,7 @@ const statusTabs = [
 ];
 
 const ProjectList: React.FC = () => {
+  const theme = useTheme();
   const [projects, setProjects] = useState<any[]>([]);
   const [totalCount, setTotalCount] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -86,17 +87,17 @@ const ProjectList: React.FC = () => {
 
   const getStatusColorHex = (status: string) => {
     const statusColor = getStatusColor(status);
-    // Convert Material-UI color names to hex colors
+    // Convert Material-UI color names to theme colors
     const colorMap: Record<string, string> = {
-      'info': '#6c757d',
-      'primary': '#007bff',
-      'warning': '#fd7e14',
-      'secondary': '#ffc107',
-      'success': '#28a745',
-      'error': '#dc3545',
-      'default': '#6c757d'
+      'info': theme.palette.info.main,
+      'primary': theme.palette.primary.main,
+      'warning': theme.palette.warning.main,
+      'secondary': theme.palette.secondary.main,
+      'success': theme.palette.success.main,
+      'error': theme.palette.error.main,
+      'default': theme.palette.text.secondary
     };
-    return colorMap[statusColor] || '#6c757d';
+    return colorMap[statusColor] || theme.palette.text.secondary;
   };
 
   const exportToCSV = () => {
@@ -173,7 +174,7 @@ const ProjectList: React.FC = () => {
   return (
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
-        <h1 style={{ color: '#495057', display: 'flex', alignItems: 'center', gap: '12px' }}>
+        <h1 style={{ color: theme.palette.text.secondary, display: 'flex', alignItems: 'center', gap: '12px' }}>
           <Assignment sx={{ fontSize: '2rem' }} />
           案件管理
         </h1>
@@ -185,11 +186,11 @@ const ProjectList: React.FC = () => {
             onClick={handleExportClick}
             disabled={projects.length === 0}
             sx={{
-              borderColor: '#28a745',
-              color: '#28a745',
+              borderColor: theme.palette.success.main,
+              color: theme.palette.success.main,
               '&:hover': {
-                borderColor: '#218838',
-                backgroundColor: '#f8f9fa'
+                borderColor: theme.palette.success.dark,
+                backgroundColor: theme.palette.action.hover
               }
             }}
           >
@@ -207,7 +208,7 @@ const ProjectList: React.FC = () => {
           <button 
             onClick={() => window.location.href = '/projects/new'}
             style={{
-              background: '#007bff',
+              background: theme.palette.primary.main,
               color: 'white',
               border: 'none',
               padding: '0.75rem 1.5rem',
@@ -250,8 +251,8 @@ const ProjectList: React.FC = () => {
             key={index}
             onClick={() => handleTabChange(index)}
             style={{
-              background: currentTab === index ? '#007bff' : '#ffffff',
-              color: currentTab === index ? 'white' : '#495057',
+              background: currentTab === index ? theme.palette.primary.main : '#ffffff',
+              color: currentTab === index ? 'white' : theme.palette.text.secondary,
               border: '1px solid #dee2e6',
               padding: '0.5rem 1rem',
               borderRadius: '20px',
@@ -274,7 +275,7 @@ const ProjectList: React.FC = () => {
         overflow: 'hidden'
       }}>
         {displayProjects.length === 0 ? (
-          <p style={{ color: '#6c757d', textAlign: 'center', padding: '2rem' }}>
+          <p style={{ color: theme.palette.text.secondary, textAlign: 'center', padding: '2rem' }}>
             該当する案件がありません
           </p>
         ) : (
@@ -315,10 +316,10 @@ const ProjectList: React.FC = () => {
                         {project.status}
                       </span>
                     </td>
-                    <td style={{ padding: '1rem', color: '#6c757d' }}>
+                    <td style={{ padding: '1rem', color: theme.palette.text.secondary }}>
                       {project.input_date ? new Date(project.input_date).toLocaleDateString() : '---'}
                     </td>
-                    <td style={{ padding: '1rem', color: '#6c757d' }}>
+                    <td style={{ padding: '1rem', color: theme.palette.text.secondary }}>
                       {new Date(project.updated_at || project.created_at).toLocaleDateString()}
                     </td>
                   </tr>
@@ -355,7 +356,7 @@ const ProjectList: React.FC = () => {
                 <MenuItem value={100}>100件</MenuItem>
               </Select>
             </FormControl>
-            <div style={{ color: '#6c757d', fontSize: '0.9rem' }}>
+            <div style={{ color: theme.palette.text.secondary, fontSize: '0.9rem' }}>
               {((currentPage - 1) * itemsPerPage) + 1}-{Math.min(currentPage * itemsPerPage, totalCount)} / 総件数: {totalCount}
             </div>
           </Box>
@@ -381,7 +382,7 @@ const ProjectList: React.FC = () => {
           border: '1px solid #dee2e6',
           textAlign: 'center'
         }}>
-          <div style={{ color: '#6c757d', fontSize: '0.9rem' }}>
+          <div style={{ color: theme.palette.text.secondary, fontSize: '0.9rem' }}>
             「{searchQuery}」の検索結果: {totalCount}件
           </div>
         </Box>

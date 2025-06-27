@@ -275,7 +275,7 @@ export class DatabaseAdminService {
    */
   static async getDatabaseStats(): Promise<DatabaseResponse<any>> {
     try {
-      console.log('📊 データベース統計情報を取得中...');
+      console.log('[STATS] データベース統計情報を取得中...');
       
       // 存在するテーブルを動的に取得してチェック
       const existingTablesResult = await this.getExistingTables();
@@ -297,7 +297,7 @@ export class DatabaseAdminService {
             });
           }
         } catch (err) {
-          console.warn(`⚠️ テーブル '${tableName}' の統計取得に失敗:`, err);
+          console.warn(`[WARNING] テーブル '${tableName}' の統計取得に失敗:`, err);
         }
       }
 
@@ -315,13 +315,13 @@ export class DatabaseAdminService {
         }
       };
 
-      console.log('✅ データベース統計取得成功:', stats);
+      console.log('[SUCCESS] データベース統計取得成功:', stats);
       return {
         data: stats,
         error: null
       };
     } catch (err) {
-      console.error('❌ データベース統計取得エラー:', err);
+      console.error('[ERROR] データベース統計取得エラー:', err);
       return {
         data: null,
         error: 'データベース統計の取得中にエラーが発生しました'
@@ -334,7 +334,7 @@ export class DatabaseAdminService {
    */
   static async getTableData(tableName: string, page = 0, limit = 10): Promise<DatabaseResponse<any>> {
     try {
-      console.log(`📋 テーブルデータ取得: ${tableName}, page: ${page}, limit: ${limit}`);
+      console.log(`[LIST] テーブルデータ取得: ${tableName}, page: ${page}, limit: ${limit}`);
       
       const from = page * limit;
       const to = from + limit - 1;
@@ -364,7 +364,7 @@ export class DatabaseAdminService {
         total_count: count || 0
       };
 
-      console.log(`✅ テーブルデータ取得成功: ${tableName}, ${rows.length}行`);
+      console.log(`[SUCCESS] テーブルデータ取得成功: ${tableName}, ${rows.length}行`);
       return {
         data: result,
         error: null
@@ -397,14 +397,14 @@ export class DatabaseAdminService {
           if (!error) {
             existingTables.push(table);
           } else {
-            console.warn(`⚠️ テーブル '${table}' は存在しません:`, error.message);
+            console.warn(`[WARNING] テーブル '${table}' は存在しません:`, error.message);
           }
         } catch (err) {
-          console.warn(`⚠️ テーブル '${table}' のチェックに失敗:`, err);
+          console.warn(`[WARNING] テーブル '${table}' のチェックに失敗:`, err);
         }
       }
 
-      console.log('✅ 存在するテーブル:', existingTables);
+      console.log('[SUCCESS] 存在するテーブル:', existingTables);
       return {
         data: existingTables,
         error: null
@@ -439,20 +439,20 @@ export async function checkSupabaseConnection(): Promise<boolean> {
     if (error) {
       // APIキーエラーの場合は明確にログ出力
       if (error.message.includes('Invalid API key') || error.message.includes('JWT')) {
-        console.error('❌ Supabase APIキーが無効です。環境変数を確認してください。');
+        console.error('[ERROR] Supabase APIキーが無効です。環境変数を確認してください。');
       } else {
-        console.warn('⚠️ Supabase接続確認に失敗:', error.message);
+        console.warn('[WARNING] Supabase接続確認に失敗:', error.message);
       }
       return false;
     }
 
-    console.log('✅ Supabase接続確認成功');
+    console.log('[SUCCESS] Supabase接続確認成功');
     return true;
   } catch (err: any) {
     if (err.message?.includes('Failed to fetch')) {
-      console.warn('⚠️ ネットワークエラー - Supabaseへの接続に失敗');
+      console.warn('[WARNING] ネットワークエラー - Supabaseへの接続に失敗');
     } else {
-      console.warn('⚠️ Supabase接続確認エラー:', err);
+      console.warn('[WARNING] Supabase接続確認エラー:', err);
     }
     return false;
   }

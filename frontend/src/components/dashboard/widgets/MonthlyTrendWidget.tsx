@@ -43,17 +43,17 @@ const MonthlyTrendWidget: React.FC<MonthlyTrendWidgetProps> = ({
             <Line
               type="monotone"
               dataKey="projects"
-              stroke="#2196f3"
+              stroke="#3D5B81"
               strokeWidth={2}
-              dot={{ fill: '#2196f3' }}
+              dot={{ fill: '#3D5B81' }}
               name="新規案件"
             />
             <Line
               type="monotone"
               dataKey="completed"
-              stroke="#4caf50"
+              stroke="#9BC0D9"
               strokeWidth={2}
-              dot={{ fill: '#4caf50' }}
+              dot={{ fill: '#9BC0D9' }}
               name="完了案件"
             />
           </LineChart>

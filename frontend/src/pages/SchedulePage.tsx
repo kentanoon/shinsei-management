@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Build as BuildIcon, Sync as SyncIcon, CheckCircle as CheckCircleIcon, CalendarToday as CalendarIcon } from '@mui/icons-material';
+import { useTheme } from '@mui/material/styles';
 
 const SchedulePage: React.FC = () => {
+  const theme = useTheme();
   const [schedules, setSchedules] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -31,7 +33,7 @@ const SchedulePage: React.FC = () => {
 
   return (
     <div>
-      <h1 style={{ color: '#495057', marginBottom: '2rem', display: 'flex', alignItems: 'center', gap: '12px' }}>
+      <h1 style={{ color: theme.palette.text.secondary, marginBottom: '2rem', display: 'flex', alignItems: 'center', gap: '12px' }}>
         <CalendarIcon sx={{ fontSize: '2rem' }} />
         工程管理
       </h1>
@@ -50,11 +52,11 @@ const SchedulePage: React.FC = () => {
           border: '1px solid #dee2e6',
           boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
         }}>
-          <h3 style={{ margin: '0 0 0.5rem 0', color: '#495057', display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <h3 style={{ margin: '0 0 0.5rem 0', color: theme.palette.text.secondary, display: 'flex', alignItems: 'center', gap: '8px' }}>
             <BuildIcon />
             配筋検査予定
           </h3>
-          <p style={{ fontSize: '2rem', fontWeight: 'bold', margin: 0, color: '#ffc107' }}>
+          <p style={{ fontSize: '2rem', fontWeight: 'bold', margin: 0, color: theme.palette.warning.main }}>
             {schedules.filter(s => s.reinforcement_scheduled && !s.reinforcement_actual).length}
           </p>
         </div>
@@ -66,11 +68,11 @@ const SchedulePage: React.FC = () => {
           border: '1px solid #dee2e6',
           boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
         }}>
-          <h3 style={{ margin: '0 0 0.5rem 0', color: '#495057', display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <h3 style={{ margin: '0 0 0.5rem 0', color: theme.palette.text.secondary, display: 'flex', alignItems: 'center', gap: '8px' }}>
             <SyncIcon />
             中間検査予定
           </h3>
-          <p style={{ fontSize: '2rem', fontWeight: 'bold', margin: 0, color: '#007bff' }}>
+          <p style={{ fontSize: '2rem', fontWeight: 'bold', margin: 0, color: theme.palette.primary.main }}>
             {schedules.filter(s => s.interim_scheduled && !s.interim_actual).length}
           </p>
         </div>
@@ -82,11 +84,11 @@ const SchedulePage: React.FC = () => {
           border: '1px solid #dee2e6',
           boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
         }}>
-          <h3 style={{ margin: '0 0 0.5rem 0', color: '#495057', display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <h3 style={{ margin: '0 0 0.5rem 0', color: theme.palette.text.secondary, display: 'flex', alignItems: 'center', gap: '8px' }}>
             <CheckCircleIcon sx={{ color: 'success.main' }} />
             完了検査予定
           </h3>
-          <p style={{ fontSize: '2rem', fontWeight: 'bold', margin: 0, color: '#28a745' }}>
+          <p style={{ fontSize: '2rem', fontWeight: 'bold', margin: 0, color: theme.palette.success.main }}>
             {schedules.filter(s => s.completion_scheduled && !s.completion_actual).length}
           </p>
         </div>
@@ -100,10 +102,10 @@ const SchedulePage: React.FC = () => {
         border: '1px solid #dee2e6',
         boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
       }}>
-        <h2 style={{ color: '#495057', marginBottom: '1rem' }}>検査スケジュール一覧</h2>
+        <h2 style={{ color: theme.palette.text.secondary, marginBottom: '1rem' }}>検査スケジュール一覧</h2>
         
         {schedules.length === 0 ? (
-          <p style={{ color: '#6c757d', textAlign: 'center', padding: '2rem' }}>
+          <p style={{ color: theme.palette.text.secondary, textAlign: 'center', padding: '2rem' }}>
             検査スケジュールが登録されていません
           </p>
         ) : (
@@ -130,7 +132,7 @@ const SchedulePage: React.FC = () => {
                           </div>
                         )}
                         {schedule.reinforcement_actual && (
-                          <div style={{ fontSize: '0.9rem', color: '#28a745' }}>
+                          <div style={{ fontSize: '0.9rem', color: theme.palette.success.main }}>
                             実施: {new Date(schedule.reinforcement_actual).toLocaleDateString()}
                           </div>
                         )}
@@ -144,7 +146,7 @@ const SchedulePage: React.FC = () => {
                           </div>
                         )}
                         {schedule.interim_actual && (
-                          <div style={{ fontSize: '0.9rem', color: '#28a745' }}>
+                          <div style={{ fontSize: '0.9rem', color: theme.palette.success.main }}>
                             実施: {new Date(schedule.interim_actual).toLocaleDateString()}
                           </div>
                         )}
@@ -158,7 +160,7 @@ const SchedulePage: React.FC = () => {
                           </div>
                         )}
                         {schedule.completion_actual && (
-                          <div style={{ fontSize: '0.9rem', color: '#28a745' }}>
+                          <div style={{ fontSize: '0.9rem', color: theme.palette.success.main }}>
                             実施: {new Date(schedule.completion_actual).toLocaleDateString()}
                           </div>
                         )}
@@ -167,7 +169,7 @@ const SchedulePage: React.FC = () => {
                     <td style={{ padding: '0.75rem' }}>
                       {schedule.inspection_result && (
                         <span style={{
-                          background: schedule.inspection_result === '合格' ? '#28a745' : '#dc3545',
+                          background: schedule.inspection_result === '合格' ? theme.palette.success.main : theme.palette.error.main,
                           color: 'white',
                           padding: '0.25rem 0.5rem',
                           borderRadius: '15px',

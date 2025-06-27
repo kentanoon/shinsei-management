@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { AttachMoney as AttachMoneyIcon, BarChart as BarChartIcon, Assignment as AssignmentIcon, AccountBalance as AccountBalanceIcon, Schedule as ScheduleIcon } from '@mui/icons-material';
+import { useTheme } from '@mui/material/styles';
 
 const FinancialPage: React.FC = () => {
+  const theme = useTheme();
   const [financials, setFinancials] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -47,7 +49,7 @@ const FinancialPage: React.FC = () => {
 
   return (
     <div>
-      <h1 style={{ color: '#495057', marginBottom: '2rem', display: 'flex', alignItems: 'center', gap: '12px' }}>
+      <h1 style={{ color: theme.palette.text.secondary, marginBottom: '2rem', display: 'flex', alignItems: 'center', gap: '12px' }}>
         <AttachMoneyIcon sx={{ fontSize: '2rem' }} />
         財務管理
       </h1>
@@ -66,11 +68,11 @@ const FinancialPage: React.FC = () => {
           border: '1px solid #dee2e6',
           boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
         }}>
-          <h3 style={{ margin: '0 0 0.5rem 0', color: '#495057', display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <h3 style={{ margin: '0 0 0.5rem 0', color: theme.palette.text.secondary, display: 'flex', alignItems: 'center', gap: '8px' }}>
             <BarChartIcon />
             総契約金額
           </h3>
-          <p style={{ fontSize: '1.5rem', fontWeight: 'bold', margin: 0, color: '#007bff' }}>
+          <p style={{ fontSize: '1.5rem', fontWeight: 'bold', margin: 0, color: theme.palette.primary.main }}>
             {formatCurrency(getTotalContract())}
           </p>
         </div>
@@ -82,11 +84,11 @@ const FinancialPage: React.FC = () => {
           border: '1px solid #dee2e6',
           boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
         }}>
-          <h3 style={{ margin: '0 0 0.5rem 0', color: '#495057', display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <h3 style={{ margin: '0 0 0.5rem 0', color: theme.palette.text.secondary, display: 'flex', alignItems: 'center', gap: '8px' }}>
             <AccountBalanceIcon sx={{ color: 'success.main' }} />
             総決済金額
           </h3>
-          <p style={{ fontSize: '1.5rem', fontWeight: 'bold', margin: 0, color: '#28a745' }}>
+          <p style={{ fontSize: '1.5rem', fontWeight: 'bold', margin: 0, color: theme.palette.success.main }}>
             {formatCurrency(getTotalSettlement())}
           </p>
         </div>
@@ -98,11 +100,11 @@ const FinancialPage: React.FC = () => {
           border: '1px solid #dee2e6',
           boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
         }}>
-          <h3 style={{ margin: '0 0 0.5rem 0', color: '#495057', display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <h3 style={{ margin: '0 0 0.5rem 0', color: theme.palette.text.secondary, display: 'flex', alignItems: 'center', gap: '8px' }}>
             <AssignmentIcon />
             管理案件数
           </h3>
-          <p style={{ fontSize: '2rem', fontWeight: 'bold', margin: 0, color: '#6f42c1' }}>
+          <p style={{ fontSize: '2rem', fontWeight: 'bold', margin: 0, color: theme.palette.info.main }}>
             {financials.length}
           </p>
         </div>
@@ -114,11 +116,11 @@ const FinancialPage: React.FC = () => {
           border: '1px solid #dee2e6',
           boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
         }}>
-          <h3 style={{ margin: '0 0 0.5rem 0', color: '#495057', display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <h3 style={{ margin: '0 0 0.5rem 0', color: theme.palette.text.secondary, display: 'flex', alignItems: 'center', gap: '8px' }}>
             <ScheduleIcon sx={{ color: 'warning.main' }} />
             未決済金額
           </h3>
-          <p style={{ fontSize: '1.5rem', fontWeight: 'bold', margin: 0, color: '#ffc107' }}>
+          <p style={{ fontSize: '1.5rem', fontWeight: 'bold', margin: 0, color: theme.palette.warning.main }}>
             {formatCurrency(getTotalContract() - getTotalSettlement())}
           </p>
         </div>
@@ -132,10 +134,10 @@ const FinancialPage: React.FC = () => {
         border: '1px solid #dee2e6',
         boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
       }}>
-        <h2 style={{ color: '#495057', marginBottom: '1rem' }}>財務データ一覧</h2>
+        <h2 style={{ color: theme.palette.text.secondary, marginBottom: '1rem' }}>財務データ一覧</h2>
         
         {financials.length === 0 ? (
-          <p style={{ color: '#6c757d', textAlign: 'center', padding: '2rem' }}>
+          <p style={{ color: theme.palette.text.secondary, textAlign: 'center', padding: '2rem' }}>
             財務データが登録されていません
           </p>
         ) : (
@@ -163,7 +165,7 @@ const FinancialPage: React.FC = () => {
                     </td>
                     <td style={{ padding: '0.75rem', textAlign: 'right' }}>
                       <span style={{
-                        color: financial.settlement_amount ? '#28a745' : '#6c757d'
+                        color: financial.settlement_amount ? theme.palette.success.main : theme.palette.text.secondary
                       }}>
                         {formatCurrency(financial.settlement_amount)}
                       </span>
@@ -194,10 +196,10 @@ const FinancialPage: React.FC = () => {
         boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
         marginTop: '2rem'
       }}>
-        <h2 style={{ color: '#495057', marginBottom: '1rem' }}>提出書類状況</h2>
+        <h2 style={{ color: theme.palette.text.secondary, marginBottom: '1rem' }}>提出書類状況</h2>
         
         {financials.length === 0 ? (
-          <p style={{ color: '#6c757d', textAlign: 'center', padding: '2rem' }}>
+          <p style={{ color: theme.palette.text.secondary, textAlign: 'center', padding: '2rem' }}>
             データがありません
           </p>
         ) : (
@@ -218,7 +220,7 @@ const FinancialPage: React.FC = () => {
                 {financials.map((financial) => {
                   const getStatusBadge = (hasDocument: boolean) => (
                     <span style={{
-                      background: hasDocument ? '#28a745' : '#dc3545',
+                      background: hasDocument ? theme.palette.success.main : theme.palette.error.main,
                       color: 'white',
                       padding: '0.25rem 0.5rem',
                       borderRadius: '15px',

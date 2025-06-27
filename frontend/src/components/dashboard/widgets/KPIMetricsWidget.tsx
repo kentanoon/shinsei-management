@@ -41,11 +41,11 @@ const KPIMetricsWidget: React.FC<KPIMetricsWidgetProps> = ({
   const getTrendIcon = (trend: 'up' | 'down' | 'flat') => {
     switch (trend) {
       case 'up':
-        return <TrendingUpIcon sx={{ fontSize: 16, color: '#4caf50' }} />;
+        return <TrendingUpIcon sx={{ fontSize: 16, color: '#9BC0D9' }} />;
       case 'down':
-        return <TrendingDownIcon sx={{ fontSize: 16, color: '#f44336' }} />;
+        return <TrendingDownIcon sx={{ fontSize: 16, color: '#EE6B4D' }} />;
       case 'flat':
-        return <TrendingFlatIcon sx={{ fontSize: 16, color: '#ff9800' }} />;
+        return <TrendingFlatIcon sx={{ fontSize: 16, color: '#EE6B4D' }} />;
     }
   };
 

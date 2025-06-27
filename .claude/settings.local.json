@@ -52,7 +52,9 @@
       "Bash(sed:*)",
       "Bash(awk:*)",
       "Bash(export SHELL=/bin/bash)",
-      "Bash(/bin/bash -c \"cd '/Users/kentaroukouno/Desktop/申請管理システム' && git status\")"
+      "Bash(/bin/bash -c \"cd '/Users/kentaroukouno/Desktop/申請管理システム' && git status\")",
+      "WebFetch(domain:685d4c1abaef5a00081fe24e--tranquil-cactus-de8407.netlify.app)",
+      "Bash(true)"
     ],
     "deny": []
   }

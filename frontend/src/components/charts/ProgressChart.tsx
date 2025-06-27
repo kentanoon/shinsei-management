@@ -67,9 +67,9 @@ const ProgressChart: React.FC<ProgressChartProps> = ({
             />
             <Tooltip content={<CustomTooltip />} />
             <Legend />
-            <Bar dataKey="新規" fill="#007bff" name="新規案件" />
-            <Bar dataKey="完了" fill="#28a745" name="完了案件" />
-            <Bar dataKey="進行中" fill="#ffc107" name="進行中案件" />
+            <Bar dataKey="新規" fill="#3D5B81" name="新規案件" />
+            <Bar dataKey="完了" fill="#9BC0D9" name="完了案件" />
+            <Bar dataKey="進行中" fill="#EE6B4D" name="進行中案件" />
           </BarChart>
         </ResponsiveContainer>
       </Box>
